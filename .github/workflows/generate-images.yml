@@ -1,0 +1,46 @@
+name: Generate images (production only)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: generate-images
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate (skip if no secret)
+        env:
+          NANO_BANANA_API_KEY: ${{ secrets.NANO_BANANA_API_KEY }}
+        run: |
+          if [ -z "$NANO_BANANA_API_KEY" ]; then
+            echo "NANO_BANANA_API_KEY not set. Skipping."
+            exit 0
+          fi
+          node generate-images.js
+
+      - name: Commit generated images
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add public/generated || true
+          git diff --cached --quiet && echo "No image changes" && exit 0
+          git commit -m "chore: generate images" 
+          git push
