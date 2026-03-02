@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       single_prompt:
-        description: "Generate one image — enter the prompt here (leave blank to process all from image.prompts.json)"
+        description: "Generate one image — enter the prompt here (leave blank to process all)"
         required: false
       single_name:
         description: "SEO name for the image (e.g. tungsten-pdf-legal-firms)"
@@ -14,10 +14,6 @@ on:
       single_key:
         description: "Key to store it under in the manifest (e.g. hero, blog-post-1)"
         required: false
-      force_regenerate:
-        description: "Force regenerate ALL images even if unchanged (true/false)"
-        required: false
-        default: "false"
 
 concurrency:
   group: generate-images
@@ -44,70 +40,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Generate single image (if prompt provided)
-        if: ${{ github.event.inputs.single_prompt != '' }}
-        env:
-          IMAGE_WORKER_URL: https://master-image-generator.speech-recognition-cloud.workers.dev/generate
-          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
-          R2_PUBLIC_BASE: ${{ vars.R2_PUBLIC_BASE }}
-          SITE_ID: ${{ vars.SITE_ID }}
-        run: |
-          node - << 'EOF'
-          import fetch from "node:fetch";
-          import fs from "node:fs";
-          import path from "node:path";
-          import crypto from "node:crypto";
-
-          const WORKER_URL = process.env.IMAGE_WORKER_URL;
-          const SITE = process.env.SITE_ID || "default";
-          const prompt = `${{ github.event.inputs.single_prompt }}`;
-          const name = `${{ github.event.inputs.single_name }}` || "";
-          const key = `${{ github.event.inputs.single_key }}` || "generated-" + Date.now();
-
-          const headers = { "Content-Type": "application/json" };
-          if (process.env.ADMIN_TOKEN) headers["Authorization"] = `Bearer ${process.env.ADMIN_TOKEN}`;
-
-          console.log(`Generating image for key: ${key}`);
-          console.log(`Prompt: ${prompt}`);
-
-          const res = await fetch(WORKER_URL, {
-            method: "POST",
-            headers,
-            body: JSON.stringify({ prompt, name, site: SITE }),
-          });
-
-          const json = await res.json();
-          if (!json.ok) throw new Error(`Worker error: ${JSON.stringify(json)}`);
-
-          console.log(`R2 key: ${json.r2.key}`);
-          console.log(`SEO slug: ${json.seo.slug}`);
-          console.log(`Alt text: ${json.seo.altText}`);
-
-          const manifestPath = path.join(process.cwd(), "src", "data", "image-manifest.json");
-          let manifest = {};
-          try { manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8")); } catch {}
-
-          manifest[key] = {
-            key,
-            r2Key: json.r2.key,
-            filename: json.r2.filename,
-            contentType: json.r2.contentType,
-            bytes: json.r2.bytes,
-            seoSlug: json.seo.slug,
-            altText: json.seo.altText,
-            prompt,
-            promptHash: crypto.createHash("sha256").update(prompt).digest("hex"),
-            generatedAt: new Date().toISOString(),
-            site: SITE,
-          };
-
-          fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
-          fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-          console.log(`Manifest updated for key: ${key}`);
-          EOF
-
-      - name: Generate all images from prompts file (if no single prompt)
-        if: ${{ github.event.inputs.single_prompt == '' || github.event_name == 'push' }}
+      - name: Generate all images
         env:
           IMAGE_WORKER_URL: https://master-image-generator.speech-recognition-cloud.workers.dev/generate
           ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
@@ -115,7 +48,7 @@ jobs:
           SITE_ID: ${{ vars.SITE_ID }}
         run: node generate-images.js
 
-      - name: Commit manifest + any downloaded images
+      - name: Commit manifest
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -126,4 +59,6 @@ jobs:
           git push
 
       - name: Build Astro site
+        env:
+          R2_PUBLIC_BASE: ${{ vars.R2_PUBLIC_BASE }}
         run: npm run build
