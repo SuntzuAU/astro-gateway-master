@@ -1,1 +1,39 @@
-
+{
+  "siteName": "Gateway Site",
+  "domain": "https://example.com",
+  "primaryCTA": {
+    "text": "Request Information",
+    "url": "/contact"
+  },
+  "secondaryCTA": {
+    "text": "Contact Sales",
+    "url": "/contact"
+  },
+  "navItems": [
+    { "label": "Benefits", "url": "/#benefits" },
+    { "label": "How it works", "url": "/#how-it-works" },
+    { "label": "FAQ", "url": "/faq" },
+    { "label": "Contact", "url": "/contact" }
+  ],
+  "footerLinks": [
+    { "label": "About", "url": "/about" },
+    { "label": "Privacy", "url": "/privacy" },
+    { "label": "Terms", "url": "/terms" }
+  ],
+  "contact": {
+    "email": "info@example.com",
+    "phone": ""
+  },
+  "colours": {
+    "primary": "#111111",
+    "background": "#FFFFFF",
+    "neutral": "#F5F5F5",
+    "accent": "#0B5FFF"
+  },
+  "flags": {
+    "blogEnabled": false,
+    "testimonialsEnabled": true,
+    "pricingEnabled": false,
+    "faqEnabled": true
+  }
+}
