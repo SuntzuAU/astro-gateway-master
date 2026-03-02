@@ -1,18 +1,200 @@
 ---
-const title = "Gateway Site";
+import site from "../site.config.json";
+
+const year = new Date().getFullYear();
+
+const benefits = [
+  "Reduce document processing time and manual handling",
+  "Improve compliance, auditability, and governance",
+  "Standardise workflows across teams and departments",
+  "Work with existing systems and procurement constraints"
+];
+
+const proofPoints = [
+  "Enterprise and government-focused enquiry funnel",
+  "Clear information requests (no hard claims)",
+  "Fast static site (minimal JS)",
+  "Config-driven branding and navigation"
+];
+
+const steps = [
+  { title: "Request information", text: "Submit an enquiry with your requirements and environment constraints." },
+  { title: "We respond with options", text: "We outline fit-for-purpose approaches and procurement-friendly pathways." },
+  { title: "Pilot and scope", text: "Run a small trial to validate workflow, security, and rollout plan." }
+];
+
+const faqs = [
+  { q: "Is this suitable for government and enterprise?", a: "Yes—this site is designed to capture structured enquiries for enterprise and government use cases." },
+  { q: "Do you integrate with existing systems?", a: "We can discuss integration needs during the enquiry and propose options based on your environment." },
+  { q: "How do we get started?", a: "Use the Request Information button and we’ll follow up." }
+];
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.siteName}</title>
+    <meta name="description" content="Request information about PDF software solutions for enterprise and government." />
+    <link rel="canonical" href={site.domain} />
+    <style>
+      :root{
+        --primary:{site.colours.primary};
+        --bg:{site.colours.background};
+        --neutral:{site.colours.neutral};
+        --accent:{site.colours.accent};
+      }
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#0b1220;line-height:1.5}
+      a{color:inherit}
+      .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+      header{position:sticky;top:0;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid #e7e7e7}
+      .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:16px}
+      .brand{font-weight:700;letter-spacing:-0.02em}
+      .links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:#1f2937}
+      .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;border:1px solid #d1d5db}
+      .btn-primary{background:var(--primary);border-color:var(--primary);color:white}
+      .btn-secondary{background:white}
+      section{padding:56px 0}
+      .hero{padding:64px 0 44px}
+      .hero h1{font-size:40px;line-height:1.1;margin:0 0 14px;letter-spacing:-0.03em}
+      .hero p{max-width:760px;margin:0 0 22px;font-size:18px;color:#334155}
+      .cardgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+      .card{grid-column:span 6;background:#fff;border:1px solid #e7e7e7;border-radius:16px;padding:18px}
+      @media (max-width:820px){.card{grid-column:span 12}.hero h1{font-size:32px}}
+      .muted{color:#475569}
+      .pill{display:inline-flex;align-items:center;gap:8px;background:var(--neutral);border:1px solid #e7e7e7;border-radius:999px;padding:6px 10px;font-size:13px;color:#334155}
+      .formbox{background:#fff;border:1px dashed #cbd5e1;border-radius:16px;padding:18px;min-height:320px}
+      footer{border-top:1px solid #e7e7e7;padding:22px 0;color:#475569;font-size:14px}
+      h2{font-size:26px;letter-spacing:-0.02em;margin:0 0 14px}
+      h3{margin:0 0 8px}
+      ul{margin:10px 0 0;padding-left:18px}
+    </style>
   </head>
   <body>
+    <header>
+      <div class="wrap">
+        <div class="nav">
+          <div class="brand">{site.siteName}</div>
+          <nav class="links" aria-label="Primary">
+            {site.navItems?.map((item) => <a href={item.url}>{item.label}</a>)}
+          </nav>
+          <div style="display:flex;gap:10px;align-items:center">
+            {site.secondaryCTA?.text ? <a class="btn btn-secondary" href={site.secondaryCTA.url}>{site.secondaryCTA.text}</a> : null}
+            <a class="btn btn-primary" href={site.primaryCTA.url}>{site.primaryCTA.text}</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
     <main>
-      <h1>Astro Gateway Master Template</h1>
-      <p>If you can see this deployed, the base system works.</p>
+      <section class="hero">
+        <div class="wrap">
+          <div class="pill">Enterprise & Government • Australia</div>
+          <h1>PDF software enquiries for enterprise and government</h1>
+          <p>
+            Use this site to request information. We’ll tailor responses to your environment, procurement constraints,
+            security requirements, and workflow outcomes.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary" href={site.primaryCTA.url}>{site.primaryCTA.text}</a>
+            {site.secondaryCTA?.text ? <a class="btn btn-secondary" href={site.secondaryCTA.url}>{site.secondaryCTA.text}</a> : null}
+          </div>
+        </div>
+      </section>
+
+      <section id="benefits">
+        <div class="wrap">
+          <h2>Benefits</h2>
+          <div class="cardgrid">
+            {benefits.map((b) => (
+              <div class="card">
+                <h3>{b}</h3>
+                <div class="muted">Placeholder copy — we’ll customise per-site via config later.</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="proof" style="background:var(--neutral)">
+        <div class="wrap">
+          <h2>Proof and trust</h2>
+          <div class="cardgrid">
+            {proofPoints.map((p) => (
+              <div class="card">
+                <h3>{p}</h3>
+                <div class="muted">We’ll replace this with real proof (logos, case notes, security posture) when ready.</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <div class="wrap">
+          <h2>How it works</h2>
+          <div class="cardgrid">
+            {steps.map((s) => (
+              <div class="card">
+                <h3>{s.title}</h3>
+                <div class="muted">{s.text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" style="background:var(--neutral)">
+        <div class="wrap">
+          <h2>FAQ</h2>
+          <div class="cardgrid">
+            {faqs.map((f) => (
+              <div class="card">
+                <h3>{f.q}</h3>
+                <div class="muted">{f.a}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="final-cta">
+        <div class="wrap">
+          <h2>Request information</h2>
+          <div class="cardgrid">
+            <div class="card" style="grid-column:span 7">
+              <h3>Tell us what you need</h3>
+              <div class="muted">
+                We’ll embed your ActiveCampaign form on the Contact page. This box is sized to match a typical enterprise enquiry form.
+              </div>
+              <ul class="muted">
+                <li>Name</li>
+                <li>Email</li>
+                <li>Phone</li>
+                <li>Organisation</li>
+                <li>Industry dropdown</li>
+              </ul>
+            </div>
+            <div class="card formbox" style="grid-column:span 5">
+              <div class="muted" style="font-weight:600;margin-bottom:8px">Form placeholder</div>
+              <div class="muted">This area will be replaced with the ActiveCampaign embed HTML.</div>
+              <div style="margin-top:14px">
+                <a class="btn btn-primary" href={site.primaryCTA.url}>{site.primaryCTA.text}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer>
+      <div class="wrap" style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap">
+        <div>© {year} {site.siteName}</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          {site.footerLinks?.map((l) => <a href={l.url}>{l.label}</a>)}
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
