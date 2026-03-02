@@ -1,172 +1,146 @@
 // generate-images.js
-// Production-only image generator.
-// - Reads prompts from src/image.prompts.json (or src/src/image.prompts.json if you accidentally nested it)
-// - Writes images to public/generated/<seo-filename>
-// - Skips regeneration unless prompt changed (uses a sidecar .hash file)
-// - Calls Nano Banana via API URL you provide (so we don't guess your endpoint)
+// Calls your master-image-generator Worker (not Gemini directly).
+// - Reads prompts from src/image.prompts.json
+// - Worker handles SEO naming, R2 storage, alt text generation
+// - Writes a local SEO manifest: src/data/image-manifest.json
+// - Also downloads images to public/generated/ for local Astro builds
+// - Skips regeneration if prompt unchanged (hash check)
 
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 
-const API_KEY = process.env.NANO_BANANA_API_KEY;
-const API_URL = process.env.NANO_BANANA_API_URL; // REQUIRED: set this in GitHub repo variables/secrets
+const WORKER_URL = process.env.IMAGE_WORKER_URL ||
+  "https://master-image-generator.speech-recognition-cloud.workers.dev/generate";
 
-if (!API_KEY) throw new Error("Missing env NANO_BANANA_API_KEY");
-if (!API_URL) throw new Error("Missing env NANO_BANANA_API_URL (set your Nano Banana endpoint URL)");
+const WORKER_TOKEN = process.env.ADMIN_TOKEN || "";
+const SITE = process.env.SITE_ID || "default";
+
+if (!WORKER_URL) throw new Error("Missing IMAGE_WORKER_URL");
 
 const cwd = process.cwd();
 
-// Handle both possible locations (you currently have src/src/image.prompts.json)
 const promptPaths = [
   path.join(cwd, "src", "image.prompts.json"),
   path.join(cwd, "src", "src", "image.prompts.json"),
 ];
-
 const promptsPath = promptPaths.find((p) => fs.existsSync(p));
-if (!promptsPath) {
-  throw new Error(
-    `Cannot find image prompts file. Expected one of:\n- ${promptPaths.join("\n- ")}`
-  );
-}
+if (!promptsPath) throw new Error(`Cannot find image prompts file. Checked:\n- ${promptPaths.join("\n- ")}`);
 
-const raw = fs.readFileSync(promptsPath, "utf8");
-const config = JSON.parse(raw);
-
-if (!config?.images?.length) {
-  throw new Error(`No images[] found in ${promptsPath}`);
-}
+const config = JSON.parse(fs.readFileSync(promptsPath, "utf8"));
+if (!config?.images?.length) throw new Error(`No images[] found in ${promptsPath}`);
 
 const outDir = path.join(cwd, "public", "generated");
+const dataDir = path.join(cwd, "src", "data");
+const manifestPath = path.join(dataDir, "image-manifest.json");
+
 fs.mkdirSync(outDir, { recursive: true });
+fs.mkdirSync(dataDir, { recursive: true });
+
+let manifest = {};
+if (fs.existsSync(manifestPath)) {
+  try { manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8")); }
+  catch { manifest = {}; }
+}
 
 function sha256(s) {
   return crypto.createHash("sha256").update(s).digest("hex");
 }
 
-function getHashPath(filename) {
-  return path.join(outDir, `${filename}.hash`);
+function shouldGenerate(key, prompt) {
+  const entry = manifest[key];
+  if (!entry?.r2Key) return true;
+  const localFile = path.join(outDir, path.basename(entry.filename || ""));
+  if (!fs.existsSync(localFile)) return true;
+  return entry.promptHash !== sha256(prompt);
 }
 
-function shouldGenerate(filename, prompt) {
-  const imgPath = path.join(outDir, filename);
-  const hashPath = getHashPath(filename);
+async function callWorker(prompt, name) {
+  const headers = { "Content-Type": "application/json" };
+  if (WORKER_TOKEN) headers["Authorization"] = `Bearer ${WORKER_TOKEN}`;
 
-  if (!fs.existsSync(imgPath)) return true;
-
-  const currentHash = sha256(prompt);
-  if (!fs.existsSync(hashPath)) return true;
-
-  const prevHash = fs.readFileSync(hashPath, "utf8").trim();
-  return prevHash !== currentHash;
-}
-
-function writeHash(filename, prompt) {
-  fs.writeFileSync(getHashPath(filename), sha256(prompt), "utf8");
-}
-
-function sanitiseFilename(name) {
-  // keep it SEO-safe: lower, hyphens, .webp, no weird chars
-  const safe = name
-    .toLowerCase()
-    .replace(/[^a-z0-9.\-]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$|(?<=\.)-|-(?=\.)/g, "");
-  return safe;
-}
-
-async function callNanoBanana(prompt) {
-  // We do NOT assume Nano Banana’s payload format.
-  // This request shape is generic. If your API needs different fields, tell me what it expects.
-  const res = await fetch(API_URL, {
+  const res = await fetch(WORKER_URL, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      prompt,
-      // common optional params you might support server-side:
-      // size: "1200x630",
-      // format: "webp",
-      // quality: "high",
-    }),
+    headers,
+    body: JSON.stringify({ prompt, name, site: SITE }),
   });
 
-  const contentType = res.headers.get("content-type") || "";
-
-  // If API returns an image directly
-  if (contentType.startsWith("image/")) {
-    const arrayBuffer = await res.arrayBuffer();
-    return Buffer.from(arrayBuffer);
-  }
-
-  // Otherwise assume JSON
   const json = await res.json().catch(() => null);
-  if (!res.ok) {
-    throw new Error(`Nano Banana API error ${res.status}: ${JSON.stringify(json)}`);
+  if (!res.ok || !json?.ok) {
+    throw new Error(`Worker error ${res.status}: ${JSON.stringify(json)}`);
+  }
+  return json;
+}
+
+async function downloadImage(r2Key, localFilename) {
+  const R2_BASE = process.env.R2_PUBLIC_BASE || "";
+  if (!R2_BASE) {
+    console.log(`  ↳ No R2_PUBLIC_BASE set — skipping local download of ${localFilename}`);
+    return false;
   }
 
-  // Try a few common shapes (base64)
-  const b64 =
-    json?.image_base64 ||
-    json?.imageBase64 ||
-    json?.data?.b64_json ||
-    json?.data?.[0]?.b64_json ||
-    json?.images?.[0]?.b64_json ||
-    json?.images?.[0]?.base64;
-
-  if (b64) return Buffer.from(b64, "base64");
-
-  // Or URL returned
-  const url =
-    json?.image_url ||
-    json?.imageUrl ||
-    json?.data?.url ||
-    json?.data?.[0]?.url ||
-    json?.images?.[0]?.url;
-
-  if (url) {
-    const imgRes = await fetch(url);
-    if (!imgRes.ok) throw new Error(`Failed to fetch generated image URL: ${url}`);
-    const arrayBuffer = await imgRes.arrayBuffer();
-    return Buffer.from(arrayBuffer);
+  const url = `${R2_BASE.replace(/\/$/, "")}/${r2Key}`;
+  const imgRes = await fetch(url);
+  if (!imgRes.ok) {
+    console.warn(`  ↳ Could not download image from ${url} (${imgRes.status})`);
+    return false;
   }
 
-  throw new Error(
-    `Nano Banana response did not contain image data we recognise: ${JSON.stringify(json)}`
-  );
+  const buffer = Buffer.from(await imgRes.arrayBuffer());
+  fs.writeFileSync(path.join(outDir, localFilename), buffer);
+  console.log(`  ↳ Downloaded to public/generated/${localFilename}`);
+  return true;
 }
 
 async function main() {
   let generatedCount = 0;
 
   for (const img of config.images) {
-    const filename = sanitiseFilename(img.filename || "");
-    const prompt = (img.prompt || "").trim();
+    const key = (img.key || img.filename || "").toString().trim();
+    const prompt = (img.prompt || "").toString().trim();
+    const name = (img.name || img.filename || "").toString().trim();
 
-    if (!filename || !prompt) {
-      console.log("Skipping invalid entry (needs filename + prompt):", img);
+    if (!key || !prompt) {
+      console.log("Skipping invalid entry (needs key + prompt):", img);
       continue;
     }
 
-    const outPath = path.join(outDir, filename);
-
-    if (!shouldGenerate(filename, prompt)) {
-      console.log(`Skip (unchanged): ${filename}`);
+    if (!shouldGenerate(key, prompt)) {
+      console.log(`Skip (unchanged): ${key}`);
       continue;
     }
 
-    console.log(`Generating: ${filename}`);
-    const buffer = await callNanoBanana(prompt);
+    console.log(`Generating: ${key}`);
+    console.log(`  Prompt: ${prompt.slice(0, 80)}...`);
 
-    fs.writeFileSync(outPath, buffer);
-    writeHash(filename, prompt);
+    const result = await callWorker(prompt, name);
+    const { r2 } = result;
+    const seo = result.seo || {};
+
+    manifest[key] = {
+      key,
+      r2Key: r2.key,
+      filename: r2.filename,
+      contentType: r2.contentType,
+      bytes: r2.bytes,
+      seoSlug: seo.slug || "",
+      altText: seo.altText || prompt.slice(0, 120),
+      prompt,
+      promptHash: sha256(prompt),
+      generatedAt: new Date().toISOString(),
+      site: SITE,
+    };
+
+    console.log(`  ↳ R2 key: ${r2.key}`);
+    console.log(`  ↳ SEO slug: ${seo.slug}`);
+    console.log(`  ↳ Alt text: ${seo.altText}`);
+
+    await downloadImage(r2.key, r2.filename);
     generatedCount += 1;
-
-    console.log(`Wrote: public/generated/${filename}`);
   }
 
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
+  console.log(`\nManifest updated: src/data/image-manifest.json`);
   console.log(`Done. Generated/updated: ${generatedCount}`);
 }
 
