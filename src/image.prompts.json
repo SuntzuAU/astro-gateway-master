@@ -2,28 +2,28 @@
   "images": [
     {
       "key": "hero",
-      "name": "medical-ai-speech-recognition-hero",
-      "prompt": "Ultra realistic medical AI speech recognition dashboard, doctor using voice dictation, clean hospital environment, professional blue tones"
+      "name": "tungsten-pdf-enterprise-australia",
+      "prompt": "Professional enterprise PDF software interface on a large monitor, clean modern office environment, Australian government or legal setting, confident professional reviewing documents, blue and white corporate tones"
     },
     {
       "key": "about-banner",
-      "name": "speech-recognition-australia-team",
-      "prompt": "Professional Australian medical technology team, modern office, AI software screens, collaborative environment"
+      "name": "pdf-software-australian-team",
+      "prompt": "Australian enterprise technology team in a professional office, reviewing PDF documents on screens, corporate environment, collaborative meeting, trust and expertise"
     },
     {
       "key": "feature-transcription",
-      "name": "ai-transcription-realtime",
-      "prompt": "Real-time AI transcription interface, waveform visualization, medical notes appearing on screen, clean UI"
+      "name": "pdf-redaction-compliance-tool",
+      "prompt": "PDF document redaction interface on screen, sensitive information being securely redacted, compliance and legal document workflow, professional software UI, clean and precise"
     },
     {
       "key": "feature-multilingual",
-      "name": "multilingual-speech-recognition",
-      "prompt": "Multilingual speech recognition visualization, 57 languages, global network connections, professional interface"
+      "name": "pdf-workflow-automation-enterprise",
+      "prompt": "Enterprise document workflow automation dashboard, multiple PDF documents being processed, SharePoint and Microsoft 365 integration visible, professional corporate software interface"
     },
     {
       "key": "cta-banner",
-      "name": "dragon-alternative-cloud-software",
-      "prompt": "Modern cloud-based speech recognition software interface, Dragon alternative, clean SaaS dashboard"
+      "name": "tungsten-pdf-government-procurement",
+      "prompt": "Australian government office professional using PDF software, secure document management, formal government environment, trust and compliance, professional blue tones"
     }
   ]
 }
