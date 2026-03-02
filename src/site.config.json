@@ -4,14 +4,17 @@
   "branding": {
     "industry": "Enterprise, Government & Legal",
     "region": "Australia",
-    "headline": "Tungsten PDF Software for Australian Enterprise and Government",
-    "subheadline": "The professional PDF solution trusted by enterprise, government, and legal organisations across Australia. Request information tailored to your environment and procurement requirements."
+    "headline": "Tungsten Power PDF for Australian Enterprise and Government",
+    "subheadline": "The cost-effective Adobe Acrobat alternative trusted by enterprise, government, and legal organisations across Australia. Perpetual or subscription licensing, local support, and volume pricing tailored to your procurement requirements."
   },
   "colours": {
-    "primary": "#1a3c6e",
-    "background": "#f8fafc",
-    "neutral": "#eef2f7",
-    "accent": "#0f172a"
+    "primary": "#1a2f5e",
+    "background": "#ffffff",
+    "neutral": "#f1f5f9",
+    "accent": "#f59e0b",
+    "accentHover": "#d97706",
+    "text": "#0f172a",
+    "muted": "#475569"
   },
   "navItems": [
     { "label": "Benefits", "url": "#benefits" },
@@ -25,55 +28,83 @@
     "url": "#final-cta"
   },
   "secondaryCTA": {
-    "text": "Download Trial",
+    "text": "Try Free 15 Days",
     "url": "#trial"
   },
   "benefits": [
-    "Create, edit and convert PDF documents with precision",
-    "Redact sensitive information to meet compliance requirements",
-    "Automate document workflows across teams and departments",
-    "Integrate with existing systems including SharePoint and M365"
+    {
+      "title": "Significant cost savings over Adobe Acrobat",
+      "body": "Tungsten Power PDF delivers enterprise-grade PDF capability at a fraction of Adobe Acrobat's cost. Volume licensing and perpetual options make budgeting simple for government and enterprise procurement."
+    },
+    {
+      "title": "Create, edit and convert with precision",
+      "body": "Edit PDF text, images and pages directly. Convert to and from Word, Excel, PowerPoint, HTML and more — with formatting preserved accurately every time."
+    },
+    {
+      "title": "Redaction and compliance built in",
+      "body": "Permanently redact sensitive information, apply Bates stamping, set document permissions and encrypt files. Meets compliance requirements for legal, government and healthcare environments."
+    },
+    {
+      "title": "Integrates with your existing systems",
+      "body": "Native integration with Microsoft 365, SharePoint, OneDrive, Teams and Box. Works within your existing document management environment without disruption."
+    }
   ],
   "proofPoints": [
-    "Trusted by Australian government agencies",
-    "Procurement-friendly licensing and volume pricing",
-    "Local support and onboarding from Australian specialists",
-    "25+ years experience deploying document software in Australia"
+    "Formerly Kofax — 25+ years enterprise document software",
+    "Deployed in 70+ countries including Australian government",
+    "Perpetual licensing — own it forever, no forced subscriptions",
+    "Local Australian support from VRA — 25 years experience"
   ],
   "steps": [
     {
       "title": "Submit your enquiry",
-      "text": "Tell us about your organisation, environment, and document workflow requirements."
+      "text": "Tell us about your organisation size, environment, and document workflow requirements."
     },
     {
-      "title": "Receive a tailored response",
-      "text": "We outline licensing options, integration pathways, and procurement-friendly approaches for your sector."
+      "title": "Receive a tailored proposal",
+      "text": "We outline the right Power PDF edition — Standard, Advanced or Business — with volume pricing and procurement-friendly licensing options."
     },
     {
-      "title": "Pilot and deploy",
-      "text": "Run a trial in your environment, validate workflows, and roll out with local support."
+      "title": "Trial and deploy",
+      "text": "Download a free 15-day trial, validate in your environment, and roll out with local onboarding support from our Australian team."
+    }
+  ],
+  "features": [
+    {
+      "key": "feature-transcription",
+      "title": "Professional redaction and security",
+      "body": "Permanently redact sensitive data, apply document restrictions, encrypt with passwords, and manage security centrally across your organisation."
+    },
+    {
+      "key": "feature-multilingual",
+      "title": "Cloud editing and Microsoft 365 integration",
+      "body": "Power PDF 2025.3 introduces browser-based cloud editing and deep Microsoft Teams and OneDrive integration — work on PDFs anywhere, on any device."
     }
   ],
   "faqs": [
     {
-      "q": "Is Tungsten PDF suitable for government procurement?",
-      "a": "Yes — Tungsten PDF is widely deployed in Australian government agencies and supports standard procurement pathways including panel arrangements and volume licensing."
+      "q": "How does Tungsten Power PDF compare to Adobe Acrobat?",
+      "a": "Power PDF delivers comparable functionality to Adobe Acrobat — editing, conversion, redaction, e-signatures, and collaboration — at significantly lower cost. Volume licensing makes it particularly attractive for enterprise and government procurement."
     },
     {
-      "q": "How does Tungsten PDF compare to Adobe Acrobat?",
-      "a": "Tungsten PDF offers comparable functionality to Adobe Acrobat at a more competitive price point, with stronger document automation capabilities and flexible volume licensing for enterprise."
+      "q": "What editions are available?",
+      "a": "Power PDF comes in Standard (individual users), Advanced (business users with redaction, collaboration and integrations), and Business (volume licensing with centralised management and cloud access). Perpetual and subscription options are available."
     },
     {
-      "q": "Can it integrate with our existing systems?",
-      "a": "Yes — Tungsten PDF integrates with SharePoint, Microsoft 365, and most document management systems used in Australian enterprise and government environments."
+      "q": "Is it suitable for Australian government procurement?",
+      "a": "Yes — Tungsten Power PDF is widely deployed in government environments and supports standard Australian procurement pathways including panel arrangements and volume licensing. Local support is provided by our Australian team."
     },
     {
-      "q": "Do you offer local support in Australia?",
-      "a": "Yes — all enquiries, onboarding, and ongoing support are handled by our Australian team with 25+ years experience in document software deployment."
+      "q": "Does it integrate with SharePoint and Microsoft 365?",
+      "a": "Yes — Power PDF integrates natively with SharePoint, Microsoft 365, OneDrive, Teams and Box. It also works within your existing document management systems."
     },
     {
-      "q": "Is redaction and security compliance supported?",
-      "a": "Yes — Tungsten PDF includes professional redaction tools, digital signatures, and encryption features suitable for legal, compliance, and government security requirements."
+      "q": "Is there a free trial available?",
+      "a": "Yes — Power PDF is available as a free 15-day trial with full functionality. Contact us and we will arrange access along with onboarding support from our Australian team."
+    },
+    {
+      "q": "Do you provide local Australian support?",
+      "a": "Yes — all enquiries, licensing, onboarding and ongoing support are handled by Voice Recognition Australia, with 25 years experience deploying enterprise document software across Australia."
     }
   ],
   "footerLinks": [
