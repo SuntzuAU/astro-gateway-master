@@ -2,15 +2,28 @@
   "images": [
     {
       "key": "hero",
-      "filename": "pdf-software-enterprise-government-australia-hero.webp",
-      "alt": "PDF software solutions for enterprise and government in Australia",
-      "prompt": "Modern SaaS hero image with Apple-like minimalism for an enterprise and government PDF software enquiry landing page in Australia. Clean abstract document workflow motif, professional, trustworthy, neutral background, no text, no logos, no people, high quality."
+      "name": "medical-ai-speech-recognition-hero",
+      "prompt": "Ultra realistic medical AI speech recognition dashboard, doctor using voice dictation, clean hospital environment, professional blue tones"
     },
     {
-      "key": "og",
-      "filename": "pdf-software-enterprise-government-australia-og.webp",
-      "alt": "Enterprise and government PDF software enquiries in Australia",
-      "prompt": "Open Graph image background for an enterprise/government PDF software landing page in Australia. Minimal, clean, abstract document and compliance motif, high contrast but subtle, no text, no logos."
+      "key": "about-banner",
+      "name": "speech-recognition-australia-team",
+      "prompt": "Professional Australian medical technology team, modern office, AI software screens, collaborative environment"
+    },
+    {
+      "key": "feature-transcription",
+      "name": "ai-transcription-realtime",
+      "prompt": "Real-time AI transcription interface, waveform visualization, medical notes appearing on screen, clean UI"
+    },
+    {
+      "key": "feature-multilingual",
+      "name": "multilingual-speech-recognition",
+      "prompt": "Multilingual speech recognition visualization, 57 languages, global network connections, professional interface"
+    },
+    {
+      "key": "cta-banner",
+      "name": "dragon-alternative-cloud-software",
+      "prompt": "Modern cloud-based speech recognition software interface, Dragon alternative, clean SaaS dashboard"
     }
   ]
 }
