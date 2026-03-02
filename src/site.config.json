@@ -7,6 +7,12 @@
     "headline": "Switch from Adobe Acrobat and Save Thousands",
     "subheadline": "Tungsten Power PDF delivers everything your team needs — editing, redaction, e-signatures, and Microsoft 365 integration — at a fraction of Adobe's annual subscription cost. Perpetual licensing available. Local Australian support."
   },
+  "heroVideo": {
+    "enabled": true,
+    "youtubeId": "1R23rVJ2Bgg",
+    "heading": "See Power PDF in action",
+    "subheading": "Watch how Australian teams are switching from Adobe Acrobat and cutting their software costs."
+  },
   "colours": {
     "primary": "#1a2f5e",
     "background": "#ffffff",
