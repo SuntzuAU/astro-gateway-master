@@ -1,84 +1,84 @@
 {
-  "siteName": "Gateway Site",
-  "domain": "https://example.com",
-
+  "siteName": "PDF Software Australia",
+  "domain": "https://pdfsoftware.com.au",
   "branding": {
-    "industry": "Enterprise & Government",
+    "industry": "Enterprise, Government & Legal",
     "region": "Australia",
-    "headline": "PDF software enquiries for enterprise and government",
-    "subheadline": "Use this site to request information. We’ll tailor responses to your environment, procurement constraints, security requirements, and workflow outcomes."
+    "headline": "Tungsten PDF Software for Australian Enterprise and Government",
+    "subheadline": "The professional PDF solution trusted by enterprise, government, and legal organisations across Australia. Request information tailored to your environment and procurement requirements."
   },
-
   "colours": {
-    "primary": "#1e3a8a",
+    "primary": "#1a3c6e",
     "background": "#f8fafc",
     "neutral": "#eef2f7",
     "accent": "#0f172a"
   },
-
   "navItems": [
     { "label": "Benefits", "url": "#benefits" },
     { "label": "How it works", "url": "#how-it-works" },
+    { "label": "Features", "url": "#features" },
     { "label": "FAQ", "url": "#faq" },
     { "label": "Contact", "url": "#final-cta" }
   ],
-
   "primaryCTA": {
-    "text": "Contact Sales",
+    "text": "Request Information",
     "url": "#final-cta"
   },
-
   "secondaryCTA": {
-    "text": "",
-    "url": ""
+    "text": "Download Trial",
+    "url": "#trial"
   },
-
   "benefits": [
-    "Reduce document processing time and manual handling",
-    "Improve compliance, auditability, and governance",
-    "Standardise workflows across teams and departments",
-    "Work with existing systems and procurement constraints"
+    "Create, edit and convert PDF documents with precision",
+    "Redact sensitive information to meet compliance requirements",
+    "Automate document workflows across teams and departments",
+    "Integrate with existing systems including SharePoint and M365"
   ],
-
   "proofPoints": [
-    "Enterprise and government-focused enquiry funnel",
-    "Clear information requests (no hard claims)",
-    "Fast static site (minimal JS)",
-    "Config-driven branding and navigation"
+    "Trusted by Australian government agencies",
+    "Procurement-friendly licensing and volume pricing",
+    "Local support and onboarding from Australian specialists",
+    "25+ years experience deploying document software in Australia"
   ],
-
   "steps": [
     {
-      "title": "Request information",
-      "text": "Submit an enquiry with your requirements and environment constraints."
+      "title": "Submit your enquiry",
+      "text": "Tell us about your organisation, environment, and document workflow requirements."
     },
     {
-      "title": "We respond with options",
-      "text": "We outline fit-for-purpose approaches and procurement-friendly pathways."
+      "title": "Receive a tailored response",
+      "text": "We outline licensing options, integration pathways, and procurement-friendly approaches for your sector."
     },
     {
-      "title": "Pilot and scope",
-      "text": "Run a small trial to validate workflow, security, and rollout plan."
+      "title": "Pilot and deploy",
+      "text": "Run a trial in your environment, validate workflows, and roll out with local support."
     }
   ],
-
   "faqs": [
     {
-      "q": "Is this suitable for government and enterprise?",
-      "a": "Yes—this site is designed to capture structured enquiries for enterprise and government use cases."
+      "q": "Is Tungsten PDF suitable for government procurement?",
+      "a": "Yes — Tungsten PDF is widely deployed in Australian government agencies and supports standard procurement pathways including panel arrangements and volume licensing."
     },
     {
-      "q": "Do you integrate with existing systems?",
-      "a": "We can discuss integration needs during the enquiry and propose options based on your environment."
+      "q": "How does Tungsten PDF compare to Adobe Acrobat?",
+      "a": "Tungsten PDF offers comparable functionality to Adobe Acrobat at a more competitive price point, with stronger document automation capabilities and flexible volume licensing for enterprise."
     },
     {
-      "q": "How do we get started?",
-      "a": "Use the Contact Sales button and we’ll follow up."
+      "q": "Can it integrate with our existing systems?",
+      "a": "Yes — Tungsten PDF integrates with SharePoint, Microsoft 365, and most document management systems used in Australian enterprise and government environments."
+    },
+    {
+      "q": "Do you offer local support in Australia?",
+      "a": "Yes — all enquiries, onboarding, and ongoing support are handled by our Australian team with 25+ years experience in document software deployment."
+    },
+    {
+      "q": "Is redaction and security compliance supported?",
+      "a": "Yes — Tungsten PDF includes professional redaction tools, digital signatures, and encryption features suitable for legal, compliance, and government security requirements."
     }
   ],
-
   "footerLinks": [
-    { "label": "Privacy Policy", "url": "#" },
-    { "label": "Terms", "url": "#" }
+    { "label": "Privacy Policy", "url": "/privacy" },
+    { "label": "Terms", "url": "/terms" },
+    { "label": "Contact", "url": "#final-cta" }
   ]
 }
