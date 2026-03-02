@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "key": "hero",
+      "name": "medical-ai-speech-recognition-hero",
+      "prompt": "Ultra realistic medical AI speech recognition dashboard, doctor using voice dictation, clean hospital environment, professional blue tones"
+    },
+    {
+      "key": "about-banner",
+      "name": "speech-recognition-australia-team",
+      "prompt": "Professional Australian medical technology team, modern office, AI software screens, collaborative environment"
+    },
+    {
+      "key": "feature-transcription",
+      "name": "ai-transcription-realtime",
+      "prompt": "Real-time AI transcription interface, waveform visualization, medical notes appearing on screen, clean UI"
+    },
+    {
+      "key": "feature-multilingual",
+      "name": "multilingual-speech-recognition",
+      "prompt": "Multilingual speech recognition visualization, 57 languages, global network connections, professional interface"
+    },
+    {
+      "key": "cta-banner",
+      "name": "dragon-alternative-cloud-software",
+      "prompt": "Modern cloud-based speech recognition software interface, Dragon alternative, clean SaaS dashboard"
+    }
+  ]
+}
