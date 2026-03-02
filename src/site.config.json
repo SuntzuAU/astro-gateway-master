@@ -111,11 +111,11 @@
   ],
   "tco": {
     "heading": "3-year cost comparison — 10 users",
-    "note": "Adobe Acrobat pricing from Adobe AU pricing page. Tungsten pricing one-time purchase inc GST.",
+    "note": "Adobe Acrobat business/teams pricing as published on adobe.com/au, 2 March 2026, incl. GST. Tungsten Power PDF Advanced one-time purchase price incl. GST.",
     "rows": [
       { "product": "Tungsten Power PDF Advanced", "cost": "A$2,610", "type": "One-time" },
-      { "product": "Adobe Acrobat Standard", "cost": "A$8,636", "type": "Subscription" },
-      { "product": "Adobe Acrobat Pro", "cost": "A$11,516", "type": "Subscription" },
+      { "product": "Adobe Acrobat Standard for teams", "cost": "A$9,718", "type": "Subscription" },
+      { "product": "Adobe Acrobat Pro for teams", "cost": "A$12,597", "type": "Subscription" },
       { "product": "Bluebeam Basics", "cost": "A$13,530", "type": "Subscription" }
     ]
   },
@@ -160,7 +160,7 @@
     },
     {
       "q": "How much cheaper is Power PDF than Adobe Acrobat?",
-      "a": "Adobe Acrobat Pro costs A$383.88 per user per year in Australia. Power PDF Advanced is A$261 per user once — a one-time purchase. For 10 users over 3 years, that's A$2,610 vs A$11,516. The savings scale significantly for larger teams."
+      "a": "Adobe Acrobat Pro for teams costs A$419.89 per user per year in Australia. Power PDF Advanced is A$261 per user once — a one-time purchase. For 10 users over 3 years, that's A$2,610 vs A$12,597. Adobe pricing as published on adobe.com/au, 2 March 2026."
     },
     {
       "q": "What does Power PDF Advanced include over Standard?",
