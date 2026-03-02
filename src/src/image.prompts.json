@@ -1,0 +1,16 @@
+{
+  "images": [
+    {
+      "key": "hero",
+      "filename": "pdf-software-enterprise-government-australia-hero.webp",
+      "alt": "PDF software solutions for enterprise and government in Australia",
+      "prompt": "Modern SaaS hero image with Apple-like minimalism for an enterprise and government PDF software enquiry landing page in Australia. Clean abstract document workflow motif, professional, trustworthy, neutral background, no text, no logos, no people, high quality."
+    },
+    {
+      "key": "og",
+      "filename": "pdf-software-enterprise-government-australia-og.webp",
+      "alt": "Enterprise and government PDF software enquiries in Australia",
+      "prompt": "Open Graph image background for an enterprise/government PDF software landing page in Australia. Minimal, clean, abstract document and compliance motif, high contrast but subtle, no text, no logos."
+    }
+  ]
+}
