@@ -1,39 +1,84 @@
 {
   "siteName": "Gateway Site",
   "domain": "https://example.com",
-  "primaryCTA": {
-    "text": "Request Information",
-    "url": "/contact"
+
+  "branding": {
+    "industry": "Enterprise & Government",
+    "region": "Australia",
+    "headline": "PDF software enquiries for enterprise and government",
+    "subheadline": "Use this site to request information. We’ll tailor responses to your environment, procurement constraints, security requirements, and workflow outcomes."
   },
-  "secondaryCTA": {
-    "text": "Contact Sales",
-    "url": "/contact"
-  },
-  "navItems": [
-    { "label": "Benefits", "url": "/#benefits" },
-    { "label": "How it works", "url": "/#how-it-works" },
-    { "label": "FAQ", "url": "/faq" },
-    { "label": "Contact", "url": "/contact" }
-  ],
-  "footerLinks": [
-    { "label": "About", "url": "/about" },
-    { "label": "Privacy", "url": "/privacy" },
-    { "label": "Terms", "url": "/terms" }
-  ],
-  "contact": {
-    "email": "info@example.com",
-    "phone": ""
-  },
+
   "colours": {
-    "primary": "#111111",
-    "background": "#FFFFFF",
-    "neutral": "#F5F5F5",
-    "accent": "#0B5FFF"
+    "primary": "#1e3a8a",
+    "background": "#f8fafc",
+    "neutral": "#eef2f7",
+    "accent": "#0f172a"
   },
-  "flags": {
-    "blogEnabled": false,
-    "testimonialsEnabled": true,
-    "pricingEnabled": false,
-    "faqEnabled": true
-  }
+
+  "navItems": [
+    { "label": "Benefits", "url": "#benefits" },
+    { "label": "How it works", "url": "#how-it-works" },
+    { "label": "FAQ", "url": "#faq" },
+    { "label": "Contact", "url": "#final-cta" }
+  ],
+
+  "primaryCTA": {
+    "text": "Contact Sales",
+    "url": "#final-cta"
+  },
+
+  "secondaryCTA": {
+    "text": "",
+    "url": ""
+  },
+
+  "benefits": [
+    "Reduce document processing time and manual handling",
+    "Improve compliance, auditability, and governance",
+    "Standardise workflows across teams and departments",
+    "Work with existing systems and procurement constraints"
+  ],
+
+  "proofPoints": [
+    "Enterprise and government-focused enquiry funnel",
+    "Clear information requests (no hard claims)",
+    "Fast static site (minimal JS)",
+    "Config-driven branding and navigation"
+  ],
+
+  "steps": [
+    {
+      "title": "Request information",
+      "text": "Submit an enquiry with your requirements and environment constraints."
+    },
+    {
+      "title": "We respond with options",
+      "text": "We outline fit-for-purpose approaches and procurement-friendly pathways."
+    },
+    {
+      "title": "Pilot and scope",
+      "text": "Run a small trial to validate workflow, security, and rollout plan."
+    }
+  ],
+
+  "faqs": [
+    {
+      "q": "Is this suitable for government and enterprise?",
+      "a": "Yes—this site is designed to capture structured enquiries for enterprise and government use cases."
+    },
+    {
+      "q": "Do you integrate with existing systems?",
+      "a": "We can discuss integration needs during the enquiry and propose options based on your environment."
+    },
+    {
+      "q": "How do we get started?",
+      "a": "Use the Contact Sales button and we’ll follow up."
+    }
+  ],
+
+  "footerLinks": [
+    { "label": "Privacy Policy", "url": "#" },
+    { "label": "Terms", "url": "#" }
+  ]
 }
