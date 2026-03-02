@@ -60,10 +60,7 @@ function imgAlt(key) {
       .stat-message span{color:#f59e0b}
 
       /* HERO VIDEO */
-      .video-section{padding:56px 0 48px}
-      .video-section .sh{text-align:center;margin-bottom:32px}
-      .video-section .sh h2{font-size:28px;letter-spacing:-0.02em;margin:0 0 10px}
-      .video-section .sh p{font-size:16px;color:#475569;margin:0 auto;max-width:560px}
+      .video-section{padding:32px 0;background:#f1f5f9}
       .video-outer{max-width:800px;margin:0 auto}
       .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;box-shadow:0 24px 64px rgba(26,47,94,.15)}
       .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:16px}
@@ -180,12 +177,6 @@ function imgAlt(key) {
       {site.heroVideo?.enabled && (
         <section class="video-section">
           <div class="wrap">
-            {(site.heroVideo.heading || site.heroVideo.subheading) && (
-              <div class="sh" style="text-align:center">
-                {site.heroVideo.heading && <h2>{site.heroVideo.heading}</h2>}
-                {site.heroVideo.subheading && <p style="margin:0 auto;max-width:560px">{site.heroVideo.subheading}</p>}
-              </div>
-            )}
             <div class="video-outer">
               <div class="video-wrap">
                 <iframe
