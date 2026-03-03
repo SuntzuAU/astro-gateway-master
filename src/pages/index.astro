@@ -59,11 +59,15 @@ function imgAlt(key) {
       .stat-message{font-size:15px;font-weight:700;color:white;letter-spacing:0.01em;text-align:center}
       .stat-message span{color:#f59e0b}
 
-      /* HERO VIDEO */
+      /* HERO VIDEO FACADE */
       .video-section{padding:32px 0;background:#f1f5f9}
       .video-outer{max-width:800px;margin:0 auto}
-      .video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;box-shadow:0 24px 64px rgba(26,47,94,.15)}
-      .video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:16px}
+      .yt-facade{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;box-shadow:0 24px 64px rgba(26,47,94,.15);cursor:pointer;background:#000}
+      .yt-facade img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
+      .yt-facade .yt-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:48px;background:#ff0000;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}
+      .yt-facade:hover .yt-play{background:#cc0000;transform:translate(-50%,-50%) scale(1.08)}
+      .yt-facade .yt-play svg{width:24px;height:24px;fill:white;margin-left:4px}
+      .yt-facade iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:16px}
 
       .sh{margin-bottom:40px}
       .sh h2{font-size:32px;letter-spacing:-0.02em;margin:0 0 10px}
@@ -178,16 +182,31 @@ function imgAlt(key) {
         <section class="video-section">
           <div class="wrap">
             <div class="video-outer">
-              <div class="video-wrap">
-                <iframe
-                  src={`https://www.youtube-nocookie.com/embed/${site.heroVideo.youtubeId}?rel=0&modestbranding=1`}
-                  title={site.heroVideo.heading || "Product video"}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
+              <div class="yt-facade" data-ytid={site.heroVideo.youtubeId}>
+                <img
+                  src={`https://i.ytimg.com/vi/${site.heroVideo.youtubeId}/maxresdefault.jpg`}
+                  alt="Play video"
                   loading="lazy"
-                ></iframe>
+                  decoding="async"
+                />
+                <div class="yt-play">
+                  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+                </div>
               </div>
             </div>
+            <script>
+              document.querySelectorAll('.yt-facade').forEach(function(el) {
+                el.addEventListener('click', function() {
+                  var id = el.dataset.ytid;
+                  var iframe = document.createElement('iframe');
+                  iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+                  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                  iframe.allowFullscreen = true;
+                  el.innerHTML = '';
+                  el.appendChild(iframe);
+                });
+              });
+            </script>
           </div>
         </section>
       )}
@@ -363,12 +382,62 @@ function imgAlt(key) {
             <div class="c5">
               <div class="formbox">
                 <div style="font-weight:800;font-size:20px;color:#0f172a">Get in touch</div>
-                <div style="color:#475569;font-size:15px">Local Australian support. Fast response.</div>
-                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;color:#94a3b8;font-size:13px">
-                  Replace this with your ActiveCampaign or HubSpot form embed.
-                </div>
-                <a class="btn btn-primary btn-lg" href="mailto:info@voicerecognition.com.au" style="text-align:center">{site.primaryCTA.text}</a>
-                <a class="btn btn-secondary btn-lg" href="#trial" style="text-align:center">{site.secondaryCTA.text}</a>
+                <div style="color:#475569;font-size:15px;margin-bottom:4px">Local Australian support. Fast response.</div>
+                <style>
+                  #_form_281_{background:#ffffff !important;color:#0f172a !important;border-radius:12px !important;padding:0 !important;margin:0 !important;box-shadow:none !important;max-width:100% !important}
+                  #_form_281_ input[type="text"],#_form_281_ textarea{background:#f8fafc;border:1px solid #e2e8f0 !important;border-radius:8px !important;color:#0f172a !important;font-size:14px;padding:10px 12px;width:100%}
+                  #_form_281_ ._submit{background:#f59e0b !important;border:none !important;border-radius:8px !important;color:#0f172a !important;font-weight:700;font-size:15px;padding:12px 20px !important;width:100%;margin-top:8px !important}
+                  #_form_281_ ._submit:hover{background:#d97706 !important}
+                  #_form_281_ ._form-label{color:#0f172a}
+                  #_form_281_ ._form-thank-you{color:#0f172a}
+                </style>
+                <form method="POST" action="https://voicerecognition.activehosted.com/proc.php" id="_form_281_" class="_form _form_281 _inline-form" novalidate data-styles-version="5">
+                  <input type="hidden" name="u" value="281" />
+                  <input type="hidden" name="f" value="281" />
+                  <input type="hidden" name="s" />
+                  <input type="hidden" name="c" value="0" />
+                  <input type="hidden" name="m" value="0" />
+                  <input type="hidden" name="act" value="sub" />
+                  <input type="hidden" name="v" value="2" />
+                  <input type="hidden" name="or" value="dc5b5401-7502-40c5-8526-4ecfaa46de59" />
+                  <div class="_form-content">
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <input type="text" id="firstname" name="firstname" placeholder="Your Name" required/>
+                      </div>
+                    </div>
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <input type="text" id="email" name="email" placeholder="Your Email" required/>
+                      </div>
+                    </div>
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <input type="text" id="phone" name="phone" placeholder="Your Phone Number" />
+                      </div>
+                    </div>
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <input type="text" id="field[21]" name="field[21]" value="" placeholder="Number of Users" />
+                      </div>
+                    </div>
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <input type="text" id="field[35]" name="field[35]" value="" placeholder="Company / Organisation" />
+                      </div>
+                    </div>
+                    <div class="_form_element _full_width">
+                      <div class="_field-wrapper">
+                        <textarea id="field[18]" name="field[18]" placeholder="Optionally describe your needs"></textarea>
+                      </div>
+                    </div>
+                    <div class="_button-wrapper _full_width">
+                      <button id="_form_281_submit" class="_submit" type="submit">Request Information</button>
+                    </div>
+                  </div>
+                  <div class="_form-thank-you" style="display:none;"></div>
+                </form>
+                <script src="https://voicerecognition.activehosted.com/f/embed.php?id=281" charset="utf-8"></script>
               </div>
             </div>
           </div>
