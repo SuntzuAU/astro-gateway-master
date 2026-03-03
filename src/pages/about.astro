@@ -1,0 +1,282 @@
+---
+import site from "../site.config.json";
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About Us — {site.siteName}</title>
+    <meta name="description" content="Voice Recognition Australia has deployed enterprise software across Australian government, healthcare, and legal environments since 1999. Founded by Russell Bewsell. 40,000+ customers supported." />
+    <link rel="canonical" href={`${site.domain}/about`} />
+    <style is:inline>
+      *,*::before,*::after{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#0f172a;line-height:1.7}
+
+      /* Header */
+      header{border-bottom:1px solid #e2e8f0;padding:14px 24px}
+      header a{display:inline-block}
+      header img{height:40px;width:auto;display:block}
+
+      /* Layout */
+      .wrap{max-width:860px;margin:0 auto;padding:56px 24px 80px}
+
+      /* Hero */
+      .hero{margin-bottom:56px}
+      .hero h1{font-size:40px;letter-spacing:-0.03em;margin:0 0 16px;line-height:1.1;color:#0f172a}
+      .hero .lead{font-size:18px;color:#475569;margin:0 0 32px;line-height:1.7;max-width:680px}
+
+      /* Stats row */
+      .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 48px}
+      .stat{background:#f1f5f9;border-radius:12px;padding:20px 16px;text-align:center}
+      .stat-val{font-size:28px;font-weight:800;color:#1a2f5e;line-height:1}
+      .stat-label{font-size:12px;color:#64748b;margin-top:6px;line-height:1.3}
+
+      /* Badges */
+      .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:56px}
+      .badge{background:#fef3c7;border:1px solid #fde68a;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:600;color:#92400e}
+
+      /* Section */
+      .section{margin-bottom:56px}
+      .section-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f59e0b;margin:0 0 8px}
+      .section h2{font-size:26px;letter-spacing:-0.02em;margin:0 0 16px;color:#1a2f5e;line-height:1.2}
+      .section p{font-size:15px;color:#334155;margin:0 0 14px}
+      .section p:last-child{margin-bottom:0}
+
+      /* Three pillars */
+      .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px}
+      .pillar{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:24px}
+      .pillar-num{font-size:32px;font-weight:800;color:#e2e8f0;line-height:1;margin-bottom:8px}
+      .pillar h3{font-size:16px;font-weight:700;color:#1a2f5e;margin:0 0 10px}
+      .pillar p{font-size:14px;color:#475569;margin:0}
+
+      /* Failure points */
+      .failures{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+      .failure{background:#fff5f5;border:1px solid #fecaca;border-radius:10px;padding:18px}
+      .failure h4{font-size:14px;font-weight:700;color:#991b1b;margin:0 0 6px}
+      .failure p{font-size:13px;color:#7f1d1d;margin:0}
+
+      /* Quote */
+      .quote-box{background:#1a2f5e;border-radius:16px;padding:36px 40px;margin:48px 0}
+      .quote-box blockquote{margin:0 0 20px;padding:0}
+      .quote-box blockquote p{font-size:18px;font-style:italic;color:#cbd5e1;line-height:1.7;margin:0}
+      .quote-author{font-weight:700;color:#f59e0b;font-size:15px}
+      .quote-title{color:#94a3b8;font-size:13px;margin-top:2px}
+
+      /* Environments grid */
+      .envs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+      .env{border-left:3px solid #f59e0b;padding:16px 20px;background:#fafafa;border-radius:0 8px 8px 0}
+      .env h3{font-size:15px;font-weight:700;color:#1a2f5e;margin:0 0 6px}
+      .env p{font-size:14px;color:#475569;margin:0}
+
+      /* CTA */
+      .cta-box{background:#f1f5f9;border-radius:16px;padding:40px;text-align:center;margin-top:56px}
+      .cta-box h2{font-size:24px;margin:0 0 10px;color:#0f172a}
+      .cta-box p{font-size:15px;color:#475569;margin:0 0 24px;max-width:500px;margin-left:auto;margin-right:auto}
+      .btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+      .btn{display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:background .15s}
+      .btn:hover{background:#d97706}
+      .btn-outline{display:inline-block;background:white;color:#1a2f5e;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none;border:2px solid #1a2f5e;transition:all .15s}
+      .btn-outline:hover{background:#1a2f5e;color:white}
+
+      /* Divider */
+      .divider{border:none;border-top:1px solid #e2e8f0;margin:56px 0}
+
+      /* Footer */
+      footer{border-top:1px solid #e2e8f0;padding:24px;text-align:center;font-size:13px;color:#94a3b8}
+      footer a{color:#1a2f5e;text-decoration:none}
+
+      @media(max-width:680px){
+        .stats{grid-template-columns:repeat(2,1fr)}
+        .pillars{grid-template-columns:1fr}
+        .failures{grid-template-columns:1fr}
+        .envs{grid-template-columns:1fr}
+        .hero h1{font-size:28px}
+        .quote-box{padding:24px}
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="/"><img src="/logo.png" alt={site.siteName} /></a>
+    </header>
+
+    <div class="wrap">
+
+      <!-- Hero -->
+      <div class="hero">
+        <p class="section-label">About Voice Recognition Australia</p>
+        <h1>25 Years Deploying Enterprise Software Across Australia's Most Demanding Environments</h1>
+        <p class="lead">Founded in 1999 by Russell Bewsell, Voice Recognition Australia has supported over 40,000 customers across government, healthcare, legal, and enterprise. We are the largest Dragon reseller in the Southern Hemisphere — and we still answer our own support calls.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val">40,000+</div>
+          <div class="stat-label">Customers supported</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">15,000+</div>
+          <div class="stat-label">Dragon users deployed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">25+</div>
+          <div class="stat-label">Years in operation</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val">15 min</div>
+          <div class="stat-label">Average support response</div>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="badges">
+        <span class="badge">✓ Australian owned and operated</span>
+        <span class="badge">✓ Headquartered in South East Queensland</span>
+        <span class="badge">✓ Microsoft certified partner</span>
+        <span class="badge">✓ Largest Dragon reseller — Southern Hemisphere</span>
+        <span class="badge">✓ Federal and State Government deployments</span>
+        <span class="badge">✓ Federal Court and High Court of Australia</span>
+        <span class="badge">✓ Department of Defence</span>
+        <span class="badge">✓ Australian Taxation Office</span>
+      </div>
+
+      <!-- Who we are -->
+      <div class="section">
+        <p class="section-label">Our Story</p>
+        <h2>Started in 1999. Still Here.</h2>
+        <p>Russell Bewsell began working in speech recognition in 1998, a year before founding what would become Voice Recognition Australia. The company was incorporated in 2003 and has operated continuously since, growing to become the largest Dragon reseller in the Southern Hemisphere by customer volume and sales.</p>
+        <p>VRA is privately owned, Australian family owned, and headquartered in South East Queensland with a presence across most states. We work across healthcare, government, legal, education, and enterprise — the kinds of organisations where documentation quality is not optional.</p>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Environments -->
+      <div class="section">
+        <p class="section-label">Trusted in High-Assurance Environments</p>
+        <h2>Deployed Where Failure Has Real Consequences</h2>
+        <p>We support teams where reliability, accuracy, and continuity matter. These are not pilot projects. They are live operational environments where speech recognition is part of critical workflow.</p>
+        <div class="envs">
+          <div class="env">
+            <h3>Healthcare</h3>
+            <p>Emergency departments, paediatric services, specialist practices. Clinical documentation where accuracy and turnaround time directly affect patient care.</p>
+          </div>
+          <div class="env">
+            <h3>Federal and State Government</h3>
+            <p>Australian Taxation Office, Federal Parliament, State Parliaments, Department of Defence. Trials involving up to 2,000 users across State government environments.</p>
+          </div>
+          <div class="env">
+            <h3>Justice and Legal</h3>
+            <p>Federal Court and High Court of Australia. Environments where documentation must be accurate, complete, and defensible under scrutiny.</p>
+          </div>
+          <div class="env">
+            <h3>Enterprise and Professional Services</h3>
+            <p>Legal firms, accounting practices, corporate teams. Faster documentation directly reduces bottlenecks and improves client responsiveness.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- VIP -->
+      <div class="section">
+        <p class="section-label">Direct Accountability at the Highest Level</p>
+        <h2>VIP Support and Personal Accountability</h2>
+        <p>VRA's leadership has provided direct assistance and training for some of Australia's most senior figures. Russell Bewsell personally supported Governor-General Peter Cosgrove with Dragon setup and technical assistance — used to write at least two books. Russell also provided ongoing support to former Foreign Minister Alexander Downer during his time at DFAT.</p>
+        <p>This is not something we put in a brochure to look impressive. It reflects a consistent approach: when the stakes are high, we show up, we stay accountable, and we get it working.</p>
+      </div>
+
+      <!-- Quote -->
+      <div class="quote-box">
+        <blockquote>
+          <p>"I have worked in speech recognition since 1998, and VRA has been built on a simple idea. Be conservative where it matters, be fully accountable for outcomes, and support people properly when the stakes are high. That mindset shapes how we approach speech recognition and AI adoption, especially in sensitive clinical environments."</p>
+        </blockquote>
+        <div class="quote-author">Russell Bewsell</div>
+        <div class="quote-title">Founder and CEO, Voice Recognition Australia</div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Implementation method -->
+      <div class="section">
+        <p class="section-label">Our Implementation Method</p>
+        <h2>Three Pillars of Successful Deployment</h2>
+        <p>Licences are the easy part. ROI comes from implementation. Every deployment VRA manages follows a structured three-pillar approach that has been refined across 25 years and thousands of users.</p>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-num">01</div>
+            <h3>Configuration</h3>
+            <p>Vocabulary optimisation, template alignment, microphone standards, device compatibility, and workflow integration. Without configuration, accuracy suffers and confidence declines.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">02</div>
+            <h3>Training</h3>
+            <p>Speech recognition is a behavioural change. Role-based onboarding for clinicians, legal professionals, and government teams accelerates adoption and realises productivity gains quickly.</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">03</div>
+            <h3>Ongoing Support</h3>
+            <p>Australian-based support with a 15-minute average response. Direct remote troubleshooting. Structured escalation through Microsoft partner channels when required.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Why implementations fail -->
+      <div class="section">
+        <p class="section-label">Why We Do It Properly</p>
+        <h2>The Cost of Getting Implementation Wrong</h2>
+        <p>Many organisations trial consumer-grade tools, get poor results, and conclude that speech recognition does not work. In almost every case, the technology was not the problem. The deployment was.</p>
+        <div class="failures">
+          <div class="failure">
+            <h4>No configuration</h4>
+            <p>Out-of-the-box tools are rarely tuned for medical, legal, or government terminology. Accuracy suffers immediately.</p>
+          </div>
+          <div class="failure">
+            <h4>No structured training</h4>
+            <p>Without workflow alignment, users revert to typing. Adoption collapses and the investment is written off.</p>
+          </div>
+          <div class="failure">
+            <h4>Slow support</h4>
+            <p>When issues are not resolved quickly, productivity drops, confidence disappears, and the rollout stalls.</p>
+          </div>
+          <div class="failure">
+            <h4>Compliance uncertainty</h4>
+            <p>Consumer tools often lack clear data governance, auditability, or assurance for regulated environments.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Why we resell this product -->
+      <div class="section">
+        <p class="section-label">Why {site.siteName}</p>
+        <h2>We Are Selective About What We Recommend</h2>
+        <p>After 25 years deploying enterprise software, we do not resell products that do not meet the standard. Every product we carry has been evaluated against real deployment requirements — not marketing claims. We stand behind what we sell because our reputation is built on outcomes, not transactions.</p>
+        <p>When you purchase through VRA, you get local Australian support, structured onboarding, and a team that will still be here when you need help long after the sale.</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-box">
+        <h2>Talk to our team</h2>
+        <p>Get a tailored proposal for your organisation. Volume pricing, deployment planning, and a free trial available.</p>
+        <div class="btn-row">
+          <a class="btn" href="/#final-cta">Request Information</a>
+          <a class="btn-outline" href="/">Back to home</a>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <a href="/">{site.siteName}</a> &nbsp;·&nbsp;
+      <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
+      <a href="/terms">Terms</a> &nbsp;·&nbsp;
+      © {year} Voice Recognition Australia
+    </footer>
+  </body>
+</html>
