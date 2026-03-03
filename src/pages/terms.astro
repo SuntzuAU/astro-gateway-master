@@ -1,0 +1,57 @@
+---
+import site from "../site.config.json";
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Terms of Use — {site.siteName}</title>
+    <link rel="canonical" href={`${site.domain}/terms`} />
+    <style is:inline>
+      *,*::before,*::after{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#0f172a;line-height:1.7}
+      .wrap{max-width:760px;margin:0 auto;padding:48px 24px}
+      h1{font-size:32px;letter-spacing:-0.02em;margin:0 0 8px}
+      h2{font-size:18px;margin:32px 0 8px}
+      p,li{font-size:15px;color:#334155}
+      .meta{font-size:13px;color:#94a3b8;margin-bottom:40px}
+      a{color:#1a2f5e}
+      footer{border-top:1px solid #e2e8f0;padding:24px;text-align:center;font-size:13px;color:#94a3b8}
+      footer a{color:#1a2f5e;text-decoration:none}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Terms of Use</h1>
+      <p class="meta">Last updated: March 2026 &nbsp;·&nbsp; {site.siteName}</p>
+
+      <p>By accessing this website you agree to the following terms. This site is operated by Voice Recognition Australia Pty Ltd.</p>
+
+      <h2>Use of this site</h2>
+      <p>This site is provided for informational purposes. You may not use it for any unlawful purpose or in any way that could damage or impair its operation.</p>
+
+      <h2>Accuracy of information</h2>
+      <p>Pricing and product information is kept as current as possible but may change without notice. Confirm all pricing and specifications directly with us before making purchasing decisions.</p>
+
+      <h2>Intellectual property</h2>
+      <p>All content on this site including text, images, and design is the property of Voice Recognition Australia or its licensors. You may not reproduce or distribute it without written permission.</p>
+
+      <h2>Third-party products</h2>
+      <p>Product names, trademarks, and logos referenced on this site belong to their respective owners. Reference to any product does not imply endorsement.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>To the extent permitted by Australian law, Voice Recognition Australia is not liable for any loss or damage arising from your use of this site or reliance on its content.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of New South Wales, Australia.</p>
+
+      <h2>Contact</h2>
+      <p>Voice Recognition Australia Pty Ltd<br />Email: <a href="mailto:info@voicerecognition.com.au">info@voicerecognition.com.au</a></p>
+    </div>
+    <footer>
+      <a href="/">{site.siteName}</a> &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a> &nbsp;·&nbsp; © {year} Voice Recognition Australia
+    </footer>
+  </body>
+</html>
