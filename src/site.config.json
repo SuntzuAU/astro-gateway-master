@@ -9,9 +9,7 @@
   },
   "heroVideo": {
     "enabled": true,
-    "youtubeId": "1R23rVJ2Bgg",
-    "heading": "See Power PDF in action",
-    "subheading": "Watch how Australian teams are switching from Adobe Acrobat and cutting their software costs."
+    "youtubeId": "1R23rVJ2Bgg"
   },
   "colours": {
     "primary": "#1a2f5e",
@@ -34,6 +32,7 @@
     { "label": "Features", "url": "#features" },
     { "label": "FAQ", "url": "#faq" },
     { "label": "News", "url": "/news" },
+    { "label": "About", "url": "/about" },
     { "label": "Contact", "url": "#final-cta" }
   ],
   "primaryCTA": {
@@ -186,6 +185,7 @@
     }
   ],
   "footerLinks": [
+    { "label": "About", "url": "/about" },
     { "label": "Privacy Policy", "url": "/privacy" },
     { "label": "Terms", "url": "/terms" },
     { "label": "Contact", "url": "#final-cta" }
