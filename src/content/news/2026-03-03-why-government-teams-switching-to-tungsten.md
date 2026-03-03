@@ -2,6 +2,8 @@
 title: "Why Australian Government Teams Are Switching From Adobe Acrobat to Tungsten Power PDF"
 date: "2026-03-03"
 metaDescription: "Australian government procurement teams are increasingly choosing Tungsten Power PDF over Adobe Acrobat. We break down the total cost, compliance fit, and practical reasons why."
+heroImage: "default/2026/03/03/tungsten-pdf-government-hero-9b43fff9.png"
+
 section1Title: "The Cost Problem With Adobe in the Public Sector"
 section2Title: "What Tungsten Power PDF Offers Government Teams"
 section3Title: "Making the Switch: What to Expect"
