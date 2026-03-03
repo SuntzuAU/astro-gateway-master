@@ -43,4 +43,4 @@ A typical agency deployment involves a short briefing session, software installa
 
 The 15-day free trial is a practical starting point. It allows your team to test the software against real workflows before any purchase decision is made. There is no obligation and no credit card required.
 
-For teams currently on Adobe subscriptions approaching renewal, this is the right time to evaluate. The cost difference is significant, the capability match is strong, and local support is included from day one.news
+For teams currently on Adobe subscriptions approaching renewal, this is the right time to evaluate. The cost difference is significant, the capability match is strong, and local support is included from day one.
