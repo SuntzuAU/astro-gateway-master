@@ -1,0 +1,57 @@
+---
+import site from "../site.config.json";
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — {site.siteName}</title>
+    <link rel="canonical" href={`${site.domain}/privacy`} />
+    <style is:inline>
+      *,*::before,*::after{box-sizing:border-box}
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#0f172a;line-height:1.7}
+      .wrap{max-width:760px;margin:0 auto;padding:48px 24px}
+      h1{font-size:32px;letter-spacing:-0.02em;margin:0 0 8px}
+      h2{font-size:18px;margin:32px 0 8px}
+      p,li{font-size:15px;color:#334155}
+      .meta{font-size:13px;color:#94a3b8;margin-bottom:40px}
+      a{color:#1a2f5e}
+      footer{border-top:1px solid #e2e8f0;padding:24px;text-align:center;font-size:13px;color:#94a3b8}
+      footer a{color:#1a2f5e;text-decoration:none}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Privacy Policy</h1>
+      <p class="meta">Last updated: March 2026 &nbsp;·&nbsp; {site.siteName}</p>
+
+      <p>This website is operated by Voice Recognition Australia Pty Ltd (ABN available on request). We are committed to protecting your privacy in accordance with the Australian Privacy Act 1988 and the Australian Privacy Principles.</p>
+
+      <h2>What we collect</h2>
+      <p>When you submit an enquiry through this site we collect your name, email address, organisation name, and any information you include in your message. We do not collect payment information on this site.</p>
+
+      <h2>How we use it</h2>
+      <p>We use your information solely to respond to your enquiry and provide you with relevant product information. We do not sell, rent, or share your personal information with third parties except where required by law or to deliver our services (e.g. our CRM provider).</p>
+
+      <h2>Cookies</h2>
+      <p>This site may use basic analytics cookies to understand visitor behaviour. We do not use advertising or tracking cookies. You can disable cookies in your browser settings.</p>
+
+      <h2>Third-party services</h2>
+      <p>This site may use Google Analytics and YouTube (for video content). These services have their own privacy policies which govern their data collection.</p>
+
+      <h2>Data storage</h2>
+      <p>Your data is stored securely and retained only as long as necessary to fulfil the purpose for which it was collected.</p>
+
+      <h2>Your rights</h2>
+      <p>You have the right to access, correct, or request deletion of your personal information. To do so, contact us at <a href="mailto:info@voicerecognition.com.au">info@voicerecognition.com.au</a>.</p>
+
+      <h2>Contact</h2>
+      <p>Voice Recognition Australia Pty Ltd<br />Email: <a href="mailto:info@voicerecognition.com.au">info@voicerecognition.com.au</a></p>
+    </div>
+    <footer>
+      <a href="/">{site.siteName}</a> &nbsp;·&nbsp; <a href="/terms">Terms</a> &nbsp;·&nbsp; © {year} Voice Recognition Australia
+    </footer>
+  </body>
+</html>
