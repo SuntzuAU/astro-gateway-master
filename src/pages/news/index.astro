@@ -7,7 +7,7 @@ const posts = (await getCollection('news')).sort(
 );
 
 const year = new Date().getFullYear();
-const R2_BASE = import.meta.env.R2_PUBLIC_BASE ?? '';
+const R2_BASE = import.meta.env.PUBLIC_R2_BASE ?? 'https://pub-c7a09e1ddb7c45e6a38fcdca1e4b6897.r2.dev';
 const imgSrc = (key?: string) => key ? `${R2_BASE}/${key}` : '';
 ---
 <!doctype html>
