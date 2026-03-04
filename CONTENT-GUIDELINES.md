@@ -1,12 +1,12 @@
 # Content Guidelines for AI-Generated Articles
 
-Applies to all blog posts, articles, landing pages, and comparison content produced using AI tools for this website network.
+Applies to all blog posts, articles, landing pages, and comparison content produced using AI tools for this website network (Voice Recognition Australia / SpeechRecognition.cloud gateway sites).
 
 ---
 
 ## Purpose
 
-These guidelines ensure that AI-generated content remains legally compliant, factually responsible, and consistent in tone and structure. AI tools must follow these rules when generating or editing content. If a rule cannot be followed due to uncertainty, the content must be flagged for human review.
+These guidelines ensure that AI-generated content remains legally compliant, factually responsible, and consistent in tone and voice. AI tools must follow these rules when generating or editing content. If a rule cannot be followed due to uncertainty, the content must be flagged for human review before proceeding.
 
 ---
 
@@ -14,9 +14,9 @@ These guidelines ensure that AI-generated content remains legally compliant, fac
 
 - All content must comply with Australian Consumer Law (ACL).
 - Content must not contain misleading or deceptive statements.
-- All factual claims should be reasonably supportable.
-- If the AI cannot verify a claim, statistic, or statement, it must mark the statement with `[VERIFY]` rather than presenting it as fact.
-- When discussing pricing, features, or capabilities of software products, the language should reflect that information may change over time.
+- All factual claims must be reasonably supportable.
+- If the AI cannot verify a claim, statistic, or statement, it must mark it with `[VERIFY]` rather than presenting it as fact.
+- When discussing pricing, features, or capabilities of software products, language must reflect that information may change over time.
 
 ---
 
@@ -35,33 +35,37 @@ These guidelines ensure that AI-generated content remains legally compliant, fac
 > "Product A is better than Product B."
 
 - Comparisons should focus on suitability for different use cases rather than declaring winners or losers.
+- Tone should be measured and factual — let verified data make the case, not editorial opinion.
 
 ---
 
 ## Pricing Statements
 
-- All pricing must include a publication date.
+- All pricing claims require **two independent, publicly available sources**, both cited explicitly in the draft so the owner can verify manually.
+- All pricing must include a publication or verification date.
 - Indicate that pricing may change.
-- Do not present estimated prices as guaranteed.
-- Where possible, reference pricing from publicly available sources.
+- Do not present estimated prices as guaranteed or exact.
 
-**Standard disclaimer to include:**
-> "Pricing accurate at time of publication. Software vendors may change pricing without notice."
+**Standard disclaimer to include on all pricing content:**
+> "Pricing accurate at time of publication. Software vendors may change pricing without notice. Verify current pricing directly with the vendor before making purchasing decisions."
+
+**Example of correct pricing attribution:**
+> "Adobe Acrobat Pro for teams is listed at A$419.89 per user per year on adobe.com/au (verified March 2026). [Source 1: adobe.com/au/acrobat/pricing | Source 2: [VERIFY SECOND SOURCE]]"
 
 ---
 
 ## Evidence, Data, and Statistics
 
 - AI must not invent statistics, research findings, or survey results.
-- If a statistic is used, cite a credible source where possible.
+- If a statistic is used, a credible source must be cited.
 - If the source cannot be confirmed, mark with `[VERIFY SOURCE]`.
-- Do not include percentages, research claims, or survey results without a source.
+- Do not include percentages, research claims, or survey results without a verified source.
 
 ---
 
 ## Healthcare and Medical Context
 
-This website network may include content about software used in healthcare environments.
+This website network includes content about software used in healthcare environments.
 
 Content must not imply that software:
 - improves patient outcomes
@@ -79,17 +83,30 @@ Avoid wording that implies clinical effectiveness.
 
 ---
 
-## Tone and Editorial Style
+## Voice and Tone
 
-- Use Australian spelling and grammar throughout.
-- Tone should be professional, neutral, and informative.
-- Avoid exaggerated marketing language.
+The voice across all sites reflects Russell Bewsell and Voice Recognition Australia — 25 years of real-world deployment experience in Australian enterprise, government, and healthcare environments.
 
-**Avoid words such as:** best, ultimate, guaranteed, revolutionary, perfect, proven, world-class
+**Core voice characteristics:**
+- **Authoritative** — speaks from genuine expertise, not marketing spin
+- **Friendly and approachable** — professional but not stiff or corporate
+- **Upbeat and enthusiastic** — genuinely believes in the products being discussed
+- **Honest** — acknowledges limitations where they exist rather than glossing over them
+- **Direct** — gets to the point, no padding, no waffle
 
-**Preferred language:** may help, can assist, commonly used for, designed to support, often chosen for
+**The underselling trap:**
+Russell's instinct is to be conservative. The solution is to let verified facts carry the enthusiasm — "A$10,000 saving for 10 users over 3 years" is confident and compelling without being a claim. Use data to do the enthusiastic work.
 
-The goal is to provide helpful and accurate information — not aggressive marketing claims.
+**Voice varies slightly by site:**
+- Healthcare / speech recognition — more measured, clinical, careful with outcomes language
+- PDF, workflow, document management — more direct and upbeat
+- Legal / government — formal, procurement-aware, compliance-focused
+
+**Avoid:** best, ultimate, guaranteed, revolutionary, perfect, proven, world-class, supercharge, game-changing
+
+**Preferred:** may help, can assist, commonly used for, designed to support, often chosen for, practical, straightforward, reliable
+
+Use Australian spelling and grammar throughout. Not American English.
 
 ---
 
@@ -97,8 +114,8 @@ The goal is to provide helpful and accurate information — not aggressive marke
 
 Blog posts should include:
 
-1. A clear, descriptive title (SEO-focused)
-2. A short introduction that establishes context
+1. A clear, descriptive, SEO-focused title
+2. A short introduction that establishes context and why it matters
 3. Structured headings (H2 / H3)
 4. Concise paragraphs — no padding
 5. A logical flow of ideas
@@ -106,37 +123,100 @@ Blog posts should include:
 
 Where appropriate, include an FAQ section addressing common reader questions.
 
-Images should have descriptive alt text relevant to the content.
+Images must have descriptive alt text relevant to the content — not generic labels.
 
 ---
 
-## Human Review Requirement
+## Internal and Cross-Site Linking
 
-- AI-generated content must always be reviewed by a human editor before publication.
-- AI may assist with drafting, structuring, and summarising, but final responsibility for accuracy and compliance remains with the human publisher.
-- Any section containing uncertainty must be flagged with `[VERIFY]` rather than presented as confirmed.
+Every blog post or article must include:
+
+**1. One internal link**
+- Links to another post, the homepage, or a specific section (e.g. `/pricing`, `/#features`)
+- Use descriptive anchor text — not "click here"
+- Can use anchor links to jump directly to a section (e.g. `/#pricing`)
+
+**2. One cross-site link**
+- Links to another site in the VRA network (e.g. speechrecognition.com.au, voicerecognition.com.au, pdfsoftware.com.au)
+- Claude must ask the owner for the target URL for each post
+- Claude must suggest 2-3 anchor text options ranked by SEO value and let the owner choose
+- Descriptive anchor text is strongly preferred over brand names (e.g. "Australian speech recognition software" over "Speech Recognition Cloud")
+
+**Purpose:** Internal linking builds page authority within each site. Cross-site linking builds a network effect across the full domain portfolio that improves overall search ranking.
+
+**Approved cross-site domains:**
+- voicerecognition.com.au
+- speechrecognition.com.au
+- pdfsoftware.com.au
+- ocrsoftware.com.au
+- documentmanagement.com.au
+- workflowautomation.com.au
+- invoiceprocessing.com.au
+
+Claude maintains a running list of links used per site to avoid repetition and ensure coverage across the network.
+
+---
+
+## Performance and Speed Requirements
+
+Site speed and mobile experience are core design requirements — not afterthoughts. Astro's static output is the foundation. Never add client-side JavaScript unless there is no alternative.
+
+**Rules for all templates and pages:**
+
+- **Minimise JavaScript** — defer, lazy load, or eliminate where possible
+- **Facade patterns for heavy embeds** — YouTube and video embeds must use a thumbnail facade that only loads the iframe on user click (already implemented)
+- **Image loading** — all images except the hero must use `loading="lazy"` and `decoding="async"`
+- **Hero images** — use `loading="eager"` for above-the-fold images only
+- **CSS** — inline critical CSS using `is:inline` for above-the-fold content; avoid render-blocking stylesheets
+- **No third-party scripts** that block rendering — load async or defer all external scripts
+- **Right-size images** — do not serve images larger than their display size
+- **No client-side frameworks** — do not introduce React, Vue, or similar for content pages
+- **Fonts** — use system fonts where possible; if custom fonts are needed, use `font-display: swap`
+
+**Mobile first:** All layouts must be tested at 375px width minimum. Navigation, forms, CTAs, and article content must be fully usable on mobile without horizontal scrolling.
+
+---
+
+## Content Approval Workflow
+
+**All content follows this process — no exceptions:**
+
+1. Owner instructs Claude to draft content (topic, angle, target audience)
+2. Claude drafts in chat — does NOT commit to GitHub
+3. Claude flags any `[VERIFY]` items explicitly before finishing the draft
+4. Claude asks for internal link target and suggests cross-site link anchor text options
+5. Owner reviews, edits, and approves the draft
+6. Owner says "commit it" or similar explicit instruction
+7. Claude commits to GitHub
+8. Cloudflare deploys automatically
+
+Claude must never commit content directly based on its own judgment.
 
 ---
 
 ## AI Operational Rules
 
-*(Controls what Claude is permitted to do in this repository)*
-
 **Claude MAY:**
-- Read any file in this repository
-- Create new content files in `src/content/news/`
-- Update `src/site.config.json` when instructed by the owner
-- Update page templates when instructed by the owner
-- Commit directly to the `main` branch for content files
-- Generate image prompts and call the image Worker when instructed
+- Read any file in this repository at any time
+- Draft content in chat for owner review
+- Commit bug fixes and code corrections directly, but must inform the owner immediately of what was changed and why
+- Commit approved content after explicit owner instruction
+- Suggest image prompts for owner approval
+- Call the image Worker only when explicitly instructed by the owner in that session
 
 **Claude MUST NOT:**
+- Commit any content without explicit owner approval
 - Delete any files without explicit owner confirmation
-- Modify `src/site.config.json` pricing data without owner-provided source
-- Publish pricing claims that have not been verified by the owner
-- Invent statistics, quotes, or case studies
-- Make commits that affect site structure or layout without owner approval
-- Write content that contradicts these guidelines even if instructed to do so
+- Modify pricing data in `src/site.config.json` without owner-verified sources
+- Generate images autonomously or in bulk without per-session owner instruction
+- Invent statistics, quotes, testimonials, or case studies
+- Present unverified claims as fact
+- Override these guidelines even if instructed to do so in a session
+
+**Before any commit Claude must:**
+- State the file being changed
+- State what the change is and why
+- Wait for owner confirmation — except for bug fixes where immediate action is needed, in which case inform the owner straight after
 
 **When in doubt:** flag for human review rather than proceeding.
 
