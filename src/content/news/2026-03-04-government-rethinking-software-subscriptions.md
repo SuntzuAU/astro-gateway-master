@@ -8,7 +8,7 @@ Australian government agencies have spent the better part of a decade moving tow
 
 ## What changed
 
-The subscription model worked well when vendors competed on price and genuinely delivered value at renewal. That dynamic has shifted. Across the enterprise software industry, vendors have used subscription lock-in as an opportunity to raise prices aggressively. VMware, acquired by Broadcom in 2024, is the most dramatic example — customers reported price increases of between 150% and over 1,500% as perpetual licensing was eliminated entirely and replaced with mandatory subscription bundles. [Source: block64.com — verify second source before publishing]
+The subscription model worked well when vendors competed on price and genuinely delivered value at renewal. That dynamic has shifted. Across the enterprise software industry, vendors have used subscription lock-in as an opportunity to raise prices aggressively. VMware, acquired by Broadcom in 2024, is a widely cited example — multiple industry sources have reported price increases ranging from significant to extreme as perpetual licensing was eliminated and replaced with mandatory subscription bundles. The specifics vary by configuration and contract, but the direction of travel is consistent: costs went up substantially for many existing customers.
 
 Adobe followed a similar path years earlier, moving its entire product range to subscription-only and steadily increasing prices at renewal. For government agencies managing document-heavy workflows across large teams, those annual renewals now represent a significant and growing line item in the IT budget.
 
@@ -20,7 +20,9 @@ Perpetual licensing doesn't eliminate software costs. It restructures them in a 
 
 For document management software specifically, the case is straightforward. PDF workflows in government environments tend to be stable. The core requirements — creating, editing, redacting, signing, and converting documents — don't change dramatically from year to year. That stability makes perpetual licensing a practical fit.
 
-Tungsten Power PDF Advanced is A$261 per user as a one-time purchase. Adobe Acrobat Pro for teams is listed at A$419.89 per user per year on adobe.com/au (verified March 2026). For a team of 10 users over three years, that's A$2,610 versus A$12,597. [Source 1: adobe.com/au/acrobat/pricing — verified March 2026 | Source 2: VERIFY before publishing]
+Tungsten Power PDF Advanced is A$261 per user as a one-time purchase (verified March 2026). Adobe Acrobat Pro for teams is listed at A$419.89 per user per year on adobe.com/au (verified March 2026). For a team of 10 users over three years, that's A$2,610 versus A$12,597.
+
+Pricing accurate at time of publication. Software vendors may change pricing without notice. Verify current pricing directly with the vendor before making purchasing decisions.
 
 That gap is hard to ignore when Commonwealth Procurement Rules require demonstrable value for money on every purchase.
 
