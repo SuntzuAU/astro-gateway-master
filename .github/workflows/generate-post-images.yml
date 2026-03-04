@@ -1,0 +1,115 @@
+name: Generate Post Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_slug:
+        description: 'Post filename (e.g. 2026-03-04-my-post.md) — leave blank for most recent'
+        required: false
+        default: ''
+
+jobs:
+  generate-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Find target post
+        id: find_post
+        run: |
+          if [ -n "${{ github.event.inputs.post_slug }}" ]; then
+            POST_FILE="src/content/news/${{ github.event.inputs.post_slug }}"
+          else
+            POST_FILE=$(ls src/content/news/*.md | sort | tail -1)
+          fi
+          echo "post_file=$POST_FILE" >> $GITHUB_OUTPUT
+          echo "Target post: $POST_FILE"
+
+      - name: Check if images already exist
+        id: check_images
+        run: |
+          POST_FILE="${{ steps.find_post.outputs.post_file }}"
+          if grep -q "^heroImage:" "$POST_FILE"; then
+            echo "Images already exist - skipping generation"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "No images found - proceeding"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Extract post metadata
+        id: metadata
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          POST_FILE="${{ steps.find_post.outputs.post_file }}"
+          TITLE=$(grep "^title:" "$POST_FILE" | head -1 | sed 's/title: //' | tr -d '"')
+          BASENAME=$(basename "$POST_FILE" .md)
+          echo "title=$TITLE" >> $GITHUB_OUTPUT
+          echo "basename=$BASENAME" >> $GITHUB_OUTPUT
+
+      - name: Generate hero image
+        id: hero
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"prompt\": \"Professional photorealistic image for: ${{ steps.metadata.outputs.title }}, Australian office environment, modern corporate\", \"name\": \"${{ steps.metadata.outputs.basename }}-hero\"}")
+          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
+          if [ -z "$KEY" ]; then echo "ERROR: Hero failed. Response: $RESPONSE"; exit 1; fi
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Generate break image 1
+        id: break1
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"prompt\": \"Software cost comparison and budget analysis, clean corporate infographic style, Australian business\", \"name\": \"${{ steps.metadata.outputs.basename }}-break1\"}")
+          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
+          if [ -z "$KEY" ]; then echo "ERROR: Break1 failed. Response: $RESPONSE"; exit 1; fi
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Generate break image 2
+        id: break2
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"prompt\": \"Modern Australian office with technology and efficiency theme, professional workers, digital transformation\", \"name\": \"${{ steps.metadata.outputs.basename }}-break2\"}")
+          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
+          if [ -z "$KEY" ]; then echo "ERROR: Break2 failed. Response: $RESPONSE"; exit 1; fi
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+
+      - name: Update post frontmatter
+        if: steps.check_images.outputs.skip == 'false'
+        env:
+          POST_FILE: ${{ steps.find_post.outputs.post_file }}
+          HERO: ${{ steps.hero.outputs.key }}
+          BREAK1: ${{ steps.break1.outputs.key }}
+          BREAK2: ${{ steps.break2.outputs.key }}
+        run: |
+          python3 - << 'PYEOF'
+          import re, os
+          post_file = os.environ["POST_FILE"]
+          hero = os.environ["HERO"]
+          break1 = os.environ["BREAK1"]
+          break2 = os.environ["BREAK2"]
+          with open(post_file, "r") as f:
+              content = f.read()
+          image_block = f'heroImage: "{hero}"\nbreakImage1: "{break1}"\nbreakImage2: "{break2}"\n'
+          content = re.sub(r'(metaDescription:.*\n)', r'\1' + image_block, content, count=1)
+          with open(post_file, "w") as f:
+              f.write(content)
+          print("Done")
+          PYEOF
+
+      - name: Commit updated post
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/news/
+          git commit -m "Add generated images to ${{ steps.find_post.outputs.post_file }}"
+          git push
