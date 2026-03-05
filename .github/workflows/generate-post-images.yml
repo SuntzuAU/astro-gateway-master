@@ -76,17 +76,21 @@ jobs:
             "professional services firm open plan office",
           ]
 
+          # Hero compositions - positive, confident, solution-focused only
           hero_compositions = [
-            "two professionals reviewing a document on screen together",
-            "person looking over colleagues shoulder at laptop screen",
-            "presenter at projector screen showing document to seated team",
-            "real estate agent showing property contracts to client across desk",
-            "person looking frustrated at large pile of paperwork on desk",
+            "two professionals confidently reviewing a document on screen together smiling",
+            "person looking over colleagues shoulder at laptop screen both engaged and positive",
+            "presenter at projector screen showing document to engaged seated team",
+            "real estate agent confidently showing property contracts to happy client across desk",
             "person looking relieved and happy at computer screen solution found",
-            "executive signing important contract documents at boardroom table",
-            "small team collaborating around printed documents and laptop",
+            "executive confidently signing important contract documents at boardroom table",
+            "small team collaborating productively around printed documents and laptop",
+            "professional smiling at camera holding document in modern office",
+            "two colleagues celebrating successful document completion at desk",
+            "manager presenting results on screen to satisfied team in meeting room",
           ]
 
+          # Break compositions - varied including problem and detail shots
           break_compositions = [
             "close up of hands on laptop keyboard reviewing document",
             "PDF document on modern desk with hand resting on it",
@@ -96,6 +100,8 @@ jobs:
             "filing cabinet open with folders representing old paper system",
             "close up of document on screen sharp focus shallow depth of field",
             "empty professional boardroom table with documents ready for meeting",
+            "person looking frustrated at large pile of paperwork on desk",
+            "overflowing inbox tray with paper documents on office desk",
           ]
 
           lighting = [
