@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       post_slug:
-        description: 'Post filename (e.g. 2026-03-04-my-post.md) — leave blank for most recent'
+        description: 'Post filename (e.g. 2026-03-04-my-post.md) - leave blank for most recent'
         required: false
         default: ''
 
@@ -50,9 +50,94 @@ jobs:
         run: |
           POST_FILE="${{ steps.find_post.outputs.post_file }}"
           TITLE=$(grep "^title:" "$POST_FILE" | head -1 | sed 's/title: //' | tr -d '"')
-          BASENAME=$(basename "$POST_FILE" .md)
           echo "title=$TITLE" >> $GITHUB_OUTPUT
-          echo "basename=$BASENAME" >> $GITHUB_OUTPUT
+
+      - name: Build image prompts
+        id: prompts
+        if: steps.check_images.outputs.skip == 'false'
+        run: |
+          python3 << 'PYEOF'
+          import random, os
+
+          title = os.environ.get("TITLE", "professional document software")
+
+          # -------------------------------------------------------
+          # SITE-SPECIFIC POOLS - update these when cloning
+          # -------------------------------------------------------
+
+          settings = [
+            "Australian government office interior",
+            "modern real estate agency office Sydney",
+            "legal chambers and law firm office",
+            "corporate boardroom Melbourne",
+            "hospital administration office",
+            "university administration building",
+            "local council chamber interior",
+            "professional services firm open plan office",
+          ]
+
+          hero_compositions = [
+            "two professionals reviewing a document on screen together",
+            "person looking over colleagues shoulder at laptop screen",
+            "presenter at projector screen showing document to seated team",
+            "real estate agent showing property contracts to client across desk",
+            "person looking frustrated at large pile of paperwork on desk",
+            "person looking relieved and happy at computer screen solution found",
+            "executive signing important contract documents at boardroom table",
+            "small team collaborating around printed documents and laptop",
+          ]
+
+          break_compositions = [
+            "close up of hands on laptop keyboard reviewing document",
+            "PDF document on modern desk with hand resting on it",
+            "stack of paper documents beside laptop showing clean digital screen",
+            "signed contract on desk with pen beside it",
+            "property listing documents spread across meeting table",
+            "filing cabinet open with folders representing old paper system",
+            "close up of document on screen sharp focus shallow depth of field",
+            "empty professional boardroom table with documents ready for meeting",
+          ]
+
+          lighting = [
+            "warm natural window light",
+            "cool professional office lighting",
+            "golden afternoon light through office windows",
+            "bright modern workspace lighting",
+            "soft diffused overcast light",
+          ]
+
+          style = "photorealistic photography, Canon 5D quality, no infographics, no diagrams, no charts, no text overlays, no illustrations, no clipart, no UI mockups"
+
+          # Build hero prompt
+          s = random.choice(settings)
+          c = random.choice(hero_compositions)
+          l = random.choice(lighting)
+          hero = f"{c}, {s}, {l}, context: {title}, {style}"
+
+          # Build break1 prompt - different setting and composition to hero
+          s2 = random.choice([x for x in settings if x != s])
+          c2 = random.choice(break_compositions)
+          l2 = random.choice([x for x in lighting if x != l])
+          break1 = f"{c2}, {s2}, {l2}, {style}"
+
+          # Build break2 prompt - different again
+          s3 = random.choice([x for x in settings if x != s and x != s2])
+          c3 = random.choice([x for x in break_compositions if x != c2])
+          l3 = random.choice(lighting)
+          break2 = f"{c3}, {s3}, {l3}, {style}"
+
+          # Write to GitHub outputs
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            f.write(f"hero={hero}\n")
+            f.write(f"break1={break1}\n")
+            f.write(f"break2={break2}\n")
+
+          print(f"Hero: {hero}")
+          print(f"Break1: {break1}")
+          print(f"Break2: {break2}")
+          PYEOF
+        env:
+          TITLE: ${{ steps.metadata.outputs.title }}
 
       - name: Generate hero image
         id: hero
@@ -60,7 +145,7 @@ jobs:
         run: |
           RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
             -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"Professional photorealistic image for: ${{ steps.metadata.outputs.title }}, Australian office environment, modern corporate\", \"name\": \"${{ steps.metadata.outputs.basename }}-hero\"}")
+            -d "{\"prompt\": \"${{ steps.prompts.outputs.hero }}\", \"name\": \"hero\"}")
           KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
           if [ -z "$KEY" ]; then echo "ERROR: Hero failed. Response: $RESPONSE"; exit 1; fi
           echo "key=$KEY" >> $GITHUB_OUTPUT
@@ -71,7 +156,7 @@ jobs:
         run: |
           RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
             -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"Software cost comparison and budget analysis, clean corporate infographic style, Australian business\", \"name\": \"${{ steps.metadata.outputs.basename }}-break1\"}")
+            -d "{\"prompt\": \"${{ steps.prompts.outputs.break1 }}\", \"name\": \"break1\"}")
           KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
           if [ -z "$KEY" ]; then echo "ERROR: Break1 failed. Response: $RESPONSE"; exit 1; fi
           echo "key=$KEY" >> $GITHUB_OUTPUT
@@ -82,7 +167,7 @@ jobs:
         run: |
           RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
             -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"Modern Australian office with technology and efficiency theme, professional workers, digital transformation\", \"name\": \"${{ steps.metadata.outputs.basename }}-break2\"}")
+            -d "{\"prompt\": \"${{ steps.prompts.outputs.break2 }}\", \"name\": \"break2\"}")
           KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
           if [ -z "$KEY" ]; then echo "ERROR: Break2 failed. Response: $RESPONSE"; exit 1; fi
           echo "key=$KEY" >> $GITHUB_OUTPUT
@@ -95,7 +180,7 @@ jobs:
           BREAK1: ${{ steps.break1.outputs.key }}
           BREAK2: ${{ steps.break2.outputs.key }}
         run: |
-          python3 - << 'PYEOF'
+          python3 << 'PYEOF'
           import re, os
           post_file = os.environ["POST_FILE"]
           hero = os.environ["HERO"]
