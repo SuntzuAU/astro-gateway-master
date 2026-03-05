@@ -15,6 +15,7 @@ function imgAlt(key) {
 }
 
 const c = site.colours;
+const formId = site.form.id;
 ---
 
 <!doctype html>
@@ -26,7 +27,6 @@ const c = site.colours;
     <meta name="description" content={site.branding.subheadline} />
     <link rel="canonical" href={site.domain} />
 
-    <!-- Google Analytics -->
     {site.googleAnalyticsId && (
       <script async src={`https://www.googletagmanager.com/gtag/js?id=${site.googleAnalyticsId}`}></script>
       <script define:vars={{ gaId: site.googleAnalyticsId }}>
@@ -38,17 +38,8 @@ const c = site.colours;
     )}
 
     <style is:inline>
-      :root {
-        --color-primary: {c.primary};
-        --color-background: {c.background};
-        --color-neutral: {c.neutral};
-        --color-accent: {c.accent};
-        --color-accent-hover: {c.accentHover};
-        --color-text: {c.text};
-        --color-muted: {c.muted};
-      }
       *,*::before,*::after{box-sizing:border-box}
-      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--color-background);color:var(--color-text);line-height:1.6}
+      body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0f172a;line-height:1.6}
       a{color:inherit;text-decoration:none}
       img{max-width:100%;display:block}
       .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
@@ -56,30 +47,20 @@ const c = site.colours;
       .nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0;gap:16px}
       .logo img{height:40px;width:auto}
       .nav-links{display:flex;gap:18px;font-size:14px;font-weight:500;color:#334155}
-      .nav-links a:hover{color:var(--color-primary)}
       .nav-ctas{display:flex;gap:10px;align-items:center;flex-shrink:0}
       .btn{display:inline-block;padding:10px 20px;border-radius:8px;font-weight:700;font-size:14px;border:2px solid transparent;cursor:pointer;transition:all .15s;white-space:nowrap}
-      .btn-primary{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-text)}
-      .btn-primary:hover{background:var(--color-accent-hover);border-color:var(--color-accent-hover)}
-      .btn-secondary{background:white;border-color:#cbd5e1;color:var(--color-primary)}
-      .btn-secondary:hover{border-color:var(--color-primary)}
+      .btn-secondary{background:white;border-color:#cbd5e1}
       .btn-lg{padding:14px 28px;font-size:16px;border-radius:10px}
       section{padding:64px 0}
-      .neutral-bg{background:var(--color-neutral)}
-      .dark-bg{background:var(--color-primary);color:white}
       .hero{padding:72px 0 56px}
       .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
       .hero-pill{display:inline-flex;align-items:center;background:#fef3c7;border:1px solid #fde68a;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:#92400e;margin-bottom:18px}
       .hero h1{font-size:42px;line-height:1.1;margin:0 0 16px;letter-spacing:-0.03em}
-      .hero p{font-size:17px;color:var(--color-muted);margin:0 0 28px;line-height:1.7}
+      .hero p{font-size:17px;margin:0 0 28px;line-height:1.7}
       .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
       .hero-img{border-radius:16px;overflow:hidden;aspect-ratio:16/9;background:#e2e8f0;box-shadow:0 24px 64px rgba(0,0,0,.18)}
       .hero-img img{width:100%;height:100%;object-fit:cover}
-      .stats-bar{background:var(--color-primary);padding:13px 0}
-      .stats-inner{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
-      .stat-message{font-size:15px;font-weight:700;color:white;letter-spacing:0.01em;text-align:center}
-      .stat-message span{color:var(--color-accent)}
-      .video-section{padding:32px 0;background:var(--color-neutral)}
+      .video-section{padding:32px 0}
       .video-outer{max-width:800px;margin:0 auto}
       .yt-facade{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,.15);cursor:pointer;background:#000}
       .yt-facade img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:16px;display:block}
@@ -89,7 +70,7 @@ const c = site.colours;
       .yt-facade iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:16px}
       .sh{margin-bottom:40px}
       .sh h2{font-size:32px;letter-spacing:-0.02em;margin:0 0 10px}
-      .sh p{font-size:17px;color:var(--color-muted);margin:0;max-width:600px}
+      .sh p{font-size:17px;margin:0;max-width:600px}
       .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
       .c6{grid-column:span 6}
       .c4{grid-column:span 4}
@@ -99,31 +80,29 @@ const c = site.colours;
       .card-img{border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#e2e8f0;margin-bottom:16px}
       .card-img img{width:100%;height:100%;object-fit:cover}
       .card h3{margin:0 0 8px;font-size:17px}
-      .card p{margin:0;color:var(--color-muted);font-size:15px;line-height:1.65}
       .benefit-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px}
       .benefit-card h3{margin:8px 0 10px;font-size:18px}
-      .benefit-card p{margin:0;color:var(--color-muted);font-size:15px;line-height:1.65}
       .card-icon{font-size:32px;margin-bottom:14px;line-height:1}
       .pricing-card{background:#fff;border:2px solid #e2e8f0;border-radius:20px;padding:28px;display:flex;flex-direction:column}
-      .pricing-card.highlight{border-color:var(--color-accent);box-shadow:0 8px 32px rgba(0,0,0,.1)}
-      .pricing-badge{display:inline-block;background:var(--color-accent);color:var(--color-text);font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
+      .pricing-badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
       .pricing-name{font-size:20px;font-weight:700;margin:0 0 4px}
       .pricing-platform{font-size:13px;color:#64748b;margin:0 0 16px}
-      .pricing-price{font-size:40px;font-weight:800;color:var(--color-primary);line-height:1;margin:0 0 4px}
+      .pricing-price{font-size:40px;font-weight:800;line-height:1;margin:0 0 4px}
       .pricing-note{font-size:13px;color:#64748b;margin:0 0 20px}
       .pricing-features{list-style:none;padding:0;margin:0 0 24px;flex:1}
       .pricing-features li{padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155;display:flex;gap:8px;align-items:flex-start}
-      .pricing-features li::before{content:"checkmark";color:var(--color-accent);font-weight:700;flex-shrink:0}
+      .pricing-features li::before{content:"checkmark";font-weight:700;flex-shrink:0}
       .tco-table{width:100%;border-collapse:collapse;margin-top:24px}
       .tco-table th{text-align:left;padding:12px 16px;font-size:13px;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;background:#f8fafc}
       .tco-table td{padding:14px 16px;font-size:15px;border-bottom:1px solid #f1f5f9}
-      .tco-table tr.winner td{background:#fefce8;font-weight:700;color:var(--color-primary)}
       .tco-note{font-size:13px;color:#94a3b8;margin-top:12px}
-      .step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--color-accent);color:var(--color-text);font-weight:800;font-size:16px;margin-bottom:14px}
+      .step-num{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;font-weight:800;font-size:16px;margin-bottom:14px}
       .edition{background:rgba(255,255,255,.08);border-radius:12px;padding:16px;margin-bottom:10px}
-      .edition-name{font-weight:700;color:var(--color-accent);margin-bottom:4px;font-size:15px}
       .edition-desc{font-size:14px;color:#cbd5e1;line-height:1.5}
       .formbox{background:#fff;border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:16px}
+      ._form_element{margin-bottom:12px}
+      ._form_element input,._form_element textarea{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;color:#0f172a;font-size:14px;font-family:system-ui,-apple-system,sans-serif;padding:10px 12px;width:100%}
+      ._submit{border:none;border-radius:8px;font-weight:700;font-size:15px;padding:12px 20px;width:100%;margin-top:8px;cursor:pointer}
       footer{background:#0f172a;color:#64748b;padding:28px 0;font-size:14px}
       .footer-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
       .footer-links{display:flex;gap:20px}
@@ -134,6 +113,33 @@ const c = site.colours;
         .c6,.c4,.c7,.c5{grid-column:span 12}
       }
     </style>
+
+    <style is:inline set:html={`
+      body { background: ${c.background}; color: ${c.text}; }
+      .nav-links a:hover { color: ${c.primary}; }
+      .btn-primary { background: ${c.accent}; border-color: ${c.accent}; color: ${c.text}; }
+      .btn-primary:hover { background: ${c.accentHover}; border-color: ${c.accentHover}; }
+      .btn-secondary { color: ${c.primary}; }
+      .btn-secondary:hover { border-color: ${c.primary}; }
+      .neutral-bg { background: ${c.neutral}; }
+      .dark-bg { background: ${c.primary}; color: white; }
+      .stats-bar { background: ${c.primary}; padding: 13px 0; }
+      .stat-message span { color: ${c.accent}; }
+      .video-section { background: ${c.neutral}; }
+      .sh p { color: ${c.muted}; }
+      .card p { color: ${c.muted}; }
+      .benefit-card p { color: ${c.muted}; }
+      .hero p { color: ${c.muted}; }
+      .pricing-card.highlight { border-color: ${c.accent}; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+      .pricing-badge { background: ${c.accent}; color: ${c.text}; }
+      .pricing-price { color: ${c.primary}; }
+      .pricing-features li::before { color: ${c.accent}; }
+      .tco-table tr.winner td { background: #fefce8; font-weight: 700; color: ${c.primary}; }
+      .step-num { background: ${c.accent}; color: ${c.text}; }
+      .edition-name { color: ${c.accent}; font-weight: 700; margin-bottom: 4px; font-size: 15px; }
+      ._submit { background: ${c.accent}; color: ${c.text}; }
+      ._submit:hover { background: ${c.accentHover}; }
+    `} />
   </head>
   <body>
 
@@ -180,8 +186,8 @@ const c = site.colours;
 
       <div class="stats-bar">
         <div class="wrap">
-          <div class="stats-inner">
-            <div class="stat-message" set:html={site.branding.statsMessage.replace(/\b([\d%$A]+[^\s,]*)\b/g, '<span>$1</span>')} />
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
+            <div style="font-size:15px;font-weight:700;color:white;text-align:center">{site.branding.statsMessage}</div>
             <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px">
               {site.stats?.map((s) => (
                 <div style="font-size:13px;color:#94a3b8">checkmark <span style="color:white;font-weight:600">{s.value}</span> {s.label}</div>
@@ -212,4 +218,227 @@ const c = site.colours;
                 el.addEventListener('click', function() {
                   var id = el.dataset.ytid;
                   var iframe = document.createElement('iframe');
-                  iframe.src = 'https://www.youtube-nocookie.com/embed/' + id +
+                  iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+                  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                  iframe.allowFullscreen = true;
+                  el.innerHTML = '';
+                  el.appendChild(iframe);
+                });
+              });
+            </script>
+          </div>
+        </section>
+      )}
+
+      <section id="benefits">
+        <div class="wrap">
+          <div class="sh">
+            <h2>{site.branding.benefitsHeading}</h2>
+            <p>{site.branding.benefitsSubheading}</p>
+          </div>
+          <div class="grid">
+            {site.benefits?.map((b) => (
+              <div class="benefit-card c6">
+                <div class="card-icon">{b.icon}</div>
+                <h3>{b.title}</h3>
+                <p>{b.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="neutral-bg">
+        <div class="wrap">
+          <div class="sh">
+            <h2>{site.branding.pricingHeading}</h2>
+            <p>{site.branding.pricingSubheading}</p>
+          </div>
+          <div class="grid">
+            {site.pricing?.map((p) => (
+              <div class={`pricing-card c4${p.highlight ? " highlight" : ""}`}>
+                {p.highlight && <div class="pricing-badge">Most popular</div>}
+                <div class="pricing-name">{p.name}</div>
+                <div class="pricing-platform">{p.platform}</div>
+                <div class="pricing-price">{p.price}</div>
+                <div class="pricing-note">{p.priceNote}</div>
+                <ul class="pricing-features">
+                  {p.features?.map((f) => <li>{f}</li>)}
+                </ul>
+                <a class="btn btn-primary" href="#final-cta" style="text-align:center">{site.primaryCTA.text}</a>
+              </div>
+            ))}
+          </div>
+          <div class="card" style="margin-top:32px">
+            <h3 style="margin:0 0 4px">{site.tco?.heading}</h3>
+            <p style="color:#475569;font-size:14px;margin:0 0 4px">Switch now and keep the savings every year.</p>
+            <table class="tco-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>3-year total (10 users)</th>
+                  <th>Licence type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {site.tco?.rows?.map((r, i) => (
+                  <tr class={i === 0 ? "winner" : ""}>
+                    <td>{r.product}</td>
+                    <td>{r.cost}</td>
+                    <td>{r.type}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="tco-note">{site.tco?.note}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="wrap">
+          <div class="grid">
+            <div class="card c7">
+              {imgSrc("about-banner") && <div class="card-img"><img src={imgSrc("about-banner")} alt={imgAlt("about-banner")} loading="lazy" decoding="async" /></div>}
+              <h3>{site.branding.aboutHeading}</h3>
+              <p>{site.branding.aboutBody}</p>
+              <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+                {site.proofPoints?.map((p) => (
+                  <div style="background:#f1f5f9;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:#334155">checkmark {p}</div>
+                ))}
+              </div>
+            </div>
+            <div class="card c5" style={`background:${c.primary};color:white;border-color:${c.primary}`}>
+              <h3 style="color:white;margin:0 0 16px">{site.siteName} editions</h3>
+              {site.aboutEditions?.map((e) => (
+                <div class="edition">
+                  <div class="edition-name">{e.name}{e.highlight ? " *" : ""}</div>
+                  <div class="edition-desc">{e.desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="neutral-bg">
+        <div class="wrap">
+          <div class="sh">
+            <h2>How it works</h2>
+            <p>{site.branding.howItWorksSubheading}</p>
+          </div>
+          <div class="grid">
+            {site.steps?.map((s, i) => (
+              <div class="card c4">
+                <div class="step-num">{i + 1}</div>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="wrap">
+          <div class="sh">
+            <h2>{site.branding.featuresHeading}</h2>
+            <p>{site.branding.featuresSubheading}</p>
+          </div>
+          <div class="grid">
+            {site.features?.map((f) => (
+              <div class="card c6">
+                {imgSrc(f.key) && <div class="card-img"><img src={imgSrc(f.key)} alt={imgAlt(f.key)} loading="lazy" decoding="async" /></div>}
+                <div class="card-icon">{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="neutral-bg">
+        <div class="wrap">
+          <div class="sh">
+            <h2>Frequently asked questions</h2>
+          </div>
+          <div class="grid">
+            {site.faqs?.map((f) => (
+              <div class="card c6">
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="final-cta" class="dark-bg">
+        <div class="wrap">
+          <div class="grid">
+            <div class="c7">
+              {imgSrc("cta-banner") && <div style="border-radius:16px;overflow:hidden;aspect-ratio:16/9;margin-bottom:24px"><img src={imgSrc("cta-banner")} alt={imgAlt("cta-banner")} loading="lazy" style="width:100%;height:100%;object-fit:cover" /></div>}
+              <h2 style="color:white;font-size:28px;margin:0 0 12px">{site.branding.ctaHeading}</h2>
+              <p style="color:#94a3b8;margin:0 0 20px">{site.branding.ctaBody}</p>
+              <ul style="color:#94a3b8;margin:0;padding-left:20px;line-height:2.2;font-size:15px">
+                {site.branding.ctaBullets?.map((b) => <li>{b}</li>)}
+              </ul>
+            </div>
+            <div class="c5">
+              <div class="formbox">
+                <div style="font-weight:800;font-size:20px;color:#0f172a">Get in touch</div>
+                <div style="color:#475569;font-size:15px;margin-bottom:4px">Local Australian support. Fast response.</div>
+                <form method="POST" action="https://voicerecognition.activehosted.com/proc.php" id={`_form_${formId}_`} class="_form _inline-form" novalidate>
+                  <input type="hidden" name="u" value={site.form.hiddenU} />
+                  <input type="hidden" name="f" value={site.form.hiddenF} />
+                  <input type="hidden" name="s" />
+                  <input type="hidden" name="c" value="0" />
+                  <input type="hidden" name="m" value="0" />
+                  <input type="hidden" name="act" value="sub" />
+                  <input type="hidden" name="v" value="2" />
+                  <input type="hidden" name="or" value={site.form.hiddenOr} />
+                  <div class="_form-content">
+                    <div class="_form_element">
+                      <input type="text" name="firstname" placeholder="Your Name" required />
+                    </div>
+                    <div class="_form_element">
+                      <input type="text" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="_form_element">
+                      <input type="text" name="phone" placeholder="Your Phone Number" />
+                    </div>
+                    <div class="_form_element">
+                      <input type="text" name="field[21]" placeholder="Number of Users" />
+                    </div>
+                    <div class="_form_element">
+                      <input type="text" name="field[35]" placeholder="Company / Organisation" />
+                    </div>
+                    <div class="_form_element">
+                      <textarea name="field[18]" placeholder="Optionally describe your needs"></textarea>
+                    </div>
+                    <button class="_submit" type="submit">{site.form.submitText}</button>
+                  </div>
+                  <div class="_form-thank-you" style="display:none;"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-inner">
+          <div>© {year} {site.siteName}</div>
+          <div class="footer-links">
+            {site.footerLinks?.map((l) => <a href={l.url}>{l.label}</a>)}
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
