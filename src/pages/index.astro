@@ -37,6 +37,38 @@ const formId = site.form.id;
       </script>
     )}
 
+    <script define:vars={{ c, formId }}>
+      const css = `
+        body { background: ${c.background}; color: ${c.text}; }
+        .nav-links a:hover { color: ${c.primary}; }
+        .btn-primary { background: ${c.accent}; border-color: ${c.accent}; color: ${c.text}; }
+        .btn-primary:hover { background: ${c.accentHover}; border-color: ${c.accentHover}; }
+        .btn-secondary { color: ${c.primary}; }
+        .btn-secondary:hover { border-color: ${c.primary}; }
+        .neutral-bg { background: ${c.neutral}; }
+        .dark-bg { background: ${c.primary}; color: white; }
+        .stats-bar { background: ${c.primary}; }
+        .stat-message span { color: ${c.accent}; }
+        .video-section { background: ${c.neutral}; }
+        .sh p { color: ${c.muted}; }
+        .card p { color: ${c.muted}; }
+        .benefit-card p { color: ${c.muted}; }
+        .hero p { color: ${c.muted}; }
+        .pricing-card.highlight { border-color: ${c.accent}; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+        .pricing-badge { background: ${c.accent}; color: ${c.text}; }
+        .pricing-price { color: ${c.primary}; }
+        .pricing-features li::before { color: ${c.accent}; }
+        .tco-table tr.winner td { background: #fefce8; font-weight: 700; color: ${c.primary}; }
+        .step-num { background: ${c.accent}; color: ${c.text}; }
+        .edition-name { color: ${c.accent}; font-weight: 700; margin-bottom: 4px; font-size: 15px; }
+        ._submit { background: ${c.accent}; color: ${c.text}; }
+        ._submit:hover { background: ${c.accentHover}; }
+      `;
+      const el = document.createElement('style');
+      el.textContent = css;
+      document.head.appendChild(el);
+    </script>
+
     <style is:inline>
       *,*::before,*::after{box-sizing:border-box}
       body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0f172a;line-height:1.6}
@@ -91,7 +123,7 @@ const formId = site.form.id;
       .pricing-note{font-size:13px;color:#64748b;margin:0 0 20px}
       .pricing-features{list-style:none;padding:0;margin:0 0 24px;flex:1}
       .pricing-features li{padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155;display:flex;gap:8px;align-items:flex-start}
-      .pricing-features li::before{content:"checkmark";font-weight:700;flex-shrink:0}
+      .pricing-features li::before{content:"✓";font-weight:700;flex-shrink:0}
       .tco-table{width:100%;border-collapse:collapse;margin-top:24px}
       .tco-table th{text-align:left;padding:12px 16px;font-size:13px;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;background:#f8fafc}
       .tco-table td{padding:14px 16px;font-size:15px;border-bottom:1px solid #f1f5f9}
@@ -113,33 +145,6 @@ const formId = site.form.id;
         .c6,.c4,.c7,.c5{grid-column:span 12}
       }
     </style>
-
-    <style is:inline set:html={`
-      body { background: ${c.background}; color: ${c.text}; }
-      .nav-links a:hover { color: ${c.primary}; }
-      .btn-primary { background: ${c.accent}; border-color: ${c.accent}; color: ${c.text}; }
-      .btn-primary:hover { background: ${c.accentHover}; border-color: ${c.accentHover}; }
-      .btn-secondary { color: ${c.primary}; }
-      .btn-secondary:hover { border-color: ${c.primary}; }
-      .neutral-bg { background: ${c.neutral}; }
-      .dark-bg { background: ${c.primary}; color: white; }
-      .stats-bar { background: ${c.primary}; padding: 13px 0; }
-      .stat-message span { color: ${c.accent}; }
-      .video-section { background: ${c.neutral}; }
-      .sh p { color: ${c.muted}; }
-      .card p { color: ${c.muted}; }
-      .benefit-card p { color: ${c.muted}; }
-      .hero p { color: ${c.muted}; }
-      .pricing-card.highlight { border-color: ${c.accent}; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
-      .pricing-badge { background: ${c.accent}; color: ${c.text}; }
-      .pricing-price { color: ${c.primary}; }
-      .pricing-features li::before { color: ${c.accent}; }
-      .tco-table tr.winner td { background: #fefce8; font-weight: 700; color: ${c.primary}; }
-      .step-num { background: ${c.accent}; color: ${c.text}; }
-      .edition-name { color: ${c.accent}; font-weight: 700; margin-bottom: 4px; font-size: 15px; }
-      ._submit { background: ${c.accent}; color: ${c.text}; }
-      ._submit:hover { background: ${c.accentHover}; }
-    `} />
   </head>
   <body>
 
@@ -184,13 +189,13 @@ const formId = site.form.id;
         </div>
       </section>
 
-      <div class="stats-bar">
+      <div class="stats-bar" style="padding:13px 0">
         <div class="wrap">
           <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap">
-            <div style="font-size:15px;font-weight:700;color:white;text-align:center">{site.branding.statsMessage}</div>
+            <div class="stat-message" style="font-size:15px;font-weight:700;color:white;text-align:center">{site.branding.statsMessage}</div>
             <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px">
               {site.stats?.map((s) => (
-                <div style="font-size:13px;color:#94a3b8">checkmark <span style="color:white;font-weight:600">{s.value}</span> {s.label}</div>
+                <div style="font-size:13px;color:#94a3b8">✓ <span style="color:white;font-weight:600">{s.value}</span> {s.label}</div>
               ))}
             </div>
           </div>
@@ -304,7 +309,7 @@ const formId = site.form.id;
               <p>{site.branding.aboutBody}</p>
               <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
                 {site.proofPoints?.map((p) => (
-                  <div style="background:#f1f5f9;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:#334155">checkmark {p}</div>
+                  <div style="background:#f1f5f9;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:#334155">✓ {p}</div>
                 ))}
               </div>
             </div>
