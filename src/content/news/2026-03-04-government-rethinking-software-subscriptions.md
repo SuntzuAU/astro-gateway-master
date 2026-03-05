@@ -2,6 +2,9 @@
 title: "Why Australian Government Agencies Are Rethinking Software Subscriptions"
 date: "2026-03-04"
 metaDescription: "Australian government procurement teams are taking a closer look at perpetual software licensing as subscription costs compound year after year. Here's what's driving the shift."
+heroImage: "default/2026/03/05/hero-b71adaa4.png"
+breakImage1: "default/2026/03/05/break1-c2607598.png"
+breakImage2: "default/2026/03/05/break2-d2538a24.png"
 ---
 
 Australian government agencies have spent the better part of a decade moving toward subscription-based software. The logic made sense at the time - lower upfront costs, automatic updates, predictable monthly billing. But as those subscriptions compound year after year, a growing number of procurement teams are doing the maths and arriving at an uncomfortable conclusion: the ongoing cost has quietly become the problem.
