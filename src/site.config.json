@@ -1,11 +1,37 @@
 {
   "siteName": "PDF Software Australia",
   "domain": "https://pdfsoftware.com.au",
+  "googleAnalyticsId": "",
   "branding": {
     "industry": "Enterprise, Government & Legal",
     "region": "Australia",
     "headline": "Switch from Adobe Acrobat and Save Thousands",
-    "subheadline": "Tungsten Power PDF delivers everything your team needs — editing, redaction, e-signatures, and Microsoft 365 integration — at a fraction of Adobe's annual subscription cost. Perpetual licensing available. Local Australian support."
+    "subheadline": "Tungsten Power PDF delivers everything your team needs — editing, redaction, e-signatures, and Microsoft 365 integration — at a fraction of Adobe's annual subscription cost. Perpetual licensing available. Local Australian support.",
+    "statsMessage": "Save up to 79% vs Adobe Acrobat Pro — perpetual licence, no subscription, no renewal fees",
+    "benefitsHeading": "Why Australian organisations choose Power PDF",
+    "benefitsSubheading": "Enterprise-grade PDF capability — without the Adobe Acrobat price tag.",
+    "pricingHeading": "Simple, transparent pricing",
+    "pricingSubheading": "One-time purchase. Own it forever. No subscriptions, no renewals.",
+    "aboutHeading": "Local expertise. Enterprise results.",
+    "aboutBody": "Voice Recognition Australia has been deploying enterprise document software across Australian government, legal, and corporate environments for 25 years. We provide local onboarding, training, and ongoing support — not just a licence key.",
+    "howItWorksSubheading": "From enquiry to deployment — we handle everything locally.",
+    "featuresHeading": "Key features",
+    "featuresSubheading": "Everything your team needs to work with documents securely and efficiently.",
+    "ctaHeading": "Ready to switch from Adobe Acrobat?",
+    "ctaBody": "Tell us about your organisation and we'll respond within one business day with a tailored proposal — licensing options, volume pricing, and a free 15-day trial.",
+    "ctaBullets": [
+      "Organisation name and sector",
+      "Number of users and platform (Windows / Mac)",
+      "Current PDF solution and pain points",
+      "Procurement requirements or constraints"
+    ]
+  },
+  "form": {
+    "id": "281",
+    "submitText": "Request Information",
+    "hiddenU": "281",
+    "hiddenF": "281",
+    "hiddenOr": "dc5b5401-7502-40c5-8526-4ecfaa46de59"
   },
   "heroVideo": {
     "enabled": true,
@@ -25,6 +51,25 @@
     { "value": "25+", "label": "Years in market" },
     { "value": "$261", "label": "AUD inc GST — Advanced, once" },
     { "value": "15 days", "label": "Free trial" }
+  ],
+  "aboutEditions": [
+    {
+      "name": "Standard — $188 AUD",
+      "desc": "Individual users. Create, edit, convert, sign. Perpetual licence for Windows."
+    },
+    {
+      "name": "Advanced — $261 AUD",
+      "desc": "Business users. Adds redaction, Bates numbering, batch processing, e-signatures, SharePoint integration.",
+      "highlight": true
+    },
+    {
+      "name": "Mac — $188 AUD",
+      "desc": "Full PDF editing for macOS 10.15 to 14. Native Apple Silicon support."
+    },
+    {
+      "name": "Business SaaS",
+      "desc": "Enterprise volume. Cloud editor, Teams integration, centralised management. Contact us for pricing."
+    }
   ],
   "navItems": [
     { "label": "Benefits", "url": "#benefits" },
