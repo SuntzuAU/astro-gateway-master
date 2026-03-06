@@ -149,10 +149,51 @@ const benefitIcons = [
       .footer-links{display:flex;gap:20px}
       .footer-links a:hover{color:white}
       .stat-check{display:inline-block;width:14px;height:14px;margin-right:4px;vertical-align:middle;flex-shrink:0}
+
+      /* ── Tablet (≤900px) ── */
       @media(max-width:900px){
         .hero-inner{grid-template-columns:1fr}
-        .hero h1{font-size:30px}
+        .hero h1{font-size:32px}
         .c6,.c4,.c7,.c5{grid-column:span 12}
+        .sh h2{font-size:26px}
+      }
+
+      /* ── Mobile (≤600px) ── */
+      @media(max-width:600px){
+        /* Nav: hide text links, keep logo + single CTA button */
+        .nav-links{display:none}
+        .nav-ctas .btn-secondary{display:none}
+        .nav-ctas .btn-primary{padding:8px 16px;font-size:13px}
+
+        /* Tighten section padding */
+        section{padding:40px 0}
+        .hero{padding:36px 0 28px}
+        .hero h1{font-size:26px}
+        .hero p{font-size:15px}
+        .sh h2{font-size:22px}
+        .sh p{font-size:15px}
+        .sh{margin-bottom:24px}
+
+        /* Hero buttons stack full-width */
+        .hero-btns{flex-direction:column}
+        .hero-btns .btn-lg{width:100%;text-align:center;padding:13px 20px}
+
+        /* Cards tighter on mobile */
+        .card{padding:18px}
+        .benefit-card{padding:20px}
+        .pricing-card{padding:20px}
+        .formbox{padding:20px}
+
+        /* TCO table: scrollable, shrink text */
+        .tco-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+        .tco-table th,.tco-table td{padding:10px 12px;font-size:12px;white-space:nowrap}
+
+        /* Stats bar: stack vertically */
+        .stats-items{flex-direction:column;gap:8px;align-items:center}
+
+        /* Footer: centre-aligned on small screens */
+        .footer-inner{flex-direction:column;align-items:center;text-align:center}
+        .footer-links{justify-content:center}
       }
     </style>
   </head>
@@ -203,7 +244,7 @@ const benefitIcons = [
         <div class="wrap">
           <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
             <div class="stats-savings" style="font-size:15px;font-weight:800;text-align:center">{site.branding.statsMessage}</div>
-            <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
+            <div class="stats-items" style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center">
               {site.stats?.map((s) => (
                 <div style="font-size:13px;color:#94a3b8;display:flex;align-items:center;gap:4px">
                   <svg class="stat-check" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -293,24 +334,26 @@ const benefitIcons = [
           <div class="card" style="margin-top:32px">
             <h3 style="margin:0 0 4px">{site.tco?.heading}</h3>
             <p style="color:#475569;font-size:14px;margin:0 0 4px">Switch now and keep the savings every year.</p>
-            <table class="tco-table">
-              <thead>
-                <tr>
-                  <th>Product</th>
-                  <th>3-year total (10 users)</th>
-                  <th>Licence type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {site.tco?.rows?.map((r, i) => (
-                  <tr class={i === 0 ? "winner" : ""}>
-                    <td>{r.product}</td>
-                    <td>{r.cost}</td>
-                    <td>{r.type}</td>
+            <div class="tco-table-wrap">
+              <table class="tco-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>3-year total (10 users)</th>
+                    <th>Licence type</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {site.tco?.rows?.map((r, i) => (
+                    <tr class={i === 0 ? "winner" : ""}>
+                      <td>{r.product}</td>
+                      <td>{r.cost}</td>
+                      <td>{r.type}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <p class="tco-note">{site.tco?.note}</p>
             <p class="tco-disclaimer">Product comparisons are based on publicly available pricing and features. Prices and offerings may change. Verify current pricing directly with each vendor before making purchasing decisions.</p>
           </div>
