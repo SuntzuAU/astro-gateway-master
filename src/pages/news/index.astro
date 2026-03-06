@@ -7,7 +7,7 @@ const posts = (await getCollection('news')).sort(
 );
 
 const year = new Date().getFullYear();
-const R2_BASE = import.meta.env.PUBLIC_R2_BASE ?? 'https://pub-c7a09e1ddb7c45e6a38fcdca1e4b6897.r2.dev';
+const R2_BASE = (import.meta.env.PUBLIC_R2_BASE ?? 'https://pub-c7a09e1ddb7c45e6a38fcdca1e4b6897.r2.dev').replace(/\/$/, '');
 const imgSrc = (key?: string) => key ? `${R2_BASE}/${key}` : '';
 ---
 <!doctype html>
@@ -53,7 +53,7 @@ const imgSrc = (key?: string) => key ? `${R2_BASE}/${key}` : '';
   <body>
     <header>
       <a class="logo" href="/"><img src="/logo.png" alt={site.siteName} /></a>
-      <a class="home-link" href="/">← Back to home</a>
+      <a class="home-link" href="/">&#8592; Back to home</a>
     </header>
 
     <div class="wrap">
@@ -81,7 +81,7 @@ const imgSrc = (key?: string) => key ? `${R2_BASE}/${key}` : '';
                 <div class="card-date">{new Date(post.data.date).toLocaleDateString('en-AU', { day:'numeric', month:'long', year:'numeric' })}</div>
                 <div class="card-title">{post.data.title}</div>
                 <div class="card-desc">{post.data.metaDescription}</div>
-                <span class="card-link">Read more →</span>
+                <span class="card-link">Read more &#8594;</span>
               </div>
             </a>
           ))}
@@ -90,11 +90,11 @@ const imgSrc = (key?: string) => key ? `${R2_BASE}/${key}` : '';
     </div>
 
     <footer>
-      <a href="/">{site.siteName}</a> &nbsp;·&nbsp;
-      <a href="/about">About</a> &nbsp;·&nbsp;
-      <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
-      <a href="/terms">Terms</a> &nbsp;·&nbsp;
-      © {year} Voice Recognition Australia
+      <a href="/">{site.siteName}</a> &nbsp;&#183;&nbsp;
+      <a href="/about">About</a> &nbsp;&#183;&nbsp;
+      <a href="/privacy">Privacy</a> &nbsp;&#183;&nbsp;
+      <a href="/terms">Terms</a> &nbsp;&#183;&nbsp;
+      &#169; {year} Voice Recognition Australia
     </footer>
   </body>
 </html>

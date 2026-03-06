@@ -17,26 +17,19 @@ import site from "../site.config.json";
       .code{font-size:96px;font-weight:800;color:#e2e8f0;line-height:1;margin:0 0 8px;letter-spacing:-0.04em}
       h1{font-size:28px;font-weight:700;margin:0 0 12px;color:#0f172a}
       p{font-size:16px;color:#475569;margin:0 0 32px;max-width:420px}
-      .btn{display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none;transition:background .15s}
-      .btn:hover{background:#d97706}
+      .btn{display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none}
       footer{border-top:1px solid #e2e8f0;padding:20px 24px;text-align:center;font-size:13px;color:#94a3b8}
       footer a{color:#1a2f5e;text-decoration:none}
     </style>
   </head>
   <body>
-    <header>
-      <a href="/"><img src="/logo.png" alt={site.siteName} /></a>
-    </header>
-
+    <header><a href="/"><img src="/logo.png" alt={site.siteName} /></a></header>
     <div class="wrap">
       <div class="code">404</div>
       <h1>Page not found</h1>
-      <p>The page you're looking for doesn't exist or may have moved. Let's get you back on track.</p>
+      <p>The page you're looking for doesn't exist or may have moved.</p>
       <a class="btn" href="/">Back to home</a>
     </div>
-
-    <footer>
-      <a href="/">{site.siteName}</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a>
-    </footer>
+    <footer><a href="/">{site.siteName}</a> &nbsp;·&nbsp; <a href="/privacy">Privacy</a> &nbsp;·&nbsp; <a href="/terms">Terms</a></footer>
   </body>
 </html>
