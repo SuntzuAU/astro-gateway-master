@@ -16,6 +16,14 @@ function imgAlt(key) {
 
 const c = site.colours;
 const formId = site.form.id;
+
+// Inline SVG icons — avoids HTML entity / emoji corruption from JSON/GitHub API
+const benefitIcons = [
+  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fef3c7"/><path d="M16 8a8 8 0 1 1 0 16A8 8 0 0 1 16 8zm0 2a6 6 0 1 0 0 12A6 6 0 0 0 16 10zm1 2v5.17l3.41 3.42-1.41 1.41L15 18.59V12h2z" fill="#f59e0b"/></svg>`,
+  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fef3c7"/><path d="M22 9H10a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V11a2 2 0 0 0-2-2zm0 12H10V11h12v10zm-9-8h6v2h-6v-2zm0 4h4v2h-4v-2z" fill="#f59e0b"/></svg>`,
+  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fef3c7"/><path d="M21 10H11a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zm-5 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill="#f59e0b"/></svg>`,
+  `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fef3c7"/><path d="M23 9h-4.18A3 3 0 0 0 13 9H9a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1zm-7-1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm6 13H10V11h3.26a3 3 0 0 0 5.48 0H22v10z" fill="#f59e0b"/></svg>`,
+];
 ---
 
 <!doctype html>
@@ -23,7 +31,7 @@ const formId = site.form.id;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.siteName} — {site.branding.headline}</title>
+    <title>{site.seoTitle ? site.seoTitle : `${site.siteName} — ${site.branding.headline}`}</title>
     <meta name="description" content={site.branding.subheadline} />
     <link rel="canonical" href={site.domain} />
 
@@ -57,7 +65,6 @@ const formId = site.form.id;
         .pricing-card.highlight { border-color: ${c.accent}; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
         .pricing-badge { background: ${c.accent}; color: ${c.text}; }
         .pricing-price { color: ${c.primary}; }
-        .pricing-features li::before { color: ${c.accent}; }
         .tco-table tr.winner td { background: #fefce8; font-weight: 700; color: ${c.primary}; }
         .step-num { background: ${c.accent}; color: ${c.text}; }
         .edition-name { color: ${c.accent}; font-weight: 700; margin-bottom: 4px; font-size: 15px; }
@@ -114,7 +121,7 @@ const formId = site.form.id;
       .card h3{margin:0 0 8px;font-size:17px}
       .benefit-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px}
       .benefit-card h3{margin:8px 0 10px;font-size:18px}
-      .card-icon{font-size:32px;margin-bottom:14px;line-height:1}
+      .card-icon{margin-bottom:14px;line-height:1}
       .pricing-card{background:#fff;border:2px solid #e2e8f0;border-radius:20px;padding:28px;display:flex;flex-direction:column}
       .pricing-badge{display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em}
       .pricing-name{font-size:20px;font-weight:700;margin:0 0 4px}
@@ -123,7 +130,7 @@ const formId = site.form.id;
       .pricing-note{font-size:13px;color:#64748b;margin:0 0 20px}
       .pricing-features{list-style:none;padding:0;margin:0 0 24px;flex:1}
       .pricing-features li{padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155;display:flex;gap:8px;align-items:flex-start}
-      .pricing-features li::before{content:"checkmark";font-weight:700;flex-shrink:0}
+      .pricing-features li::before{content:"✓";color:#f59e0b;font-weight:700;flex-shrink:0}
       .tco-table{width:100%;border-collapse:collapse;margin-top:24px}
       .tco-table th{text-align:left;padding:12px 16px;font-size:13px;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;background:#f8fafc}
       .tco-table td{padding:14px 16px;font-size:15px;border-bottom:1px solid #f1f5f9}
@@ -251,9 +258,9 @@ const formId = site.form.id;
             <p>{site.branding.benefitsSubheading}</p>
           </div>
           <div class="grid">
-            {site.benefits?.map((b) => (
+            {site.benefits?.map((b, i) => (
               <div class="benefit-card c6">
-                <div class="card-icon">{b.icon}</div>
+                <div class="card-icon" set:html={benefitIcons[i] ?? benefitIcons[0]} />
                 <h3>{b.title}</h3>
                 <p>{b.body}</p>
               </div>
@@ -361,10 +368,10 @@ const formId = site.form.id;
             <p>{site.branding.featuresSubheading}</p>
           </div>
           <div class="grid">
-            {site.features?.map((f) => (
+            {site.features?.map((f, i) => (
               <div class="card c6">
                 {imgSrc(f.key) && <div class="card-img"><img src={imgSrc(f.key)} alt={imgAlt(f.key)} loading="lazy" decoding="async" /></div>}
-                <div class="card-icon">{f.icon}</div>
+                <div class="card-icon" set:html={benefitIcons[i + 2] ?? benefitIcons[0]} />
                 <h3>{f.title}</h3>
                 <p>{f.body}</p>
               </div>
