@@ -6,8 +6,11 @@
 ## QUICK START FOR NEW SESSION
 
 1. Read this file first
-2. Read `/VRA-GATEWAY-SITES-BRIEFING.md` for full project context
-3. Read `/CONTENT-GUIDELINES.md` for content rules
+2. **Read SuntzuAU/vra-network-config** — this is the single source of truth for the entire network:
+   - `NETWORK-SITES.md` — which sites are live (only link to live sites)
+   - `LINK-REGISTRY.md` — which links have been used across all sites (read before writing any content)
+   - `CONTENT-GUIDELINES.md` — writing rules, tone, legal compliance, linking rules
+3. Read `/VRA-GATEWAY-SITES-BRIEFING.md` in this repo for full project context
 4. Verify GitHub MCP is working: list files in SuntzuAU/astro-gateway-master
 5. Check pdfsoftware.pages.dev is live and looking correct before doing anything else
 
@@ -17,6 +20,7 @@
 
 | Repo | Purpose | Status |
 |---|---|---|
+| SuntzuAU/vra-network-config | **Master config for entire network** — content guidelines, link registry, site list | ACTIVE |
 | SuntzuAU/astro-gateway-master | Master template — all new sites cloned from here | ACTIVE |
 | SuntzuAU/pdfsoftware | pdfsoftware.com.au production site | ACTIVE |
 
@@ -74,7 +78,7 @@
 ### Meta title format
 **pdfsoftware:** Title changed to "PDF Software Australia - Switch from Adobe Acrobat and save thousands"
 
-**master template:** Title now checks for optional `seoTitle` field in site.config.json first. If set, uses that. If not, falls back to `{siteName} — {headline}`. This lets each cloned site set a custom SEO title in config without touching the template.
+**master template:** Title now checks for optional `seoTitle` field in site.config.json first. If set, uses that. If not, falls back to `{siteName} — {headline}`.
 
 To use: add `"seoTitle": "Your Custom SEO Title Here"` to site.config.json
 
@@ -145,5 +149,5 @@ Must be set as PUBLIC_R2_BASE in both GitHub Actions secrets AND Cloudflare Page
 ## CONTENT APPROVAL RULE (DO NOT SKIP)
 
 Claude must NEVER commit content without explicit owner instruction.
-Workflow: draft in chat → owner reviews → owner says "commit it" → Claude commits.
+Workflow: draft in chat → owner reviews → owner says "commit it" → Claude commits → Claude updates LINK-REGISTRY.md in vra-network-config.
 Exception: bug fixes can be committed immediately, but owner must be informed straight after.
