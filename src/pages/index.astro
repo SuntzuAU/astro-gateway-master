@@ -70,6 +70,8 @@ const benefitIcons = [
         .edition-name { color: ${c.accent}; font-weight: 700; margin-bottom: 4px; font-size: 15px; }
         ._submit { background: ${c.accent}; color: ${c.text}; }
         ._submit:hover { background: ${c.accentHover}; }
+        .mobile-nav-open { background: ${c.primary}; }
+        .mobile-nav-open a { color: white; }
       `;
       const el = document.createElement('style');
       el.textContent = css;
@@ -90,6 +92,9 @@ const benefitIcons = [
       .btn{display:inline-block;padding:10px 20px;border-radius:8px;font-weight:700;font-size:14px;border:2px solid transparent;cursor:pointer;transition:all .15s;white-space:nowrap}
       .btn-secondary{background:white;border-color:#cbd5e1}
       .btn-lg{padding:14px 28px;font-size:16px;border-radius:10px}
+      .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+      .hamburger span{display:block;width:22px;height:2px;background:#334155;border-radius:2px;transition:all .2s}
+      .mobile-nav{display:none}
       section{padding:64px 0}
       .hero{padding:72px 0 56px}
       .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -130,7 +135,7 @@ const benefitIcons = [
       .pricing-note{font-size:13px;color:#64748b;margin:0 0 20px}
       .pricing-features{list-style:none;padding:0;margin:0 0 24px;flex:1}
       .pricing-features li{padding:7px 0;border-bottom:1px solid #f1f5f9;font-size:14px;color:#334155;display:flex;gap:8px;align-items:flex-start}
-      .pricing-features li::before{content:"✓";color:#f59e0b;font-weight:700;flex-shrink:0}
+      .pricing-features li::before{content:"&#10003;";color:#f59e0b;font-weight:700;flex-shrink:0}
       .tco-table{width:100%;border-collapse:collapse;margin-top:24px}
       .tco-table th{text-align:left;padding:12px 16px;font-size:13px;font-weight:600;color:#475569;border-bottom:2px solid #e2e8f0;background:#f8fafc}
       .tco-table td{padding:14px 16px;font-size:15px;border-bottom:1px solid #f1f5f9}
@@ -150,7 +155,7 @@ const benefitIcons = [
       .footer-links a:hover{color:white}
       .stat-check{display:inline-block;width:14px;height:14px;margin-right:4px;vertical-align:middle;flex-shrink:0}
 
-      /* ── Tablet (≤900px) ── */
+      /* Tablet */
       @media(max-width:900px){
         .hero-inner{grid-template-columns:1fr}
         .hero h1{font-size:32px}
@@ -158,14 +163,15 @@ const benefitIcons = [
         .sh h2{font-size:26px}
       }
 
-      /* ── Mobile (≤600px) ── */
+      /* Mobile */
       @media(max-width:600px){
-        /* Nav: hide text links, keep logo + single CTA button */
         .nav-links{display:none}
         .nav-ctas .btn-secondary{display:none}
         .nav-ctas .btn-primary{padding:8px 16px;font-size:13px}
-
-        /* Tighten section padding */
+        .hamburger{display:flex}
+        .mobile-nav{border-top:1px solid rgba(255,255,255,.15);padding:12px 0 8px}
+        .mobile-nav a{display:block;padding:10px 0;font-size:15px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.1)}
+        .mobile-nav a:last-child{border-bottom:none}
         section{padding:40px 0}
         .hero{padding:36px 0 28px}
         .hero h1{font-size:26px}
@@ -173,25 +179,15 @@ const benefitIcons = [
         .sh h2{font-size:22px}
         .sh p{font-size:15px}
         .sh{margin-bottom:24px}
-
-        /* Hero buttons stack full-width */
         .hero-btns{flex-direction:column}
         .hero-btns .btn-lg{width:100%;text-align:center;padding:13px 20px}
-
-        /* Cards tighter on mobile */
         .card{padding:18px}
         .benefit-card{padding:20px}
         .pricing-card{padding:20px}
         .formbox{padding:20px}
-
-        /* TCO table: scrollable, shrink text */
         .tco-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
         .tco-table th,.tco-table td{padding:10px 12px;font-size:12px;white-space:nowrap}
-
-        /* Stats bar: stack vertically */
         .stats-items{flex-direction:column;gap:8px;align-items:center}
-
-        /* Footer: centre-aligned on small screens */
         .footer-inner{flex-direction:column;align-items:center;text-align:center}
         .footer-links{justify-content:center}
       }
@@ -211,8 +207,14 @@ const benefitIcons = [
           <div class="nav-ctas">
             {site.secondaryCTA?.text && <a class="btn btn-secondary" href={site.secondaryCTA.url}>{site.secondaryCTA.text}</a>}
             <a class="btn btn-primary" href={site.primaryCTA.url}>{site.primaryCTA.text}</a>
+            <button class="hamburger" aria-label="Open menu" onclick="this.closest('header').querySelector('.mobile-nav').classList.toggle('mobile-nav-open');this.closest('header').querySelector('.mobile-nav').style.display=this.closest('header').querySelector('.mobile-nav').style.display==='block'?'none':'block'">
+              <span></span><span></span><span></span>
+            </button>
           </div>
         </div>
+        <nav class="mobile-nav" aria-label="Mobile">
+          {site.navItems?.map((item) => <a href={item.url}>{item.label}</a>)}
+        </nav>
       </div>
     </header>
 

@@ -43,7 +43,9 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-AU', {
       .article{max-width:760px;margin:0 auto;padding:48px 24px 80px}
       .meta{display:flex;gap:16px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
       .meta-date,.meta-site{font-size:13px;color:#94a3b8}
-      h1{font-size:36px;letter-spacing:-0.02em;line-height:1.15;margin:0 0 32px;color:#0f172a}
+      h1{font-size:36px;letter-spacing:-0.02em;line-height:1.15;margin:0 0 24px;color:#0f172a}
+      .img-break{margin:32px 0;border-radius:14px;overflow:hidden;background:#f1f5f9}
+      .img-break img{width:100%;max-height:360px;object-fit:cover;display:block}
       .prose{font-size:16px;color:#334155;line-height:1.8}
       .prose p{margin:0 0 18px}
       .prose h2{font-size:22px;font-weight:700;color:#1a2f5e;margin:40px 0 16px;letter-spacing:-0.01em}
@@ -54,34 +56,24 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-AU', {
       .prose strong{color:#0f172a}
       .prose blockquote{border-left:3px solid #f59e0b;margin:24px 0;padding:12px 20px;background:#fefce8;border-radius:0 8px 8px 0}
       .prose blockquote p{margin:0;color:#713f12;font-style:italic}
-      .img-break{margin:40px 0;border-radius:14px;overflow:hidden;background:#f1f5f9}
-      .img-break img{width:100%;max-height:360px;object-fit:cover;display:block}
-      .img-break-placeholder{height:240px;background:linear-gradient(135deg,#1a2f5e 0%,#2d4a8a 100%);border-radius:14px}
       .cta-strip{background:#1a2f5e;border-radius:14px;padding:32px;margin:48px 0;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
       .cta-strip p{margin:0;color:#cbd5e1;font-size:15px;max-width:500px}
       .cta-strip a{display:inline-block;background:#f59e0b;color:#0f172a;font-weight:700;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;white-space:nowrap}
       .cta-strip a:hover{background:#d97706}
       footer{border-top:1px solid #e2e8f0;padding:24px;text-align:center;font-size:13px;color:#94a3b8}
       footer a{color:#1a2f5e;text-decoration:none}
-      @media(max-width:600px){h1{font-size:26px}.cta-strip{flex-direction:column;text-align:center}}
+      @media(max-width:600px){
+        h1{font-size:24px}
+        .hero-img img{height:220px}
+        .cta-strip{flex-direction:column;text-align:center}
+        .article{padding:28px 16px 60px}
+      }
     </style>
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', function() {
-        var prose = document.querySelector('.prose');
-        if (!prose) return;
-        var h2s = Array.from(prose.querySelectorAll('h2'));
-        var breaks = Array.from(document.querySelectorAll('.img-break-inject'));
-        breaks.forEach(function(brk) { brk.style.display = ''; });
-        h2s.forEach(function(h2, i) {
-          if (breaks[i]) prose.insertBefore(breaks[i], h2);
-        });
-      });
-    </script>
   </head>
   <body>
     <header>
       <a class="logo" href="/"><img src="/logo.png" alt={site.siteName} /></a>
-      <a class="back" href="/news">← All articles</a>
+      <a class="back" href="/news">&#8592; All articles</a>
     </header>
 
     {post.data.heroImage && (
@@ -97,22 +89,21 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-AU', {
       </div>
       <h1>{post.data.title}</h1>
 
-      <div class="img-break img-break-inject" style="display:none">
-        {post.data.breakImage1
-          ? <img src={imgSrc(post.data.breakImage1)} alt={post.data.breakImage1Alt ?? ''} loading="lazy" decoding="async" />
-          : <div class="img-break-placeholder"></div>
-        }
-      </div>
-      <div class="img-break img-break-inject" style="display:none">
-        {post.data.breakImage2
-          ? <img src={imgSrc(post.data.breakImage2)} alt={post.data.breakImage2Alt ?? ''} loading="lazy" decoding="async" />
-          : <div class="img-break-placeholder"></div>
-        }
-      </div>
+      {post.data.breakImage1 && (
+        <div class="img-break">
+          <img src={imgSrc(post.data.breakImage1)} alt={post.data.breakImage1Alt ?? ''} loading="lazy" decoding="async" />
+        </div>
+      )}
 
       <div class="prose">
         <Content />
       </div>
+
+      {post.data.breakImage2 && (
+        <div class="img-break">
+          <img src={imgSrc(post.data.breakImage2)} alt={post.data.breakImage2Alt ?? ''} loading="lazy" decoding="async" />
+        </div>
+      )}
 
       <div class="cta-strip">
         <p>Ready to see {site.siteName} in your organisation? Get a free trial and tailored proposal.</p>
@@ -121,11 +112,11 @@ const formattedDate = new Date(post.data.date).toLocaleDateString('en-AU', {
     </article>
 
     <footer>
-      <a href="/">{site.siteName}</a> &nbsp;·&nbsp;
-      <a href="/news">News</a> &nbsp;·&nbsp;
-      <a href="/about">About</a> &nbsp;·&nbsp;
-      <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
-      © {year} Voice Recognition Australia
+      <a href="/">{site.siteName}</a> &nbsp;&#183;&nbsp;
+      <a href="/news">News</a> &nbsp;&#183;&nbsp;
+      <a href="/about">About</a> &nbsp;&#183;&nbsp;
+      <a href="/privacy">Privacy</a> &nbsp;&#183;&nbsp;
+      &#169; {year} Voice Recognition Australia
     </footer>
   </body>
 </html>
