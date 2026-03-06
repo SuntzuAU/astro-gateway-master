@@ -97,10 +97,11 @@ function buildPrompt(type, title, section1, section2, siteName) {
   return `${base}Professional editorial photo illustrating: ${section2 || section1 || title}. Modern Australian workplace, technology in use, no text overlays.`;
 }
 
+// Safely replace a frontmatter field value, preserving the space after the colon
 function updateFrontmatterField(content, field, value) {
   return content.replace(
-    new RegExp(`(^---[\\s\\S]*?\n${field}:\s*)([^\n]+)(\n[\\s\\S]*?---)`),
-    (_, pre, _old, post) => `${pre}"${value}"${post}`
+    new RegExp(`(^---[\\s\\S]*?\n${field}:\\s*)([^\n]+)(\n[\\s\\S]*?---)`),
+    (_, pre, _old, post) => `${pre.replace(/:\\s*$/, ': ')}"${value}"${post}`
   );
 }
 
