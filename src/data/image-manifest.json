@@ -63,5 +63,35 @@
     "promptHash": "e1c3fc06ae5e4ff81ab7eed56894db7764f193ca1fe7a33da2243b55ecab9546",
     "generatedAt": "2026-03-02T07:48:22.902Z",
     "site": "speechrecognition-cloud"
+  },
+  "blog/2026-03-03-why-government-teams-switching-to-tungsten/hero": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-teams-are-switching-from-adobe-acr-hero-0baee51b.png",
+    "altText": "PDF Software Australia editorial photo illustrating Why Australian Government Teams Switching Adobe",
+    "generatedAt": "2026-03-06T05:54:38.493Z"
+  },
+  "blog/2026-03-03-why-government-teams-switching-to-tungsten/break1": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-teams-are-switching-from-adobe-acr-break1-e70aadff.png",
+    "altText": "PDF Software Australia editorial photo illustrating Cost Problem Adobe Public Sector Australian",
+    "generatedAt": "2026-03-06T05:54:53.279Z"
+  },
+  "blog/2026-03-03-why-government-teams-switching-to-tungsten/break2": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-teams-are-switching-from-adobe-acr-break2-763589da.png",
+    "altText": "PDF Software Australia editorial photo illustrating What Tungsten Power PDF Offers Government",
+    "generatedAt": "2026-03-06T05:55:08.117Z"
+  },
+  "blog/2026-03-04-government-rethinking-software-subscriptions/hero": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-agencies-are-rethinking-software-s-hero-86982d45.png",
+    "altText": "PDF Software Australia editorial photo illustrating Why Australian Government Agencies Rethinking Software",
+    "generatedAt": "2026-03-06T05:55:34.536Z"
+  },
+  "blog/2026-03-04-government-rethinking-software-subscriptions/break1": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-agencies-are-rethinking-software-s-break1-3d791ab3.png",
+    "altText": "PDF Software Australia editorial photo illustrating Why Australian Government Agencies Rethinking Software",
+    "generatedAt": "2026-03-06T05:55:48.086Z"
+  },
+  "blog/2026-03-04-government-rethinking-software-subscriptions/break2": {
+    "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-agencies-are-rethinking-software-s-break2-08c5eb43.png",
+    "altText": "PDF Software Australia editorial photo illustrating Why Australian Government Agencies Rethinking Software",
+    "generatedAt": "2026-03-06T05:56:02.780Z"
   }
 }
