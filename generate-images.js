@@ -24,12 +24,27 @@ if (fs.existsSync(manifestPath)) {
 function sha256(s) { return crypto.createHash('sha256').update(s).digest('hex'); }
 function isPlaceholder(key) { return !key || key.startsWith('default/'); }
 
-async function callWorker(prompt, name) {
+// Build an SEO slug from a string: lowercase, hyphens, max 70 chars, no trailing hyphens
+function toSeoSlug(text) {
+  const STOP_WORDS = new Set(['a','an','the','and','or','but','in','on','at','to','for','of','with','by','from','is','are','was','were','be','been','it','its']);
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .split(/\s+/)
+    .filter(w => w.length > 1 && !STOP_WORDS.has(w))
+    .join('-')
+    .slice(0, 70)
+    .replace(/-+$/, '');
+}
+
+async function callWorker(prompt, seoName) {
+  // seoName should already be a slug — passed as 'name' so Worker uses it directly
   const headers = { 'Content-Type': 'application/json' };
   if (WORKER_TOKEN) headers['Authorization'] = `Bearer ${WORKER_TOKEN}`;
   const res = await fetch(WORKER_URL, {
     method: 'POST', headers,
-    body: JSON.stringify({ prompt, name, site: SITE }),
+    body: JSON.stringify({ prompt, name: seoName, site: SITE }),
   });
   const json = await res.json().catch(() => null);
   if (!res.ok || !json?.ok) throw new Error(`Worker error ${res.status}: ${JSON.stringify(json)}`);
@@ -54,22 +69,36 @@ async function phase1() {
   for (const img of config.images) {
     const key = (img.key || '').trim();
     const prompt = (img.prompt || '').trim();
-    const name = (img.name || img.key || '').trim();
+    // Use explicit name from prompts file, or derive SEO slug from prompt
+    const seoName = img.name ? toSeoSlug(img.name) : toSeoSlug(prompt);
     if (!key || !prompt) continue;
     const entry = manifest[key];
     const localFile = path.join(outDir, path.basename(entry?.filename || ''));
     const upToDate = entry?.r2Key && entry.promptHash === sha256(prompt) && (entry.filename ? fs.existsSync(localFile) : true);
     if (upToDate) { console.log(`Skip (unchanged): ${key}`); continue; }
-    console.log(`Generating site image: ${key}`);
-    const result = await callWorker(prompt, name);
+    console.log(`Generating site image: ${key} -> ${seoName}`);
+    const result = await callWorker(prompt, seoName);
     const { r2 } = result;
+    // r2.filename is the SEO filename returned by the Worker (slug-first)
+    // r2.seoFilename is also available if Worker returns it
+    const filename = r2.seoFilename || r2.filename || path.basename(r2.key);
     manifest[key] = {
-      key, r2Key: r2.key, filename: r2.filename, contentType: r2.contentType,
-      bytes: r2.bytes, altText: result.seo?.altText || prompt.slice(0, 120),
-      prompt, promptHash: sha256(prompt), generatedAt: new Date().toISOString(), site: SITE,
+      key,
+      r2Key: r2.key,
+      filename,
+      contentType: r2.contentType,
+      bytes: r2.bytes,
+      // altText: prefer Worker-returned SEO alt text, fall back to prompt snippet
+      altText: result.seo?.altText || seoName.replace(/-/g, ' '),
+      prompt,
+      promptHash: sha256(prompt),
+      generatedAt: new Date().toISOString(),
+      site: SITE,
     };
-    console.log(`  R2: ${r2.key}`);
-    if (r2.filename) await downloadImage(r2.key, r2.filename);
+    console.log(`  R2 key: ${r2.key}`);
+    console.log(`  SEO filename: ${filename}`);
+    console.log(`  Alt text: ${manifest[key].altText}`);
+    if (filename) await downloadImage(r2.key, filename);
     count++;
   }
   console.log(`Phase 1 done. Generated: ${count}`);
@@ -86,8 +115,16 @@ function parseFrontmatter(content) {
   return fm;
 }
 
-function buildSlug(title) {
-  return title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60).replace(/-+$/, '');
+function buildPostSeoName(type, title, section1, section2, siteName) {
+  // Build a descriptive SEO name for the blog post image
+  const base = siteName ? toSeoSlug(siteName) : '';
+  let descriptor = '';
+  if (type === 'hero') descriptor = toSeoSlug(title);
+  else if (type === 'break1') descriptor = toSeoSlug(section1 || title);
+  else descriptor = toSeoSlug(section2 || section1 || title);
+  // Combine site prefix + descriptor + type suffix, within 70 char limit
+  const combined = base ? `${base}-${descriptor}` : descriptor;
+  return `${combined.slice(0, 60)}-${type}`;
 }
 
 function buildPrompt(type, title, section1, section2, siteName) {
@@ -97,12 +134,9 @@ function buildPrompt(type, title, section1, section2, siteName) {
   return `${base}Professional editorial photo illustrating: ${section2 || section1 || title}. Modern Australian workplace, technology in use, no text overlays.`;
 }
 
-// Safely replace a frontmatter field value, preserving the space after the colon
 function updateFrontmatterField(content, field, value) {
-  return content.replace(
-    new RegExp(`(^---[\\s\\S]*?\n${field}:\\s*)([^\n]+)(\n[\\s\\S]*?---)`),
-    (_, pre, _old, post) => `${pre.replace(/:\\s*$/, ': ')}"${value}"${post}`
-  );
+  const re = new RegExp(`(^---[\\s\\S]*?\n)(${field}:)([ \t]*)([^\n]+)(\n[\\s\\S]*?---)`);
+  return content.replace(re, (_, pre, f, _sp, _old, post) => `${pre}${f} "${value}"${post}`);
 }
 
 async function phase2() {
@@ -126,18 +160,25 @@ async function phase2() {
     const title = fm.title || file.replace(/\.mdx?$/, '');
     const section1 = fm.section1Title || '';
     const section2 = fm.section2Title || '';
-    const slug = buildSlug(title);
     console.log(`Generating images for: ${file}`);
     for (const [type, field, needsIt] of [['hero','heroImage',needsHero],['break1','breakImage1',needsBreak1],['break2','breakImage2',needsBreak2]]) {
       if (!needsIt) continue;
       const prompt = buildPrompt(type, title, section1, section2, siteName);
-      const name = `${slug}-${type}`;
+      // SEO-first name: descriptive slug derived from post title + image type
+      const seoName = buildPostSeoName(type, title, section1, section2, siteName);
       try {
-        const result = await callWorker(prompt, name);
+        const result = await callWorker(prompt, seoName);
         const { r2 } = result;
-        manifest[`blog/${file.replace(/\.mdx?$/,'/')}${type}`] = { r2Key: r2.key, altText: result.seo?.altText || prompt.slice(0,120), generatedAt: new Date().toISOString() };
+        const altText = result.seo?.altText || seoName.replace(/-/g, ' ');
+        manifest[`blog/${file.replace(/\.mdx?$/, '/')}${type}`] = {
+          r2Key: r2.key,
+          seoFilename: r2.seoFilename || r2.filename,
+          altText,
+          generatedAt: new Date().toISOString(),
+        };
         content = updateFrontmatterField(content, field, r2.key);
         console.log(`  [${type}] R2: ${r2.key}`);
+        console.log(`  [${type}] Alt: ${altText}`);
         count++;
       } catch (e) { console.error(`  [${type}] FAILED: ${e.message}`); }
     }
