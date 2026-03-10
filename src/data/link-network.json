@@ -1,0 +1,281 @@
+{
+  "_readme": "Master network interlink config. Lives in astro-gateway-master. Copied to every site clone. Never add footer links - all links must be contextual in-body only.",
+
+  "productivityNarrative": {
+    "theme": "professional-productivity",
+    "universalAngle": "Every product in this network addresses a different bottleneck in the same problem: professionals and businesses spending too much time on documentation, administration, and manual processes instead of their actual work.",
+    "adjacencies": {
+      "voice-input": ["document-output", "output-delivery", "saas-platform"],
+      "document-output": ["voice-input", "output-delivery"],
+      "output-delivery": ["document-output", "voice-input"],
+      "saas-platform": ["voice-input", "document-output"]
+    },
+    "conclusionBridgeTemplate": "Professionals who get the most value from {THIS_PRODUCT} often find that addressing {ADJACENT_PROBLEM} compounds the time saving significantly."
+  },
+
+  "rules": {
+    "_note": "No footer links. All links must be contextual - woven naturally into body copy or conclusion paragraphs.",
+    "internal": {
+      "minPerPage": 1,
+      "maxPerPage": 3,
+      "targets": ["other-blog-posts", "product-pages", "homepage"],
+      "anchorVariation": "required - never repeat same anchor text to same destination within same site"
+    },
+    "external": {
+      "minPerPage": 1,
+      "maxPerPage": 2,
+      "maxSameSitePerPage": 1,
+      "preferLowCoverageTargets": true,
+      "neverLinkToSelf": true,
+      "anchorVariation": "required - track used anchors in link-usage.json, never repeat",
+      "placement": "contextual-in-body-only"
+    }
+  },
+
+  "network": {
+    "voicerecognition.com.au": {
+      "label": "Voice Recognition Australia",
+      "role": "primary-ecommerce",
+      "url": "https://www.voicerecognition.com.au",
+      "productivityCategory": "voice-input",
+      "description": "Primary 25yr Shopify ecommerce site. All gateway sites link here for purchase.",
+      "topics": ["dragon software", "speech recognition", "dictation", "voice software", "nuance", "microsoft dragon"],
+      "bridgePhrases": [
+        "purchasing Dragon software in Australia",
+        "sourcing Dragon from an authorised Australian reseller",
+        "getting Dragon deployed with local support"
+      ],
+      "anchorPools": {
+        "brand": [
+          "Voice Recognition Australia",
+          "VRA",
+          "authorised Dragon reseller Australia"
+        ],
+        "descriptive": [
+          "Australian Dragon software specialists",
+          "Dragon software with local Australian support",
+          "specialist speech recognition reseller",
+          "25 years of Dragon deployment experience"
+        ],
+        "action": [
+          "view Dragon pricing and options",
+          "get a Dragon quote for your organisation",
+          "explore Dragon licencing options"
+        ],
+        "medical": [
+          "Dragon Medical One Australian reseller",
+          "medical speech recognition Australia",
+          "Dragon for healthcare Australia"
+        ],
+        "legal": [
+          "Dragon for legal professionals Australia",
+          "legal dictation software Australia",
+          "speech recognition for law firms"
+        ]
+      }
+    },
+
+    "pdfsoftware.com.au": {
+      "label": "Tungsten Power PDF",
+      "role": "gateway",
+      "url": "https://www.pdfsoftware.com.au",
+      "productivityCategory": "document-output",
+      "description": "Tungsten Power PDF gateway. Targets professionals moving away from Adobe Acrobat.",
+      "topics": ["pdf software", "document management", "adobe alternative", "pdf editing", "power pdf"],
+      "bridgePhrases": [
+        "managing and editing the documents that voice workflows produce",
+        "handling PDF output without an Adobe subscription",
+        "reducing per-user document software costs",
+        "replacing Adobe Acrobat with a perpetual licence alternative"
+      ],
+      "anchorPools": {
+        "brand": [
+          "Tungsten Power PDF",
+          "Power PDF Australia",
+          "Tungsten PDF software"
+        ],
+        "descriptive": [
+          "PDF software for Australian businesses",
+          "affordable PDF editing for professionals",
+          "perpetual licence PDF software",
+          "PDF management without a subscription"
+        ],
+        "comparison": [
+          "Adobe Acrobat alternative for Australian teams",
+          "cost-effective PDF solution vs Adobe",
+          "one-time purchase PDF software"
+        ],
+        "medical": [
+          "PDF software for medical practices",
+          "document management for healthcare"
+        ],
+        "legal": [
+          "PDF software for legal firms",
+          "document editing for legal professionals"
+        ]
+      }
+    },
+
+    "dragonprofessional16.com.au": {
+      "label": "Dragon Professional 16",
+      "role": "gateway",
+      "url": "https://www.dragonprofessional16.com.au",
+      "productivityCategory": "voice-input",
+      "description": "Dragon Professional 16 desktop product gateway. Targets users who need offline/desktop dictation.",
+      "topics": ["dragon professional 16", "dragon professional", "desktop dictation", "offline speech recognition", "dragon upgrade"],
+      "bridgePhrases": [
+        "desktop dictation without cloud dependency",
+        "upgrading to the latest Dragon Professional desktop version",
+        "offline speech recognition with full command and control"
+      ],
+      "anchorPools": {
+        "brand": [
+          "Dragon Professional 16",
+          "Dragon Professional 16 Australia",
+          "Dragon Pro 16"
+        ],
+        "descriptive": [
+          "desktop speech recognition software for professionals",
+          "offline Dragon dictation software",
+          "Dragon with full command and control features",
+          "locally installed speech recognition"
+        ],
+        "action": [
+          "upgrade to Dragon Professional 16",
+          "view Dragon Professional 16 pricing",
+          "download Dragon Professional 16"
+        ]
+      }
+    },
+
+    "dragonnaturallyspeaking.com.au": {
+      "label": "Dragon NaturallySpeaking Australia",
+      "role": "gateway",
+      "url": "https://www.dragonnaturallyspeaking.com.au",
+      "productivityCategory": "voice-input",
+      "description": "Long-established Dragon gateway with domain authority. Covers Dragon product range broadly.",
+      "topics": ["dragon naturally speaking", "dictation software", "speech to text", "voice recognition software"],
+      "bridgePhrases": [
+        "understanding the full Dragon product range",
+        "finding the right Dragon product for your workflow",
+        "Dragon software options for Australian professionals"
+      ],
+      "anchorPools": {
+        "brand": [
+          "Dragon NaturallySpeaking",
+          "Dragon NaturallySpeaking Australia",
+          "Dragon dictation software"
+        ],
+        "descriptive": [
+          "professional dictation software for Australia",
+          "voice-to-text software for professionals",
+          "speech recognition software for business",
+          "Dragon software product range"
+        ],
+        "medical": [
+          "Dragon for medical documentation",
+          "clinical dictation software Australia",
+          "speech recognition for healthcare professionals"
+        ],
+        "legal": [
+          "Dragon for legal dictation",
+          "voice recognition for lawyers",
+          "dictation software for legal practices"
+        ]
+      }
+    },
+
+    "dictationsolutions.com.au": {
+      "label": "Dictation Solutions Australia",
+      "role": "gateway",
+      "url": "https://www.dictationsolutions.com.au",
+      "productivityCategory": "voice-input",
+      "description": "20yr domain authority site. Covers traditional and modern dictation - Philips Speech Live, Olympus, Dragon.",
+      "topics": ["dictation solutions", "philips speech live", "olympus dictation", "traditional dictation", "dictation hardware"],
+      "bridgePhrases": [
+        "combining speech recognition with professional dictation hardware",
+        "traditional dictation workflows updated for modern offices",
+        "Philips and Olympus dictation systems for Australian professionals"
+      ],
+      "anchorPools": {
+        "brand": [
+          "Dictation Solutions Australia",
+          "Philips Speech Live Australia",
+          "professional dictation systems"
+        ],
+        "descriptive": [
+          "dictation hardware and software for Australian businesses",
+          "Philips and Olympus dictation solutions",
+          "professional dictation for healthcare and legal",
+          "traditional dictation systems Australia"
+        ],
+        "medical": [
+          "medical dictation hardware Australia",
+          "Philips Speech Live for healthcare"
+        ],
+        "legal": [
+          "dictation systems for law firms",
+          "legal dictation hardware and software"
+        ]
+      }
+    },
+
+    "speechrecognition.cloud": {
+      "label": "SpeechRecognition Cloud",
+      "role": "saas-platform",
+      "url": "https://www.speechrecognition.cloud",
+      "productivityCategory": "saas-platform",
+      "description": "SRC SaaS platform - cloud-based AI speech recognition. The pivot product.",
+      "topics": ["cloud speech recognition", "ai transcription", "saas dictation", "browser speech recognition", "multi-language transcription"],
+      "bridgePhrases": [
+        "cloud-based speech recognition without software installation",
+        "AI-powered transcription accessible from any browser",
+        "speech recognition as a subscription service"
+      ],
+      "anchorPools": {
+        "brand": [
+          "SpeechRecognition Cloud",
+          "SRC platform"
+        ],
+        "descriptive": [
+          "cloud-based AI speech recognition",
+          "browser-accessible transcription platform",
+          "AI transcription for Australian businesses",
+          "cloud speech recognition without local installation"
+        ],
+        "comparison": [
+          "cloud alternative to desktop Dragon",
+          "subscription-based speech recognition",
+          "AI transcription with 57 language support"
+        ]
+      }
+    },
+
+    "cloudprinting.au": {
+      "label": "CloudPrinting Australia - PrintX",
+      "role": "gateway",
+      "url": "https://www.cloudprinting.au",
+      "productivityCategory": "output-delivery",
+      "description": "New product PrintX. Cloud print management - removes last manual step in document workflows.",
+      "topics": ["cloud printing", "print management", "printx", "managed print", "remote printing"],
+      "bridgePhrases": [
+        "removing the last manual step in the document workflow",
+        "cloud-based print management for distributed teams",
+        "printing from anywhere without being tied to a local printer"
+      ],
+      "anchorPools": {
+        "brand": [
+          "PrintX Australia",
+          "CloudPrinting Australia",
+          "PrintX cloud print management"
+        ],
+        "descriptive": [
+          "cloud print management for Australian businesses",
+          "managed print services without local infrastructure",
+          "print from anywhere with cloud printing",
+          "reducing print administration overhead"
+        ]
+      }
+    }
+  }
+}
