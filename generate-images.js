@@ -119,50 +119,64 @@ function buildPostSeoName(type, title, section1, section2, siteName) {
   return `${combined.slice(0, 60)}-${type}`;
 }
 
-// IMPORTANT: These prompts are carefully engineered to avoid Gemini's failure modes:
-// - Never mention software names, product names, or brands (Gemini renders them as logos on screens)
-// - Never ask for "software interface" or "screen showing app" (produces UI mockups)
-// - Always specify positive emotional state for hero shots
-// - Always end with the negative list to override Gemini defaults
+// Negative prompt applied to every image to prevent Gemini's failure modes.
+// Do NOT mention software names or brands in any prompt — Gemini renders them as logos on screens.
 const NEGATIVE =
-  'photorealistic DSLR photography, natural candid feel, ' +
+  'photorealistic DSLR photography, shot on full-frame camera 50mm lens look, ' +
+  'natural skin tones realistic proportions, professional wardrobe polished grooming, ' +
+  'clean modern Australian office aesthetic, ' +
   'NO logos, NO brand names, NO text on screens, NO UI mockups, NO app interfaces, ' +
-  'NO stock photo poses, NO diagrams, NO charts, NO illustrations, NO clipart';
+  'NO stock photo cliches, NO diagrams, NO charts, NO illustrations, NO clipart, ' +
+  'NO cartoon, NO anime, NO exaggerated proportions, NO warped faces, NO extra fingers, ' +
+  'NO watermarks, NO gibberish text';
+
+// 20 professionally art-directed hero scene descriptions.
+// Hero images: capable, warm, modern, aspirational — attractive adults in realistic premium workplaces.
+const HERO_PROMPTS = [
+  'Attractive adult female medical administrator aged 30-45, professional and polished, looking briefly toward the camera while working on a laptop with a Bluetooth headset, busy modern clinic office softly blurred in the background, warm daylight, shallow depth of field, calm productive energy, landscape hero image with negative space for website text',
+  'Attractive adult male clinic administrator aged 35-45, clean-shaven, wearing a discreet Bluetooth headset, seated at a desk with laptop and patient notes, busy healthcare office in the blurred background, soft natural window light, confident and approachable, hero banner framing',
+  'Handsome adult male doctor aged 35-45, standing at a desktop PC and dictating into a headset microphone, busy hospital office workspace behind him with cinematic depth of field, strong daylight from a side window, hardworking but content expression, authoritative and professional, landscape hero composition with room for headline text',
+  'Attractive adult male doctor aged 40-45 with short salt-and-pepper beard, dictating at a standing workstation in a modern hospital office, blurred clinical activity in the background, crisp lighting through glass, positive and capable expression, shallow depth of field',
+  'Attractive adult female specialist aged 35-45, seated at a desk in a bright private consulting room, wearing a subtle headset and reviewing notes on screen, softly blurred clinic background, warm premium lighting, poised and intelligent expression, clean composition with negative space for web copy',
+  'Attractive adult female lawyer aged 35-45, elegant business attire, working at a desk with city skyline behind her through large office windows, papers and a small digital voice recorder on the desk, glancing toward camera with calm confidence, warm backlighting and cinematic depth of field, landscape hero banner',
+  'Attractive adult male lawyer aged 40-45, tailored suit, standing at a desk in a high-rise office, dictating toward a desktop microphone while reviewing documents on screen, skyline softly blurred in background, confident authoritative expression, rich warm lighting, space for text',
+  'Three adult professionals in a public service office gathered around a shared screen displaying a word-processing document, one person dictating while a small desktop microphone sits on the table, collaborative body language, clean modern government workspace, warm lighting on the table surface, shallow depth of field',
+  'Mixed-gender team of adult professionals aged 30-45 in a public-sector style office, collaborating around a desk with laptop and monitor, one team member speaking naturally while others review text on screen, subtle microphone visible, intelligent and constructive atmosphere, polished lighting, hero-banner layout',
+  'Attractive adult university student aged 20-25, seated at a library desk with laptop, wearing a headset with boom mic and dictating while studying, softly blurred bookshelves in background, warm focused table lighting, modern academic setting, positive and capable expression, landscape format with negative space',
+  'Adult postgraduate student aged 30-40, working at a library or campus study hub, speaking into a compact headset while editing text on screen, papers and notebook neatly arranged, shallow depth of field, clean academic atmosphere, natural lighting',
+  'Attractive adult female executive aged 35-45 in a modern office, seated at a laptop with Bluetooth headset, glass-walled office environment in the background, focused but warm expression, soft directional light, shallow depth of field, clean hero composition',
+  'Attractive adult male professional aged 35-45, confident and polished, standing at an ergonomic workstation in a modern office, dictating while looking at a large monitor, blurred team activity in the background, bright natural light, landscape hero image',
+  'Attractive adult female consultant aged 30-45, smart business attire, working at a desk with financial papers and laptop, discreet microphone visible, speaking while reviewing a report, modern office with glass and warm backlight, confident and competent mood, space for website headline',
+  'Small team of adult office professionals in a clean administrative environment, one person dictating while two others review a shared document on screen, desk microphone visible, warm premium lighting, shallow depth of field, realistic office productivity hero image',
+  'Attractive adult female healthcare support worker aged 30-45, wearing a Bluetooth headset and typing at laptop, softly blurred clinic support office in background, bright clean lighting, reassuring and efficient mood, hero-banner framing',
+  'Adult male physician aged 40-45, attractive and authoritative, dictating notes at a workstation after consultation, modern medical office with blurred equipment and hallway movement behind him, positive expression, cinematic daylight, shallow depth of field',
+  'Attractive adult female legal assistant aged 30-40, professional attire, seated at desk with laptop, legal papers, and compact desktop recorder, city office background with soft skyline blur, warm side light, intelligent and efficient mood, landscape website hero layout',
+  'Two adult education professionals and one student in a modern campus office, gathered around a screen editing a document, one person speaking naturally into a microphone, collaborative and upbeat atmosphere, warm table lighting, shallow depth of field',
+  'Attractive adult professional aged 30-45 in a modern office, using a headset and computer while speaking naturally, blurred colleagues and workspace behind, warm cinematic light, confident and welcoming expression, landscape hero-banner composition with generous negative space',
+];
+
+// Break/ambient scenes — environment and detail shots, no people required.
+const BREAK_PROMPTS = [
+  'Clean modern clinic administration desk with laptop, Bluetooth headset resting beside it, patient folder, warm natural window light, shallow depth of field, no people',
+  'Bright modern legal office interior, city skyline visible through large windows, tidy desk with documents and small digital recorder, warm afternoon light, no people',
+  'Contemporary open-plan Australian corporate office, natural light flooding in, plants, glass partitions, tidy workstations, wide shot, no people',
+  'Close-up of professional hands on laptop keyboard in a well-lit modern office, shallow depth of field, clean desk surface visible',
+  'Modern hospital administration corridor, glass walls, clean surfaces, warm clinical lighting, wide shot with depth, no people',
+  'Tidy wooden desk with leather notebook, pen, laptop and coffee cup, warm side lighting, shallow depth of field, clean minimal composition',
+  'Modern Australian law firm meeting room, long table with chairs, city view through full-height windows, soft even lighting, no people',
+  'University library study area, modern and light-filled, laptop and headset on desk, bookshelves softly blurred behind, warm focused table lamp',
+  'Government office workspace, clean and organised, shared desks with monitors and notepads, professional warm lighting, wide shot',
+  'Close-up of a compact desktop microphone on a tidy office desk beside a laptop, soft directional light, shallow depth of field, no people',
+];
 
 function buildPrompt(type, title, section1, section2, siteName) {
-  const HERO_SCENES = [
-    'two professionals smiling and collaborating at a modern desk with a laptop, both looking pleased with their work',
-    'confident professional in smart casual attire at a clean modern desk, looking satisfied and focused',
-    'small team of three people in a bright open-plan office having a positive discussion around a table',
-    'professional at a standing desk in a light-filled modern office, smiling and relaxed',
-    'two colleagues walking through a bright modern corridor, talking and smiling, carrying documents',
-  ];
-  const BREAK_SCENES = [
-    'close-up of clean modern desk with laptop, coffee cup, and notepad in warm natural light',
-    'bright modern meeting room with empty chairs, glass walls, city view in background',
-    'hands resting on a laptop keyboard in a clean well-lit office environment, shallow depth of field',
-    'wide shot of a tidy open-plan Australian office with natural light and plants',
-    'professional leather notebook and pen on a clean wooden desk beside a laptop, warm light',
-  ];
-  const SETTINGS = [
-    'modern Sydney CBD office with harbour view',
-    'bright contemporary Melbourne professional workspace',
-    'clean modern Australian healthcare administration office',
-    'light-filled Australian legal chambers interior',
-    'contemporary open-plan corporate office Brisbane',
-  ];
-
-  // Pick deterministically based on type so hero/break are always different
-  const heroScene = HERO_SCENES[Math.floor(Math.random() * HERO_SCENES.length)];
-  const breakScene = BREAK_SCENES[Math.floor(Math.random() * BREAK_SCENES.length)];
-  const setting = SETTINGS[Math.floor(Math.random() * SETTINGS.length)];
-
   const context = siteName ? ` Editorial context: ${siteName}.` : '';
-
   if (type === 'hero') {
-    return `${heroScene}, ${setting}.${context} ${NEGATIVE}`;
+    const scene = HERO_PROMPTS[Math.floor(Math.random() * HERO_PROMPTS.length)];
+    return `${scene}.${context} ${NEGATIVE}`;
   }
-  return `${breakScene}, ${setting}.${context} ${NEGATIVE}`;
+  const scene = BREAK_PROMPTS[Math.floor(Math.random() * BREAK_PROMPTS.length)];
+  return `${scene}.${context} ${NEGATIVE}`;
 }
 
 // Insert field after metaDescription if missing; replace value if already present
