@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       post_slug:
-        description: 'Post filename (e.g. 2026-03-04-my-post.md) - leave blank for most recent'
+        description: 'Post filename (e.g. dragon-medical-upgrade.md) - leave blank for most recent'
         required: false
         default: ''
 
@@ -27,185 +27,127 @@ jobs:
           if [ -n "${{ github.event.inputs.post_slug }}" ]; then
             POST_FILE="src/content/news/${{ github.event.inputs.post_slug }}"
           else
-            POST_FILE=$(ls src/content/news/*.md | sort | tail -1)
+            POST_FILE=$(ls src/content/news/*.md | grep -v '_placeholder' | sort | tail -1)
           fi
           echo "post_file=$POST_FILE" >> $GITHUB_OUTPUT
           echo "Target post: $POST_FILE"
 
-      - name: Check if images already exist
-        id: check_images
-        run: |
-          POST_FILE="${{ steps.find_post.outputs.post_file }}"
-          if grep -q "^heroImage:" "$POST_FILE"; then
-            echo "Images already exist - skipping generation"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "No images found - proceeding"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Extract post metadata
-        id: metadata
-        if: steps.check_images.outputs.skip == 'false'
-        run: |
-          POST_FILE="${{ steps.find_post.outputs.post_file }}"
-          TITLE=$(grep "^title:" "$POST_FILE" | head -1 | sed 's/title: //' | tr -d '"')
-          echo "title=$TITLE" >> $GITHUB_OUTPUT
-
-      - name: Build image prompts
-        id: prompts
-        if: steps.check_images.outputs.skip == 'false'
-        run: |
-          python3 << 'PYEOF'
-          import random, os
-
-          title = os.environ.get("TITLE", "professional document software")
-
-          # -------------------------------------------------------
-          # SITE-SPECIFIC POOLS - update these when cloning
-          # -------------------------------------------------------
-
-          settings = [
-            "Australian government office interior",
-            "modern real estate agency office Sydney",
-            "legal chambers and law firm office",
-            "corporate boardroom Melbourne",
-            "hospital administration office",
-            "university administration building",
-            "local council chamber interior",
-            "professional services firm open plan office",
-          ]
-
-          # Hero compositions - positive, confident, solution-focused only
-          hero_compositions = [
-            "two professionals confidently reviewing a document on screen together smiling",
-            "person looking over colleagues shoulder at laptop screen both engaged and positive",
-            "presenter at projector screen showing document to engaged seated team",
-            "real estate agent confidently showing property contracts to happy client across desk",
-            "person looking relieved and happy at computer screen solution found",
-            "executive confidently signing important contract documents at boardroom table",
-            "small team collaborating productively around printed documents and laptop",
-            "professional smiling at camera holding document in modern office",
-            "two colleagues celebrating successful document completion at desk",
-            "manager presenting results on screen to satisfied team in meeting room",
-          ]
-
-          # Break compositions - varied including problem and detail shots
-          break_compositions = [
-            "close up of hands on laptop keyboard reviewing document",
-            "PDF document on modern desk with hand resting on it",
-            "stack of paper documents beside laptop showing clean digital screen",
-            "signed contract on desk with pen beside it",
-            "property listing documents spread across meeting table",
-            "filing cabinet open with folders representing old paper system",
-            "close up of document on screen sharp focus shallow depth of field",
-            "empty professional boardroom table with documents ready for meeting",
-            "person looking frustrated at large pile of paperwork on desk",
-            "overflowing inbox tray with paper documents on office desk",
-          ]
-
-          lighting = [
-            "warm natural window light",
-            "cool professional office lighting",
-            "golden afternoon light through office windows",
-            "bright modern workspace lighting",
-            "soft diffused overcast light",
-          ]
-
-          style = "photorealistic photography, Canon 5D quality, no infographics, no diagrams, no charts, no text overlays, no illustrations, no clipart, no UI mockups"
-
-          # Build hero prompt
-          s = random.choice(settings)
-          c = random.choice(hero_compositions)
-          l = random.choice(lighting)
-          hero = f"{c}, {s}, {l}, context: {title}, {style}"
-
-          # Build break1 prompt - different setting and composition to hero
-          s2 = random.choice([x for x in settings if x != s])
-          c2 = random.choice(break_compositions)
-          l2 = random.choice([x for x in lighting if x != l])
-          break1 = f"{c2}, {s2}, {l2}, {style}"
-
-          # Build break2 prompt - different again
-          s3 = random.choice([x for x in settings if x != s and x != s2])
-          c3 = random.choice([x for x in break_compositions if x != c2])
-          l3 = random.choice(lighting)
-          break2 = f"{c3}, {s3}, {l3}, {style}"
-
-          # Write to GitHub outputs
-          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-            f.write(f"hero={hero}\n")
-            f.write(f"break1={break1}\n")
-            f.write(f"break2={break2}\n")
-
-          print(f"Hero: {hero}")
-          print(f"Break1: {break1}")
-          print(f"Break2: {break2}")
-          PYEOF
-        env:
-          TITLE: ${{ steps.metadata.outputs.title }}
-
-      - name: Generate hero image
-        id: hero
-        if: steps.check_images.outputs.skip == 'false'
-        run: |
-          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"${{ steps.prompts.outputs.hero }}\", \"name\": \"hero\"}")
-          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
-          if [ -z "$KEY" ]; then echo "ERROR: Hero failed. Response: $RESPONSE"; exit 1; fi
-          echo "key=$KEY" >> $GITHUB_OUTPUT
-
-      - name: Generate break image 1
-        id: break1
-        if: steps.check_images.outputs.skip == 'false'
-        run: |
-          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"${{ steps.prompts.outputs.break1 }}\", \"name\": \"break1\"}")
-          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
-          if [ -z "$KEY" ]; then echo "ERROR: Break1 failed. Response: $RESPONSE"; exit 1; fi
-          echo "key=$KEY" >> $GITHUB_OUTPUT
-
-      - name: Generate break image 2
-        id: break2
-        if: steps.check_images.outputs.skip == 'false'
-        run: |
-          RESPONSE=$(curl -s -X POST "${{ secrets.IMAGE_WORKER_URL }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"prompt\": \"${{ steps.prompts.outputs.break2 }}\", \"name\": \"break2\"}")
-          KEY=$(echo $RESPONSE | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['r2']['key'])" 2>/dev/null)
-          if [ -z "$KEY" ]; then echo "ERROR: Break2 failed. Response: $RESPONSE"; exit 1; fi
-          echo "key=$KEY" >> $GITHUB_OUTPUT
-
-      - name: Update post frontmatter
-        if: steps.check_images.outputs.skip == 'false'
+      - name: Generate all images and update post
         env:
           POST_FILE: ${{ steps.find_post.outputs.post_file }}
-          HERO: ${{ steps.hero.outputs.key }}
-          BREAK1: ${{ steps.break1.outputs.key }}
-          BREAK2: ${{ steps.break2.outputs.key }}
+          WORKER_URL: https://master-image-generator.speech-recognition-cloud.workers.dev/generate
+          SITE_ID: ${{ vars.SITE_ID }}
         run: |
           python3 << 'PYEOF'
-          import re, os
+          import random, os, json, urllib.request, re
+
           post_file = os.environ["POST_FILE"]
-          hero = os.environ["HERO"]
-          break1 = os.environ["BREAK1"]
-          break2 = os.environ["BREAK2"]
-          with open(post_file, "r") as f:
+          worker_url = os.environ["WORKER_URL"]
+          site_name = os.environ.get("SITE_ID", "")
+
+          with open(post_file) as f:
               content = f.read()
-          image_block = f'heroImage: "{hero}"\nbreakImage1: "{break1}"\nbreakImage2: "{break2}"\n'
-          content = re.sub(r'(metaDescription:.*\n)', r'\1' + image_block, content, count=1)
+
+          NEGATIVE = (
+              "photorealistic DSLR photography, shot on full-frame camera 50mm lens look, "
+              "natural skin tones realistic proportions, professional wardrobe polished grooming, "
+              "clean modern Australian office aesthetic, "
+              "NO logos, NO brand names, NO text on screens, NO UI mockups, NO app interfaces, "
+              "NO stock photo cliches, NO diagrams, NO charts, NO illustrations, NO clipart, "
+              "NO cartoon, NO anime, NO exaggerated proportions, NO warped faces, NO extra fingers, "
+              "NO watermarks, NO gibberish text"
+          )
+
+          HERO_PROMPTS = [
+              "Attractive adult female medical administrator aged 30-45, professional and polished, looking briefly toward the camera while working on a laptop with a Bluetooth headset, busy modern clinic office softly blurred in the background, warm daylight, shallow depth of field, calm productive energy, landscape hero image with negative space for website text",
+              "Attractive adult male clinic administrator aged 35-45, clean-shaven, wearing a discreet Bluetooth headset, seated at a desk with laptop and patient notes, busy healthcare office in the blurred background, soft natural window light, confident and approachable, hero banner framing",
+              "Handsome adult male doctor aged 35-45, standing at a desktop PC and dictating into a headset microphone, busy hospital office workspace behind him with cinematic depth of field, strong daylight from a side window, hardworking but content expression, authoritative and professional, landscape hero composition with room for headline text",
+              "Attractive adult male doctor aged 40-45 with short salt-and-pepper beard, dictating at a standing workstation in a modern hospital office, blurred clinical activity in the background, crisp lighting through glass, positive and capable expression, shallow depth of field",
+              "Attractive adult female specialist aged 35-45, seated at a desk in a bright private consulting room, wearing a subtle headset and reviewing notes on screen, softly blurred clinic background, warm premium lighting, poised and intelligent expression, clean composition with negative space for web copy",
+              "Attractive adult female lawyer aged 35-45, elegant business attire, working at a desk with city skyline behind her through large office windows, papers and a small digital voice recorder on the desk, glancing toward camera with calm confidence, warm backlighting and cinematic depth of field, landscape hero banner",
+              "Attractive adult male lawyer aged 40-45, tailored suit, standing at a desk in a high-rise office, dictating toward a desktop microphone while reviewing documents on screen, skyline softly blurred in background, confident authoritative expression, rich warm lighting, space for text",
+              "Three adult professionals in a public service office gathered around a shared screen displaying a word-processing document, one person dictating while a small desktop microphone sits on the table, collaborative body language, clean modern government workspace, warm lighting on the table surface, shallow depth of field",
+              "Mixed-gender team of adult professionals aged 30-45 in a public-sector style office, collaborating around a desk with laptop and monitor, one team member speaking naturally while others review text on screen, subtle microphone visible, intelligent and constructive atmosphere, polished lighting, hero-banner layout",
+              "Attractive adult university student aged 20-25, seated at a library desk with laptop, wearing a headset with boom mic and dictating while studying, softly blurred bookshelves in background, warm focused table lighting, modern academic setting, positive and capable expression, landscape format with negative space",
+              "Adult postgraduate student aged 30-40, working at a library or campus study hub, speaking into a compact headset while editing text on screen, papers and notebook neatly arranged, shallow depth of field, clean academic atmosphere, natural lighting",
+              "Attractive adult female executive aged 35-45 in a modern office, seated at a laptop with Bluetooth headset, glass-walled office environment in the background, focused but warm expression, soft directional light, shallow depth of field, clean hero composition",
+              "Attractive adult male professional aged 35-45, confident and polished, standing at an ergonomic workstation in a modern office, dictating while looking at a large monitor, blurred team activity in the background, bright natural light, landscape hero image",
+              "Attractive adult female consultant aged 30-45, smart business attire, working at a desk with financial papers and laptop, discreet microphone visible, speaking while reviewing a report, modern office with glass and warm backlight, confident and competent mood, space for website headline",
+              "Small team of adult office professionals in a clean administrative environment, one person dictating while two others review a shared document on screen, desk microphone visible, warm premium lighting, shallow depth of field",
+              "Attractive adult female healthcare support worker aged 30-45, wearing a Bluetooth headset and typing at laptop, softly blurred clinic support office in background, bright clean lighting, reassuring and efficient mood, hero-banner framing",
+              "Adult male physician aged 40-45, attractive and authoritative, dictating notes at a workstation after consultation, modern medical office with blurred equipment and hallway movement behind him, positive expression, cinematic daylight, shallow depth of field",
+              "Attractive adult female legal assistant aged 30-40, professional attire, seated at desk with laptop, legal papers, and compact desktop recorder, city office background with soft skyline blur, warm side light, intelligent and efficient mood, landscape website hero layout",
+              "Two adult education professionals and one student in a modern campus office, gathered around a screen editing a document, one person speaking naturally into a microphone, collaborative and upbeat atmosphere, warm table lighting, shallow depth of field",
+              "Attractive adult professional aged 30-45 in a modern office, using a headset and computer while speaking naturally, blurred colleagues and workspace behind, warm cinematic light, confident and welcoming expression, landscape hero-banner composition with generous negative space",
+          ]
+
+          BREAK_PROMPTS = [
+              "Clean modern clinic administration desk with laptop, Bluetooth headset resting beside it, patient folder, warm natural window light, shallow depth of field, no people",
+              "Bright modern legal office interior, city skyline visible through large windows, tidy desk with documents and small digital recorder, warm afternoon light, no people",
+              "Contemporary open-plan Australian corporate office, natural light flooding in, plants, glass partitions, tidy workstations, wide shot, no people",
+              "Close-up of professional hands on laptop keyboard in a well-lit modern office, shallow depth of field, clean desk surface visible",
+              "Modern hospital administration corridor, glass walls, clean surfaces, warm clinical lighting, wide shot with depth, no people",
+              "Tidy wooden desk with leather notebook, pen, laptop and coffee cup, warm side lighting, shallow depth of field, clean minimal composition",
+              "Modern Australian law firm meeting room, long table with chairs, city view through full-height windows, soft even lighting, no people",
+              "University library study area, modern and light-filled, laptop and headset on desk, bookshelves softly blurred behind, warm focused table lamp",
+              "Government office workspace, clean and organised, shared desks with monitors and notepads, professional warm lighting, wide shot",
+              "Close-up of a compact desktop microphone on a tidy office desk beside a laptop, soft directional light, shallow depth of field, no people",
+          ]
+
+          hero_prompt = random.choice(HERO_PROMPTS)
+          break_prompt1 = random.choice(BREAK_PROMPTS)
+          break_prompt2 = random.choice([p for p in BREAK_PROMPTS if p != break_prompt1])
+
+          context = f" Editorial context: {site_name}." if site_name else ""
+
+          prompts = {
+              "heroImage":   (f"{hero_prompt}.{context} {NEGATIVE}", "hero"),
+              "breakImage1": (f"{break_prompt1}.{context} {NEGATIVE}", "break1"),
+              "breakImage2": (f"{break_prompt2}.{context} {NEGATIVE}", "break2"),
+          }
+
+          def call_worker(prompt, name):
+              payload = json.dumps({"prompt": prompt, "name": name}).encode()
+              req = urllib.request.Request(
+                  worker_url,
+                  data=payload,
+                  headers={"Content-Type": "application/json"},
+                  method="POST"
+              )
+              with urllib.request.urlopen(req, timeout=60) as resp:
+                  return json.loads(resp.read())
+
+          new_content = content
+          for field, (prompt, slug) in prompts.items():
+              print(f"Generating {field}...")
+              print(f"  Prompt: {prompt[:120]}...")
+              result = call_worker(prompt, slug)
+              if not result.get("ok"):
+                  raise RuntimeError(f"Worker failed for {field}: {result}")
+              r2_key = result["r2"]["key"]
+              print(f"  R2 key: {r2_key}")
+              existing = re.search(rf'^{field}:.*$', new_content, re.MULTILINE)
+              if existing:
+                  new_content = re.sub(rf'^{field}:.*$', f'{field}: "{r2_key}"', new_content, flags=re.MULTILINE)
+              else:
+                  new_content = re.sub(
+                      r'^(metaDescription:[ \t]*.*)$',
+                      rf'\1\n{field}: "{r2_key}"',
+                      new_content,
+                      count=1,
+                      flags=re.MULTILINE
+                  )
+
           with open(post_file, "w") as f:
-              f.write(content)
-          print("Done")
+              f.write(new_content)
+
+          print("Done. Post updated.")
           PYEOF
 
       - name: Commit updated post
-        if: steps.check_images.outputs.skip == 'false'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add src/content/news/
-          git commit -m "Add generated images to ${{ steps.find_post.outputs.post_file }}"
+          git diff --staged --quiet || git commit -m "Add generated images to ${{ steps.find_post.outputs.post_file }}"
           git push
