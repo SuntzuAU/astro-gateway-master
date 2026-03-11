@@ -24,7 +24,6 @@ if (fs.existsSync(manifestPath)) {
 function sha256(s) { return crypto.createHash('sha256').update(s).digest('hex'); }
 function isPlaceholder(key) { return !key || key.startsWith('default/'); }
 
-// Build an SEO slug from a string: lowercase, hyphens, max 70 chars, no trailing hyphens
 function toSeoSlug(text) {
   const STOP_WORDS = new Set(['a','an','the','and','or','but','in','on','at','to','for','of','with','by','from','is','are','was','were','be','been','it','its']);
   return text
@@ -120,11 +119,50 @@ function buildPostSeoName(type, title, section1, section2, siteName) {
   return `${combined.slice(0, 60)}-${type}`;
 }
 
+// IMPORTANT: These prompts are carefully engineered to avoid Gemini's failure modes:
+// - Never mention software names, product names, or brands (Gemini renders them as logos on screens)
+// - Never ask for "software interface" or "screen showing app" (produces UI mockups)
+// - Always specify positive emotional state for hero shots
+// - Always end with the negative list to override Gemini defaults
+const NEGATIVE =
+  'photorealistic DSLR photography, natural candid feel, ' +
+  'NO logos, NO brand names, NO text on screens, NO UI mockups, NO app interfaces, ' +
+  'NO stock photo poses, NO diagrams, NO charts, NO illustrations, NO clipart';
+
 function buildPrompt(type, title, section1, section2, siteName) {
-  const base = siteName ? `${siteName} - ` : '';
-  if (type === 'hero') return `${base}Professional editorial photo illustrating: ${title}. Clean modern corporate Australian business environment, photography style, no text overlays.`;
-  if (type === 'break1') return `${base}Professional editorial photo illustrating: ${section1 || title}. Australian enterprise context, documentary photography style, no text overlays.`;
-  return `${base}Professional editorial photo illustrating: ${section2 || section1 || title}. Modern Australian workplace, technology in use, no text overlays.`;
+  const HERO_SCENES = [
+    'two professionals smiling and collaborating at a modern desk with a laptop, both looking pleased with their work',
+    'confident professional in smart casual attire at a clean modern desk, looking satisfied and focused',
+    'small team of three people in a bright open-plan office having a positive discussion around a table',
+    'professional at a standing desk in a light-filled modern office, smiling and relaxed',
+    'two colleagues walking through a bright modern corridor, talking and smiling, carrying documents',
+  ];
+  const BREAK_SCENES = [
+    'close-up of clean modern desk with laptop, coffee cup, and notepad in warm natural light',
+    'bright modern meeting room with empty chairs, glass walls, city view in background',
+    'hands resting on a laptop keyboard in a clean well-lit office environment, shallow depth of field',
+    'wide shot of a tidy open-plan Australian office with natural light and plants',
+    'professional leather notebook and pen on a clean wooden desk beside a laptop, warm light',
+  ];
+  const SETTINGS = [
+    'modern Sydney CBD office with harbour view',
+    'bright contemporary Melbourne professional workspace',
+    'clean modern Australian healthcare administration office',
+    'light-filled Australian legal chambers interior',
+    'contemporary open-plan corporate office Brisbane',
+  ];
+
+  // Pick deterministically based on type so hero/break are always different
+  const heroScene = HERO_SCENES[Math.floor(Math.random() * HERO_SCENES.length)];
+  const breakScene = BREAK_SCENES[Math.floor(Math.random() * BREAK_SCENES.length)];
+  const setting = SETTINGS[Math.floor(Math.random() * SETTINGS.length)];
+
+  const context = siteName ? ` Editorial context: ${siteName}.` : '';
+
+  if (type === 'hero') {
+    return `${heroScene}, ${setting}.${context} ${NEGATIVE}`;
+  }
+  return `${breakScene}, ${setting}.${context} ${NEGATIVE}`;
 }
 
 // Insert field after metaDescription if missing; replace value if already present
