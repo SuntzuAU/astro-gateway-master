@@ -52,14 +52,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git stash
-          git pull --rebase origin main
-          git stash pop
           git add -A
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore: update images and manifest [skip ci]"
+          git commit -m "chore: update images and manifest"
           git push
-
+          
       - name: Build Astro site
         env:
           PUBLIC_R2_BASE: ${{ vars.R2_PUBLIC_BASE }}
