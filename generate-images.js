@@ -39,7 +39,6 @@ function toSeoSlug(text) {
 }
 
 async function callWorker(prompt, seoName) {
-  // seoName should already be a slug — passed as 'name' so Worker uses it directly
   const headers = { 'Content-Type': 'application/json' };
   if (WORKER_TOKEN) headers['Authorization'] = `Bearer ${WORKER_TOKEN}`;
   const res = await fetch(WORKER_URL, {
@@ -69,7 +68,6 @@ async function phase1() {
   for (const img of config.images) {
     const key = (img.key || '').trim();
     const prompt = (img.prompt || '').trim();
-    // Use explicit name from prompts file, or derive SEO slug from prompt
     const seoName = img.name ? toSeoSlug(img.name) : toSeoSlug(prompt);
     if (!key || !prompt) continue;
     const entry = manifest[key];
@@ -79,8 +77,6 @@ async function phase1() {
     console.log(`Generating site image: ${key} -> ${seoName}`);
     const result = await callWorker(prompt, seoName);
     const { r2 } = result;
-    // r2.filename is the SEO filename returned by the Worker (slug-first)
-    // r2.seoFilename is also available if Worker returns it
     const filename = r2.seoFilename || r2.filename || path.basename(r2.key);
     manifest[key] = {
       key,
@@ -88,7 +84,6 @@ async function phase1() {
       filename,
       contentType: r2.contentType,
       bytes: r2.bytes,
-      // altText: prefer Worker-returned SEO alt text, fall back to prompt snippet
       altText: result.seo?.altText || seoName.replace(/-/g, ' '),
       prompt,
       promptHash: sha256(prompt),
@@ -116,13 +111,11 @@ function parseFrontmatter(content) {
 }
 
 function buildPostSeoName(type, title, section1, section2, siteName) {
-  // Build a descriptive SEO name for the blog post image
   const base = siteName ? toSeoSlug(siteName) : '';
   let descriptor = '';
   if (type === 'hero') descriptor = toSeoSlug(title);
   else if (type === 'break1') descriptor = toSeoSlug(section1 || title);
   else descriptor = toSeoSlug(section2 || section1 || title);
-  // Combine site prefix + descriptor + type suffix, within 70 char limit
   const combined = base ? `${base}-${descriptor}` : descriptor;
   return `${combined.slice(0, 60)}-${type}`;
 }
@@ -134,9 +127,16 @@ function buildPrompt(type, title, section1, section2, siteName) {
   return `${base}Professional editorial photo illustrating: ${section2 || section1 || title}. Modern Australian workplace, technology in use, no text overlays.`;
 }
 
-function updateFrontmatterField(content, field, value) {
-  const re = new RegExp(`(^---[\\s\\S]*?\n)(${field}:)([ \t]*)([^\n]+)(\n[\\s\\S]*?---)`);
-  return content.replace(re, (_, pre, f, _sp, _old, post) => `${pre}${f} "${value}"${post}`);
+// Insert field after metaDescription if missing; replace value if already present
+function setFrontmatterField(content, field, value) {
+  const existingRe = new RegExp(`^(${field}:)[ \\t]*.*$`, 'm');
+  if (existingRe.test(content)) {
+    return content.replace(existingRe, `${field}: "${value}"`);
+  }
+  return content.replace(
+    /^(metaDescription:[ \t]*.*)$/m,
+    `$1\n${field}: "${value}"`
+  );
 }
 
 async function phase2() {
@@ -150,6 +150,7 @@ async function phase2() {
   } catch {}
   let count = 0;
   for (const file of files) {
+    if (file.startsWith('_')) { console.log(`Skip placeholder: ${file}`); continue; }
     const filePath = path.join(newsDir, file);
     let content = fs.readFileSync(filePath, 'utf8');
     const fm = parseFrontmatter(content);
@@ -164,7 +165,6 @@ async function phase2() {
     for (const [type, field, needsIt] of [['hero','heroImage',needsHero],['break1','breakImage1',needsBreak1],['break2','breakImage2',needsBreak2]]) {
       if (!needsIt) continue;
       const prompt = buildPrompt(type, title, section1, section2, siteName);
-      // SEO-first name: descriptive slug derived from post title + image type
       const seoName = buildPostSeoName(type, title, section1, section2, siteName);
       try {
         const result = await callWorker(prompt, seoName);
@@ -176,7 +176,7 @@ async function phase2() {
           altText,
           generatedAt: new Date().toISOString(),
         };
-        content = updateFrontmatterField(content, field, r2.key);
+        content = setFrontmatterField(content, field, r2.key);
         console.log(`  [${type}] R2: ${r2.key}`);
         console.log(`  [${type}] Alt: ${altText}`);
         count++;
