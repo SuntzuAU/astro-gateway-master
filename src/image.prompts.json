@@ -1,29 +1,66 @@
 {
+  "_readme": [
+    "PER-SITE IMAGE PROMPTS",
+    "Reference scenes from image-prompt-library.json using 'scene' field.",
+    "Set 'type' to 'hero' or 'break' to pick the right variant from the library.",
+    "Override with a custom 'prompt' if a scene does not fit - library scene is ignored when prompt is set.",
+    "Override 'altText' to customise the image alt text for SEO.",
+    "Run: Actions > Generate Site Images (manual trigger) after editing.",
+    "To regenerate one image: remove its r2Key from image-manifest.json, re-run workflow.",
+    "DO NOT change 'key' values - they are referenced by index.astro.",
+    "No emoji or special characters in this file."
+  ],
+  "_availableScenes": [
+    "doctor-surgery",
+    "hospital-office",
+    "lawyer-office",
+    "legal-team",
+    "office-general",
+    "office-executive",
+    "government-office",
+    "clinic-desk",
+    "student-study",
+    "box-shot",
+    "microphone-closeup",
+    "pdf-workflow",
+    "medical-admin"
+  ],
   "images": [
     {
       "key": "hero",
-      "name": "tungsten-pdf-enterprise-australia",
-      "prompt": "Professional enterprise PDF software interface on a large monitor, clean modern office environment, Australian government or legal setting, confident professional reviewing documents, blue and white corporate tones"
+      "role": "hero",
+      "scene": "office-general",
+      "type": "hero",
+      "altText": "Professional using document software in a modern Australian office"
     },
     {
-      "key": "about-banner",
-      "name": "pdf-software-australian-team",
-      "prompt": "Australian enterprise technology team in a professional office, reviewing PDF documents on screens, corporate environment, collaborative meeting, trust and expertise"
+      "key": "feat1",
+      "role": "feat1",
+      "scene": "office-general",
+      "type": "break",
+      "altText": "Modern Australian corporate office workspace"
     },
     {
-      "key": "feature-transcription",
-      "name": "pdf-redaction-compliance-tool",
-      "prompt": "PDF document redaction interface on screen, sensitive information being securely redacted, compliance and legal document workflow, professional software UI, clean and precise"
-    },
-    {
-      "key": "feature-multilingual",
-      "name": "pdf-workflow-automation-enterprise",
-      "prompt": "Enterprise document workflow automation dashboard, multiple PDF documents being processed, SharePoint and Microsoft 365 integration visible, professional corporate software interface"
-    },
-    {
-      "key": "cta-banner",
-      "name": "tungsten-pdf-government-procurement",
-      "prompt": "Australian government office professional using PDF software, secure document management, formal government environment, trust and compliance, professional blue tones"
+      "key": "feat2",
+      "role": "feat2",
+      "scene": "box-shot",
+      "type": "break",
+      "altText": "Professional software setup with laptop and headset on a clean desk"
     }
+  ],
+  "_newSiteChecklist": [
+    "WHEN CLONING TO A NEW SITE:",
+    "1. Pick scenes from _availableScenes that match your product and audience.",
+    "2. Update 'scene' values for hero, feat1, feat2.",
+    "3. Update 'altText' values to describe what the images show for this site.",
+    "4. For a custom prompt not in the library, add a 'prompt' field and omit 'scene'.",
+    "5. Clear any r2Key entries from image-manifest.json carried over from master.",
+    "6. Run Actions > Generate Site Images.",
+    "Common site configurations:",
+    "  Dragon / speech recognition sites: hero=doctor-surgery, feat1=clinic-desk, feat2=microphone-closeup",
+    "  PDF / document sites: hero=office-general, feat1=pdf-workflow, feat2=box-shot",
+    "  Legal sites: hero=lawyer-office, feat1=legal-team, feat2=office-executive",
+    "  Dictation hardware sites: hero=hospital-office, feat1=microphone-closeup, feat2=medical-admin",
+    "  Student / education sites: hero=student-study, feat1=office-general, feat2=box-shot"
   ]
 }
