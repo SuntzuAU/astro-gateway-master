@@ -93,5 +93,21 @@
     "r2Key": "speechrecognition-cloud/2026/03/06/why-australian-government-agencies-are-rethinking-software-s-break2-08c5eb43.png",
     "altText": "PDF Software Australia editorial photo illustrating Why Australian Government Agencies Rethinking Software",
     "generatedAt": "2026-03-06T05:56:02.780Z"
+  },
+  "feat1": {
+    "key": "feat1",
+    "r2Key": "speechrecognition-cloud/2026/03/12/images-speechrecognition-cloud-feat1-6109bbeb-2115a81e.jpg",
+    "altText": "Modern Australian corporate office workspace",
+    "scene": "office-general",
+    "generatedAt": "2026-03-12T22:21:42.898Z",
+    "site": "speechrecognition-cloud"
+  },
+  "feat2": {
+    "key": "feat2",
+    "r2Key": "speechrecognition-cloud/2026/03/12/images-speechrecognition-cloud-feat2-3886a677-58abaa7a.jpg",
+    "altText": "Professional software setup with laptop and headset on a clean desk",
+    "scene": "box-shot",
+    "generatedAt": "2026-03-12T22:22:02.444Z",
+    "site": "speechrecognition-cloud"
   }
 }
