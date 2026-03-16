@@ -35,7 +35,56 @@ Only after reading all five may you proceed.
 
 ## AUTHORITY LANGUAGE
 
-All authority claims about VRA and Russell Bewsell **must come from `src/data/link-network.json` → `authority` block**. Never improvise credentials, statistics, or claim language. If a claim is not in that block, do not use it.
+All authority claims about VRA and Russell Bewsell **must come from `src/data/link-network.json` -> `authority` block**. Never improvise credentials, statistics, or claim language. If a claim is not in that block, do not use it.
+
+---
+
+## BLOG POST IMAGE REQUIREMENT — MANDATORY, NO EXCEPTIONS
+
+Every blog post MUST have three images. This is not optional. A blog post without images is incomplete and must not be committed.
+
+**Required images for every post:**
+- `heroImage` — full-width image above the article header
+- `breakImage1` — contextual image placed after the header, before the body
+- `breakImage2` — contextual image placed at the end of the body, before the CTA
+
+**Required alt text for every image:**
+- `heroImageAlt`
+- `breakImage1Alt`
+- `breakImage2Alt`
+
+**Workflow — images MUST be generated BEFORE committing the article:**
+
+1. Draft the article in chat and get owner approval
+2. Prepare three image prompts relevant to the article content
+3. Call the Worker three times via Chrome MCP javascript_tool (Claude can do this autonomously — no need to ask owner to trigger manually)
+4. Capture the three R2 keys from the Worker responses
+5. Add all six image frontmatter fields to the article
+6. THEN commit article + images together in one operation
+
+**Worker endpoint:**
+```
+POST https://master-image-generator.speech-recognition-cloud.workers.dev/generate
+Body: { "prompt": "...", "name": "seo-slug-here" }
+Response: { ok: true, r2: { key: "site/yyyy/mm/dd/seo-slug-uuid.png" } }
+```
+
+**Call via Chrome MCP:**
+```javascript
+(async () => {
+  const r = await fetch('https://master-image-generator.speech-recognition-cloud.workers.dev/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: '...', name: '...' })
+  });
+  const d = await r.json();
+  return JSON.stringify(d);
+})();
+```
+
+**SEO image naming:** slug-first format describing article content, e.g. `dragon-medical-one-australia-gp-dictation-hero`
+
+**If Chrome MCP is unavailable:** inform the owner and wait — do NOT commit the article without images.
 
 ---
 
@@ -61,14 +110,6 @@ The reference pattern for all page builds is `dragonprofessional16.com.au`. Key 
 
 ---
 
-## IMAGE GENERATION
-
-- Worker URL: `https://master-image-generator.speech-recognition-cloud.workers.dev/generate`
-- **Never call the image generation Worker autonomously.** Always prepare prompts, show Russ exactly what will be called, wait for manual trigger.
-- SEO filename format: `seo-slug-uuid.png` (slug first)
-
----
-
 ## CONTENT APPROVAL WORKFLOW
 
 1. Owner instructs Claude to draft content
@@ -77,9 +118,11 @@ The reference pattern for all page builds is `dragonprofessional16.com.au`. Key 
 4. Claude suggests anchor text options for cross-site links — owner chooses
 5. Owner reviews and approves
 6. Owner says "commit it"
-7. Claude commits — Cloudflare deploys automatically
+7. Claude generates images via Worker (Chrome MCP), captures R2 keys
+8. Claude commits article WITH images in one operation
+9. Cloudflare deploys automatically
 
-**Blog posts require draft approval before committing. Code bug fixes may be committed directly with immediate notification to owner.**
+**Never commit an article without images. Never commit images separately as a follow-up step.**
 
 ---
 
