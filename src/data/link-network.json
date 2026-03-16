@@ -1,5 +1,87 @@
 {
-  "_readme": "Master network interlink config. Lives in astro-gateway-master. Copied to every site clone. Never add footer links - all links must be contextual in-body only.",
+  "_readme": "Master network interlink config. Lives in astro-gateway-master. Copied to every site clone. Never add footer links - all links must be contextual in-body only. READ THIS FILE BEFORE WRITING ANY CONTENT.",
+
+  "authority": {
+    "_readme": "Approved authority language for VRA and Russell Bewsell. Use these snippets verbatim or adapt minimally. Never invent claims not listed here. This is the single source of truth for credentials across all sites.",
+
+    "company": {
+      "name": "Voice Recognition Australia",
+      "shortName": "VRA",
+      "url": "https://www.voicerecognition.com.au",
+      "yearsInBusiness": "25 years",
+      "resellerStatus": "Nuance Platinum-tier authorised reseller",
+      "foundingClaim": "Authorised Dragon reseller since Dragon first launched in Australia",
+      "sectors": ["healthcare", "legal", "government", "enterprise"],
+      "approvedClaims": [
+        "Australia's most experienced Nuance Platinum reseller for Dragon software",
+        "Authorised Dragon reseller since Dragon first launched in Australia",
+        "25 years of Dragon deployment across healthcare, legal, government and enterprise in Australia",
+        "One of only a small number of Nuance Platinum-tier authorised resellers in Australia"
+      ],
+      "sectorClaims": {
+        "healthcare": "deployed Dragon Medical One and Dragon medical solutions across Australian medical practices and healthcare teams",
+        "legal": "deployed Dragon for legal dictation workflows across Australian law firms and legal practices",
+        "government": "deployed speech recognition solutions for Australian government agencies",
+        "enterprise": "deployed Dragon at scale across Australian enterprise environments"
+      }
+    },
+
+    "founder": {
+      "name": "Russell Bewsell",
+      "title": "Founder and CEO, Voice Recognition Australia",
+      "yearsExperience": 28,
+      "approvedClaims": [
+        "Russell Bewsell, Founder and CEO of Voice Recognition Australia, has 28 years of experience in the speech recognition industry",
+        "One of Australia's leading authorities on Dragon deployment in healthcare and enterprise",
+        "Presented the Dragonology national training series on behalf of Nuance in 2017, speaking to thousands of Australian professionals across multiple cities about speech recognition"
+      ],
+      "dragonology": {
+        "description": "National Dragon training series presented on behalf of Nuance",
+        "year": 2017,
+        "reach": "thousands of Australian professionals across multiple cities",
+        "exampleSession": {
+          "title": "Dragon Training Video - Dragonology Sydney",
+          "url": "https://www.youtube.com/watch?v=EUZF0HQL6S8",
+          "views": "14000+",
+          "duration": "27 minutes"
+        }
+      }
+    },
+
+    "youtubeChannel": {
+      "name": "Voice Recognition Australia - Speech to Text",
+      "url": "https://www.youtube.com/@VoiceRecognitionAustralia",
+      "approvedClaims": [
+        "Voice Recognition Australia's YouTube training library has accumulated hundreds of thousands of views"
+      ],
+      "featuredVideos": [
+        {
+          "title": "Dragon Professional - Dragon NaturallySpeaking Software",
+          "url": "[CONFIRM - search youtube.com/@VoiceRecognitionAustralia for 180K view video]",
+          "views": "180000+",
+          "note": "Most-watched VRA video - general Dragon overview. URL to be confirmed by owner."
+        },
+        {
+          "title": "Dragon Training Video - Dragonology Sydney",
+          "url": "https://www.youtube.com/watch?v=EUZF0HQL6S8",
+          "views": "14000+",
+          "year": 2017,
+          "note": "Sydney session from the national Dragonology tour, presented on behalf of Nuance"
+        }
+      ]
+    },
+
+    "hardRules": [
+      "Only use claims explicitly listed in this authority block — never improvise credentials",
+      "Never invent statistics, client names, rankings, or award claims",
+      "Never claim clinical outcomes, patient safety improvements, or medical device status",
+      "Always say 'authorised reseller' not 'official reseller'",
+      "Dragonology references must always include 'on behalf of Nuance' and '2017'",
+      "Never mention specific customer names, patient names, or organisation names unless explicitly approved",
+      "YouTube view counts must use the approximate figures listed here — do not invent or inflate numbers",
+      "'Platinum reseller' is the current approved tier — do not say Gold unless this block is updated"
+    ]
+  },
 
   "productivityNarrative": {
     "theme": "professional-productivity",
@@ -190,8 +272,8 @@
       "role": "gateway",
       "url": "https://www.dictationsolutions.com.au",
       "productivityCategory": "voice-input",
-      "description": "20yr domain authority site. Covers traditional and modern dictation - Philips Speech Live, Olympus, Dragon.",
-      "topics": ["dictation solutions", "philips speech live", "olympus dictation", "traditional dictation", "dictation hardware"],
+      "description": "20yr domain authority site. Covers traditional and modern dictation - Philips SpeechLive, Olympus, Dragon.",
+      "topics": ["dictation solutions", "philips speechlive", "olympus dictation", "traditional dictation", "dictation hardware"],
       "bridgePhrases": [
         "combining speech recognition with professional dictation hardware",
         "traditional dictation workflows updated for modern offices",
@@ -200,7 +282,7 @@
       "anchorPools": {
         "brand": [
           "Dictation Solutions Australia",
-          "Philips Speech Live Australia",
+          "Philips SpeechLive Australia",
           "professional dictation systems"
         ],
         "descriptive": [
@@ -211,7 +293,7 @@
         ],
         "medical": [
           "medical dictation hardware Australia",
-          "Philips Speech Live for healthcare"
+          "Philips SpeechLive for healthcare"
         ],
         "legal": [
           "dictation systems for law firms",
@@ -241,6 +323,7 @@
           "cloud-based AI speech recognition",
           "browser-accessible transcription platform",
           "AI transcription for Australian businesses",
+          "speech to text software",
           "cloud speech recognition without local installation"
         ],
         "comparison": [
