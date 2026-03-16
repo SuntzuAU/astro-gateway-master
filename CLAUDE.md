@@ -22,14 +22,29 @@ This file is read by every Claude session working on any VRA gateway site repo. 
 Before writing a single line of code or content, read these files **in this order**:
 
 1. `CLAUDE.md` - this file (you are reading it)
-2. `src/data/link-network.json` - full network config, anchor pools, AND authority language for VRA/Russell
-3. `src/site.config.json` - this site's content, colours, products, CTAs
-4. `src/data/link-usage.json` - what has already been linked from this site (anchor text already used)
-5. `src/content/news/` - existing blog posts (check slugs, context tags, existing links)
+2. `CONTENT-GUIDELINES.md` - legal compliance, ACL rules, medical content restrictions, pricing verification, linking rules, voice/tone
+3. `src/data/link-network.json` - full network config, anchor pools, authority language for VRA/Russell, bridge phrases
+4. `src/site.config.json` - this site's content, colours, products, CTAs
+5. `src/data/link-usage.json` - what has already been linked from this site (anchor text already used)
+6. `src/content/news/` - existing blog posts (check slugs, context tags, existing links)
 
-Only after reading all five may you proceed.
+Only after reading all six may you proceed.
 
 **Why this matters:** The dictationsolutions.com.au build was severely broken because a prior session skipped these files and invented its own structure from scratch. Every structural mistake in that build traced back to not reading the reference files. Do not repeat this.
+
+---
+
+## LEGAL COMPLIANCE - AUSTRALIAN CONSUMER LAW
+
+All content must comply with Australian Consumer Law (ACL). Full rules are in `CONTENT-GUIDELINES.md`. Key points:
+
+- No misleading or deceptive statements
+- No absolute superiority claims ("best", "guaranteed", "proven")
+- All pricing requires two independent sources and a verification date
+- Include pricing disclaimer on all pricing content
+- Mark unverified claims with `[VERIFY]` - never present them as fact
+- Healthcare content must not imply clinical outcomes, patient safety improvements, or medical device status
+- Never invent statistics, research findings, quotes, testimonials, or case studies
 
 ---
 
@@ -157,8 +172,9 @@ Every blog post must include cross-site and internal links. Before writing any c
 6. All links contextual in body copy - NO footer links ever
 7. Declare all links in frontmatter (internalLinks + externalLinks)
 8. Present anchor text choices to owner before committing
+9. Include "Links used" summary at end of every draft
 
-See VRA-INTERLINK-SYSTEM.docx for full details.
+Full interlink rules are in `CONTENT-GUIDELINES.md` and `src/data/link-network.json`.
 
 ---
 
