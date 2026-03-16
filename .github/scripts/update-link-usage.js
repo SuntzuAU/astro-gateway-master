@@ -1,7 +1,7 @@
 /**
  * update-link-usage.js
  * Runs after every merge to main.
- * Scans all blog post frontmatter and rebuilds link-usage.json from scratch.
+ * Scans all blog post frontmatter in src/content/news/ and rebuilds link-usage.json.
  * The frontmatter is the source of truth - this file is the computed report.
  *
  * Usage: node .github/scripts/update-link-usage.js
@@ -11,7 +11,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Try to load gray-matter, fall back gracefully
 let matter;
 try {
   matter = require('gray-matter');
@@ -22,12 +21,12 @@ try {
 
 const USAGE_FILE = path.join(__dirname, '../../src/data/link-usage.json');
 const NETWORK_FILE = path.join(__dirname, '../../src/data/link-network.json');
-const BLOG_DIR = path.join(__dirname, '../../src/content/blog');
+const NEWS_DIR = path.join(__dirname, '../../src/content/news');
 
 function getAllMarkdownFiles(dir) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.md') || f.endsWith('.mdx'))
+    .filter(f => (f.endsWith('.md') || f.endsWith('.mdx')) && !f.startsWith('_'))
     .map(f => path.join(dir, f));
 }
 
@@ -36,39 +35,28 @@ function main() {
   const network = JSON.parse(fs.readFileSync(NETWORK_FILE, 'utf8'));
   const networkSites = Object.keys(network.network);
 
-  // Reset counts - recompute from scratch
   const coverage = {};
   const anchorsUsed = {};
-  networkSites.forEach(site => {
-    coverage[site] = 0;
-    anchorsUsed[site] = [];
-  });
+  networkSites.forEach(site => { coverage[site] = 0; anchorsUsed[site] = []; });
 
   const internalLog = [];
   const externalLog = [];
   let internalTotal = 0;
 
-  const posts = getAllMarkdownFiles(BLOG_DIR);
+  const posts = getAllMarkdownFiles(NEWS_DIR);
 
   for (const postPath of posts) {
     const raw = fs.readFileSync(postPath, 'utf8');
     const { data } = matter(raw);
-    const slug = '/' + path.basename(postPath).replace(/\.mdx?$/, '');
+    const slug = '/news/' + path.basename(postPath).replace(/\.mdx?$/, '');
 
-    // Process internal links
     if (data.internalLinks && Array.isArray(data.internalLinks)) {
       for (const link of data.internalLinks) {
-        internalLog.push({
-          from: slug,
-          to: link.to,
-          anchor: link.anchor,
-          date: data.date || 'unknown'
-        });
+        internalLog.push({ from: slug, to: link.to, anchor: link.anchor, date: data.date || 'unknown' });
         internalTotal++;
       }
     }
 
-    // Process external links
     if (data.externalLinks && Array.isArray(data.externalLinks)) {
       for (const link of data.externalLinks) {
         const site = link.to;
@@ -77,18 +65,12 @@ function main() {
           if (link.anchor && !anchorsUsed[site].includes(link.anchor)) {
             anchorsUsed[site].push(link.anchor);
           }
-          externalLog.push({
-            from: slug,
-            to: site,
-            anchor: link.anchor,
-            date: data.date || 'unknown'
-          });
+          externalLog.push({ from: slug, to: site, anchor: link.anchor, date: data.date || 'unknown' });
         }
       }
     }
   }
 
-  // Check for anchor pool exhaustion warnings
   for (const site of networkSites) {
     if (!network.network[site]) continue;
     const pools = network.network[site].anchorPools || {};
@@ -99,20 +81,12 @@ function main() {
     }
   }
 
-  // Write updated usage file
   const updated = {
     _readme: usage._readme,
     thisSite: usage.thisSite,
     lastUpdated: new Date().toISOString().split('T')[0],
-    internal: {
-      totalLinks: internalTotal,
-      log: internalLog
-    },
-    external: {
-      coverage,
-      anchorsUsed,
-      log: externalLog
-    }
+    internal: { totalLinks: internalTotal, log: internalLog },
+    external: { coverage, anchorsUsed, log: externalLog }
   };
 
   fs.writeFileSync(USAGE_FILE, JSON.stringify(updated, null, 2));
