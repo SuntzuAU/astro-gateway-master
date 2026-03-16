@@ -17,9 +17,14 @@ After reading this folder, also read these data files:
 | `CONTENT-GUIDELINES.md` | Legal compliance (ACL), pricing rules, medical content restrictions, voice/tone, competitor comparison rules |
 | `BUILD-RULES.md` | Architecture pattern, deployment config, content collection standard, image generation workflow, CSS rules |
 | `INTERLINK-RULES.md` | Cross-site and internal linking system, anchor text rules, frontmatter requirements, approval workflow |
+| `INFRASTRUCTURE.md` | **GA4 Measurement IDs, GitHub repos, Cloudflare config, R2/Worker endpoints, ActiveCampaign form IDs — read this before setting up any new site** |
 
 ## Why this folder exists
 
 Previous builds failed because Claude sessions skipped instruction files and invented their own structure. Every structural mistake traced back to not reading the references. This folder puts everything in one place so you can read it all before starting.
 
 **Your first message to any new session should be: "Read everything in the .claude folder first."**
+
+## Reference document
+
+A Word version of the infrastructure reference (`VRA-GA-Infrastructure-Reference.docx`) is stored in the Claude Project files and should be uploaded at the start of any session involving a new site build.
