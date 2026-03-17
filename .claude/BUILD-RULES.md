@@ -39,9 +39,30 @@ The reference pattern is `dragonprofessional16.com.au`:
 - System fonts where possible; custom fonts use `font-display: swap`
 - Mobile first: all layouts must work at 375px minimum
 
-## Deployment
+## CLOUDFLARE PAGES DEPLOYMENT — DO THIS FIRST WHEN A NEW SITE IS READY
 
-- Hosting: Cloudflare Pages
+**When a new repo is committed and ready to view, STOP coding and give Russ these manual instructions immediately. Do not attempt browser automation. This takes 2 minutes.**
+
+1. Go to dash.cloudflare.com → Pages → Create a project → Connect to Git
+2. Select organisation: `SuntzuAU` → select the repo
+3. Build settings:
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+4. Add environment variable:
+   - Name: `PUBLIC_R2_BASE`
+   - Value: `https://pub-c7a09e1ddb7c45e6a38fcdca1e4b6897.r2.dev`
+5. Click Save and Deploy
+6. Cloudflare will provide a `*.pages.dev` preview URL — share this with Russ to review
+
+**Custom domains (after initial deploy is confirmed working):**
+- Go to the Pages project → Custom domains
+- Add BOTH the apex domain (e.g. `dragonmedicalone.au`) AND `www.dragonmedicalone.au`
+- Adding only one causes 522 errors on the other
+
+**Never attempt to automate Cloudflare Pages setup via browser MCP. Always give Russ the manual steps.**
+
+## Deployment Notes
+
 - Both apex domain AND `www` must be added as custom domains
 - `PUBLIC_R2_BASE` must be set in BOTH GitHub Actions secrets AND Cloudflare Pages env vars
 - Value: `https://pub-c7a09e1ddb7c45e6a38fcdca1e4b6897.r2.dev`
