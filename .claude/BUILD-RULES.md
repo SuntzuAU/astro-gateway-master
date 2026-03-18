@@ -100,21 +100,29 @@ Body: { "prompt": "...", "name": "seo-slug-here" }
 - Both apex and www must be added as Cloudflare Pages custom domains
 - Cloudflare Pages 301 redirects are cached aggressively — test in incognito
 
-## CRITICAL — ActiveCampaign Form Class Names
+## CRITICAL — ActiveCampaign Form: Two Separate Bugs, Both Fixed
+
+### Bug 1: AC embed script hijacks form (client-side)
 
 **NEVER use ActiveCampaign's own CSS class naming conventions in any form component.**
 
-When a form uses AC's class names (`_form_289`, `_form_element`, `_field-wrapper`, `_submit`, `_form-thank-you`, etc.), ActiveCampaign's external tracking/embed script detects these classes in the browser, attaches itself to the form, and enforces its own validation — including requiring phone numbers in `+XXXXXXXXXXXXX` international format. This causes the form to block submission even though phone is not a required field in AC.
+When a form uses AC's class names (`_form_289`, `_form_element`, `_field-wrapper`, `_submit`, `_form-thank-you`, etc.), AC's external tracking/embed script detects these classes, attaches itself, and enforces its own validation including phone format.
 
-**The correct pattern (implemented in dragonmedicalone ACForm.astro — use as reference):**
-- Form `id` must use `vra_form_` prefix (e.g. `vra_form_289`), NOT `_form_289_`
-- All wrapper classes must use `vra-` prefix: `vra-form-content`, `vra-field`, `vra-submit`, `vra-thank-you`, `vra-error-msg`
-- No AC class names anywhere in the form HTML or surrounding elements
-- The form still submits correctly to `voicerecognition.activehosted.com/proc.php` via JSONP
-- All JS references inside `<script>` must use the `vra_form_` ID pattern
+**Fix:** All form/wrapper classes use `vra-` prefix. Form `id` uses `vra_form_` prefix. See ACForm.astro in dragonmedicalone as the reference implementation.
 
-**Phone field rule:** Phone must NEVER have a `required` attribute and must NEVER be validated for format. Any format or blank is acceptable. The JS validate_form function must only validate fields with `required` attribute plus the `email` field (email format check only).
+### Bug 2: AC server-side phone validation (server-side, harder to spot)
 
-If you ever see the error "Please provide a valid phone number (format +XXXXXXXXXXXXX)" on a live form, the cause is AC class names in the form HTML. Fix by renaming all classes to `vra-` prefix as above.
+**NEVER use `name="phone"` for the phone input field.**
 
-This rule applies to ALL sites in the network when building or cloning ACForm components.
+AC's `proc.php` endpoint treats `phone` as a reserved field name and validates it server-side, requiring international E.164 format (`+XXXXXXXXXXXXX`). It returns this error via JSONP callback to `_show_error` even when the field has no `required` attribute and even when our own JS doesn't validate it. Leaving the field blank bypasses it, but any text value triggers rejection.
+
+**Fix:** Map phone to a custom field: `name="field[XX]"` where XX is the AC custom text field ID for that form. Custom fields accept any text format.
+
+**The `cfields` map in the script must include the phone field ID:**
+```js
+window.cfields = {"35": "practice_organisation", "36": "phone_number", "18": "comments_about_your_needs"};
+```
+
+If you ever see "Please provide a valid phone number (format +XXXXXXXXXXXXX)" and the field has no `required` attribute, the cause is `name="phone"`. Fix by remapping to `name="field[XX]"` using a custom AC text field.
+
+This rule applies to ALL sites in the network. Never use `name="phone"` in any AC form.
