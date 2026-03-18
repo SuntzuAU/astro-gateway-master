@@ -14,6 +14,12 @@ Each internal link builds page authority within a site. Each cross-site link bui
 - Never repeat the same anchor text to the same destination across the site
 - All links must feel natural within the sentence — not bolted on
 
+## CRITICAL RULE: Body Links Must Match Frontmatter
+
+Every hyperlink that appears in an article's body copy MUST also be declared in the frontmatter `internalLinks` or `externalLinks` arrays. Links without frontmatter declarations are invisible to the automated tracking system (`update-link-usage.js`) and will not be counted toward coverage.
+
+Claude must not commit an article that has body links missing from frontmatter, or frontmatter links missing from the body.
+
 ## Before Writing Any Content
 
 1. Read `src/data/link-network.json` for:
@@ -40,7 +46,7 @@ Each internal link builds page authority within a site. Each cross-site link bui
 ---
 title: "Post Title"
 date: "2026-03-16"
-description: "Meta description 140-160 chars"  # or metaDescription on some sites
+description: "Meta description 140-160 chars"
 context: "descriptive"  # Options: medical, legal, descriptive, brand, action, comparison, generic
 heroImage: "site/yyyy/mm/dd/seo-slug-hero-uuid.png"
 heroImageAlt: "Descriptive alt text"
@@ -64,23 +70,40 @@ All sites in the network address the same universal problem: professionals spend
 
 Use the adjacency map in link-network.json to find the most logical adjacent product for the conclusion paragraph, then use bridge phrase templates to make the mention natural.
 
-## Draft Checklist
+## Pre-Commit Link Audit Checklist
 
-Before presenting any draft for review, confirm:
+**Claude MUST verify every item before presenting a draft for approval:**
+
+- [ ] Read link-network.json — know what anchor pools and bridge phrases are available
+- [ ] Read link-usage.json — know what has already been linked
 - [ ] Internal link included with descriptive anchor text
-- [ ] Cross-site link included (or flagged as pending if no live site available)
-- [ ] Cross-site target is NOT the same as the previous post
-- [ ] Anchor text is NOT already used for that destination on this site
-- [ ] Both links feel natural — not forced
-- [ ] "Links used" summary at end of draft:
+- [ ] Internal link declared in `internalLinks` frontmatter AND present in body
+- [ ] Cross-site link target chosen (lowest coverage count with relevant topic match)
+- [ ] Cross-site anchor text selected from appropriate pool, not already used
+- [ ] Cross-site link declared in `externalLinks` frontmatter AND present in body
+- [ ] Bridge paragraph uses adjacency map (conclusion paragraph)
+- [ ] No duplicate links to same external site on one page
+- [ ] All body hyperlinks have matching frontmatter declarations
+- [ ] Present link summary at end of draft:
 
 ```
 ---
 LINKS USED IN THIS POST
 Internal: [anchor text] -> [URL]
-Cross-site: [anchor text] -> [domain]
+Cross-site: [anchor text] -> [domain] (coverage count before: N)
 ```
 
 ## Anchor Text Approval
 
 Claude must suggest 2-3 anchor text options for cross-site links and let the owner choose. Never commit without approval on the anchor text.
+
+## Embedding Links During Article Creation — Not After
+
+Links MUST be woven into the article during initial drafting — not retrofitted later. This is faster and produces more natural-reading content. Claude should:
+
+1. Identify link targets BEFORE writing the article
+2. Plan which paragraphs will contain links
+3. Write the link context as part of the natural flow
+4. Include the bridge paragraph in the conclusion
+
+Retrofitting links after an article is written produces awkward, unnatural placements that readers and search engines can detect.

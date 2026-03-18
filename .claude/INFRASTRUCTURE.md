@@ -13,15 +13,16 @@ Last updated: 18 March 2026
 - [ ] **1. Cloudflare Pages project created** — Pages project exists for this domain
 - [ ] **2. Build settings configured** — build command `npm run build`, output dir `dist`, env var `PUBLIC_R2_BASE` set
 - [ ] **3. GitHub repo connected** — Pages project linked to the correct SuntzuAU repo
-- [ ] **4. Custom domains added in Pages** — BOTH apex and www added inside the Pages project (not just DNS records). Go to Pages → [project] → Custom domains → Add a custom domain. Add `domain.com.au` AND `www.domain.com.au` separately. This step is what triggers Cloudflare to create the correct DNS records. Skipping it means the site will never load even if nameservers and DNS look correct.
+- [ ] **4. Custom domains added in Pages** — BOTH apex and www added inside the Pages project (not just DNS records). Go to Pages -> [project] -> Custom domains -> Add a custom domain. Add `domain.com.au` AND `www.domain.com.au` separately. This step is what triggers Cloudflare to create the correct DNS records. Skipping it means the site will never load even if nameservers and DNS look correct.
 - [ ] **5. Custom domains show Active** — both entries in Pages show status Active (not Pending/Invalid)
-- [ ] **6. Nameservers at registrar** — Crazy Domains nameservers set to `ganz.ns.cloudflare.com` and `nelci.ns.cloudflare.com` (or the pair assigned to this zone — check Cloudflare DNS page)
+- [ ] **6. Nameservers at registrar** — Crazy Domains nameservers set to the pair assigned to this zone (check Cloudflare DNS page — common pairs: `lindsey`/`lynn`, `ganz`/`nelci`)
 - [ ] **7. DNS records correct in Cloudflare** — after step 4, Cloudflare Pages auto-creates a CNAME for www and an A/CNAME for apex. Verify no old A records pointing to previous hosts (Hostinger, SiteGround, etc.) are still proxied
 - [ ] **8. Logo file present** — `public/logo.jpg` exists in repo (sites use JPEG not PNG)
 - [ ] **9. R2 images populated** — image-manifest.json has r2Key values; images exist in R2 at those keys
 - [ ] **10. GA4 ID in site.config.json** — `googleAnalyticsId` field is non-empty
+- [ ] **11. Account-level Bulk Redirects checked** — go to Cloudflare Account Home -> Bulk Redirects and verify no rules intercept this domain. These are account-wide and can silently redirect all traffic even when Pages/DNS config is correct.
 
-**If a site is not loading:** go through steps 4 and 7 first. The most common cause is step 4 being skipped — custom domains not added inside Pages — which leaves old DNS records from the previous host in place.
+**If a site is not loading:** go through steps 4, 7, and 11 first. The most common causes are: step 4 skipped (custom domains not added in Pages), old DNS records from previous host, or account-level Bulk Redirect rules.
 
 ---
 
@@ -54,7 +55,7 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 | dragonnaturallyspeaking.com.au | SuntzuAU/dragonnaturallyspeaking | Cloudflare Pages | Astro | Live |
 | dictationsolutions.com.au | SuntzuAU/dictationsolutions | Cloudflare Pages | Astro | Live |
 | dragonmedicalone.au | SuntzuAU/dragonmedicalone | Cloudflare Pages | Astro | Build complete — deployment in progress |
-| speechrecognition.cloud | TBD | Cloudflare Pages | Astro | Not yet built |
+| speechrecognition.cloud | TBD | Cloudflare Pages | Astro | Next build — siteType: saas |
 | cloudprinting.au | TBD | Cloudflare Pages | Astro | Not yet built |
 
 ---
@@ -77,13 +78,13 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 
 ## ActiveCampaign Form IDs
 
-| Site | Form ID |
-|---|---|
-| pdfsoftware.com.au | `281` |
-| dragonprofessional16.com.au | `283` |
-| dragonnaturallyspeaking.com.au | `285` |
-| dragonmedicalone.au | `289` |
-| dictationsolutions.com.au | Not yet confirmed |
+| Site | Form ID | or UUID |
+|---|---|---|
+| pdfsoftware.com.au | `281` | (check repo) |
+| dragonprofessional16.com.au | `283` | `452040ae-e495-4c74-bd95-dc0f67e3edd8` |
+| dragonnaturallyspeaking.com.au | `285` | (check repo) |
+| dragonmedicalone.au | `289` | `55459e75-589b-4fbf-9c06-f7a873049b56` |
+| dictationsolutions.com.au | Not yet confirmed | — |
 
 ---
 
@@ -100,13 +101,14 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 
 ## Critical Rules (Summary)
 
-- **Deployment checklist** — run the checklist at the top of this file for every new site. Step 4 (custom domains in Pages) is the most commonly missed step and the most common cause of sites not loading.
-- **Custom domains in Pages** — always add BOTH apex and www inside the Pages project custom domains UI. This is what creates the correct DNS records. Do not add DNS records manually for Pages sites — let Pages create them.
-- **Logo files are JPEG** — sites use `public/logo.jpg`, not `logo.png`. The index.astro references `/logo.jpg`.
+- **Deployment checklist** — run the checklist at the top of this file for every new site. Step 4 (custom domains in Pages) is the most commonly missed step.
+- **Account-level Bulk Redirects** — check under Account Home -> Bulk Redirects. These are invisible in the domain zone and can hijack all traffic.
+- **Custom domains in Pages** — always add BOTH apex and www inside the Pages project custom domains UI.
+- **Logo files are JPEG** — sites use `public/logo.jpg`, not `logo.png`.
 - **Never use emoji/Unicode in site.config.json** — GitHub API corrupts them during base64 encoding
-- **Never call the image Worker autonomously** — prepare prompts, show Russ, wait for manual trigger
+- **Never call the image Worker autonomously** — prepare prompts, show Russ, wait for approval
 - **CSS variables on product subpages** — use inline styles with hardcoded hex, not `var(--primary)` in class selectors
 - **Blog content location** — `src/content/news/` not `src/content/blog/`
 - **voicerecognition.com.au is Shopify** — never redesign or replace it, gateway sites link TO it
 - **Workflow files** — `.github/workflows/` files cannot be pushed via GitHub MCP; provide content for manual paste
-- **Old DNS records** — when a domain was previously hosted elsewhere (Hostinger, SiteGround, Crazy Domains builder), Cloudflare imports those old records when the zone is created. After adding custom domains in Pages, verify the old A/CNAME records have been replaced. If the apex A record still points to a third-party IP, delete it.
+- **Old DNS records** — when a domain was previously hosted elsewhere, Cloudflare imports those old records when the zone is created. After adding custom domains in Pages, verify the old A/CNAME records have been replaced.

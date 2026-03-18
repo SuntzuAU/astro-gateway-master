@@ -15,9 +15,10 @@ After reading this folder, also read these data files:
 | File | Purpose |
 |---|---|
 | `CONTENT-GUIDELINES.md` | Legal compliance (ACL), pricing rules, medical content restrictions, voice/tone, competitor comparison rules |
-| `BUILD-RULES.md` | Architecture pattern, deployment config, content collection standard, image generation workflow, CSS rules |
-| `INTERLINK-RULES.md` | Cross-site and internal linking system, anchor text rules, frontmatter requirements, approval workflow |
-| `INFRASTRUCTURE.md` | **GA4 Measurement IDs, GitHub repos, Cloudflare config, R2/Worker endpoints, ActiveCampaign form IDs — read this before setting up any new site** |
+| `BUILD-RULES.md` | Architecture pattern, deployment config, content collection standard, image generation workflow, CSS rules, form rules, YouTube facade |
+| `INTERLINK-RULES.md` | Cross-site and internal linking system, anchor text rules, frontmatter requirements, approval workflow, pre-commit checklist |
+| `INFRASTRUCTURE.md` | GA4 Measurement IDs, GitHub repos, Cloudflare config, R2/Worker endpoints, ActiveCampaign form IDs, deployment checklist |
+| `IMAGE-STANDARDS.md` | Image sizes by slot, aspect ratios, SEO naming convention, manifest schema, prompt templates |
 
 ## Why this folder exists
 
