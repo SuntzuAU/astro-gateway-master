@@ -1,8 +1,27 @@
 # VRA Gateway Network — Infrastructure Reference
 
-Last updated: 17 March 2026
+Last updated: 18 March 2026
 
 **Read this file before setting up any new site, adding tracking, or configuring deployments.**
+
+---
+
+## MANDATORY DEPLOYMENT CHECKLIST — Every New Site
+
+**Claude must run through this checklist at the start of any session where a new site is being deployed or a site is not loading correctly. Ask Russ to confirm each step is done before diagnosing other issues.**
+
+- [ ] **1. Cloudflare Pages project created** — Pages project exists for this domain
+- [ ] **2. Build settings configured** — build command `npm run build`, output dir `dist`, env var `PUBLIC_R2_BASE` set
+- [ ] **3. GitHub repo connected** — Pages project linked to the correct SuntzuAU repo
+- [ ] **4. Custom domains added in Pages** — BOTH apex and www added inside the Pages project (not just DNS records). Go to Pages → [project] → Custom domains → Add a custom domain. Add `domain.com.au` AND `www.domain.com.au` separately. This step is what triggers Cloudflare to create the correct DNS records. Skipping it means the site will never load even if nameservers and DNS look correct.
+- [ ] **5. Custom domains show Active** — both entries in Pages show status Active (not Pending/Invalid)
+- [ ] **6. Nameservers at registrar** — Crazy Domains nameservers set to `ganz.ns.cloudflare.com` and `nelci.ns.cloudflare.com` (or the pair assigned to this zone — check Cloudflare DNS page)
+- [ ] **7. DNS records correct in Cloudflare** — after step 4, Cloudflare Pages auto-creates a CNAME for www and an A/CNAME for apex. Verify no old A records pointing to previous hosts (Hostinger, SiteGround, etc.) are still proxied
+- [ ] **8. Logo file present** — `public/logo.jpg` exists in repo (sites use JPEG not PNG)
+- [ ] **9. R2 images populated** — image-manifest.json has r2Key values; images exist in R2 at those keys
+- [ ] **10. GA4 ID in site.config.json** — `googleAnalyticsId` field is non-empty
+
+**If a site is not loading:** go through steps 4 and 7 first. The most common cause is step 4 being skipped — custom domains not added inside Pages — which leaves old DNS records from the previous host in place.
 
 ---
 
@@ -15,13 +34,13 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 
 | Domain | Product | GA4 Measurement ID | Repo Status |
 |---|---|---|---|
-| pdfsoftware.com.au | Tungsten Power PDF | `G-18L345NQ6C` | Committed ✅ |
-| dragonprofessional16.com.au | Dragon Professional 16 | `G-Y6TT76JQMJ` | Committed ✅ |
-| dragonnaturallyspeaking.com.au | Dragon NaturallySpeaking gateway | `G-V3JZSX7E0F` | Committed ✅ |
-| dictationsolutions.com.au | Dictation Solutions (multi-product) | `G-74PW1ZVXZC` | Committed ✅ |
+| pdfsoftware.com.au | Tungsten Power PDF | `G-18L345NQ6C` | Committed |
+| dragonprofessional16.com.au | Dragon Professional 16 | `G-Y6TT76JQMJ` | Committed |
+| dragonnaturallyspeaking.com.au | Dragon NaturallySpeaking gateway | `G-V3JZSX7E0F` | Committed |
+| dictationsolutions.com.au | Dictation Solutions (multi-product) | `G-74PW1ZVXZC` | Committed |
+| dragonmedicalone.au | Dragon Medical One | `G-WGQD3PBYQ8` | Committed |
 | speechrecognition.cloud | SpeechRecognition.cloud SaaS | `G-59XRLJXSS1` | Pending build |
 | cloudprinting.au | PrintX cloud printing | `G-5JQ8BG0E6T` | Pending build |
-| dragonmedicalone.au | Dragon Medical One | `G-WGQD3PBYQ8` | Pending build (currently Wix) |
 
 ---
 
@@ -32,11 +51,11 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 | voicerecognition.com.au | N/A | Shopify | Shopify | Primary hub. Do NOT modify. |
 | pdfsoftware.com.au | SuntzuAU/pdfsoftware | Cloudflare Pages | Astro | Template reference site |
 | dragonprofessional16.com.au | SuntzuAU/dragonprofessional16 | Cloudflare Pages | Astro | Live |
-| dragonnaturallyspeaking.com.au | SuntzuAU/dragonnaturallyspeaking | Cloudflare Pages | Astro | Migrated from Wix |
-| dictationsolutions.com.au | SuntzuAU/dictationsolutions | Cloudflare Pages | Astro | Active build focus |
+| dragonnaturallyspeaking.com.au | SuntzuAU/dragonnaturallyspeaking | Cloudflare Pages | Astro | Live |
+| dictationsolutions.com.au | SuntzuAU/dictationsolutions | Cloudflare Pages | Astro | Live |
+| dragonmedicalone.au | SuntzuAU/dragonmedicalone | Cloudflare Pages | Astro | Build complete — deployment in progress |
 | speechrecognition.cloud | TBD | Cloudflare Pages | Astro | Not yet built |
 | cloudprinting.au | TBD | Cloudflare Pages | Astro | Not yet built |
-| dragonmedicalone.au | TBD | Wix → Cloudflare Pages | Wix > Astro | GA created, build pending |
 
 ---
 
@@ -50,9 +69,9 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 | Image Worker URL | `https://master-image-generator.speech-recognition-cloud.workers.dev/generate` |
 | Image Worker model | `gemini-3.1-flash-image-preview` (Nano Banana 2) |
 | Gemini API endpoint | `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent` |
-| R2 image key format | `SITE_ID/YYYY/MM/DD/seo-slug-uuid.png` |
+| R2 image key format | `SITE_ID/YYYY/MM/DD/seo-slug-uuid.jpg` |
 | DNS registrar | Crazy Domains (nameservers delegated to Cloudflare) |
-| Cloudflare nameservers | `lindsey.ns.cloudflare.com` / `lynn.ns.cloudflare.com` |
+| Cloudflare nameservers | Assigned per zone — check Cloudflare DNS page for each domain. Common pairs: `lindsey`/`lynn`, `ganz`/`nelci`. Do not assume — verify in the zone. |
 
 ---
 
@@ -63,6 +82,7 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 | pdfsoftware.com.au | `281` |
 | dragonprofessional16.com.au | `283` |
 | dragonnaturallyspeaking.com.au | `285` |
+| dragonmedicalone.au | `289` |
 | dictationsolutions.com.au | Not yet confirmed |
 
 ---
@@ -80,10 +100,13 @@ The GA snippet fires automatically when the field is non-empty — do not hardco
 
 ## Critical Rules (Summary)
 
+- **Deployment checklist** — run the checklist at the top of this file for every new site. Step 4 (custom domains in Pages) is the most commonly missed step and the most common cause of sites not loading.
+- **Custom domains in Pages** — always add BOTH apex and www inside the Pages project custom domains UI. This is what creates the correct DNS records. Do not add DNS records manually for Pages sites — let Pages create them.
+- **Logo files are JPEG** — sites use `public/logo.jpg`, not `logo.png`. The index.astro references `/logo.jpg`.
 - **Never use emoji/Unicode in site.config.json** — GitHub API corrupts them during base64 encoding
 - **Never call the image Worker autonomously** — prepare prompts, show Russ, wait for manual trigger
-- **Always add both apex and www** as custom domains in Cloudflare Pages — adding only one causes 522 errors
 - **CSS variables on product subpages** — use inline styles with hardcoded hex, not `var(--primary)` in class selectors
 - **Blog content location** — `src/content/news/` not `src/content/blog/`
 - **voicerecognition.com.au is Shopify** — never redesign or replace it, gateway sites link TO it
 - **Workflow files** — `.github/workflows/` files cannot be pushed via GitHub MCP; provide content for manual paste
+- **Old DNS records** — when a domain was previously hosted elsewhere (Hostinger, SiteGround, Crazy Domains builder), Cloudflare imports those old records when the zone is created. After adding custom domains in Pages, verify the old A/CNAME records have been replaced. If the apex A record still points to a third-party IP, delete it.
