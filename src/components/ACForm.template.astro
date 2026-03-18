@@ -1,0 +1,244 @@
+---
+// FROZEN ACTIVECAMPAIGN FORM TEMPLATE
+// Copy this file to ACForm.astro for each new site.
+// Change ONLY the values marked with CHANGE_ME comments.
+// Do NOT rewrite from scratch. Do NOT add validation. Do NOT change field types.
+// The phone field is ALWAYS optional (no required attribute, type="text" not "tel").
+//
+// See .claude/BUILD-RULES.md for full form rules.
+
+import site from '../site.config.json';
+const c = site.colours;
+const formConfig = site.form || {};
+const formId = formConfig.formId || 'CHANGE_ME';           // CHANGE_ME: e.g. "289"
+const orUuid = formConfig.orUuid || 'CHANGE_ME';           // CHANGE_ME: from ActiveCampaign
+const submitText = formConfig.submitText || 'Request Information';
+---
+<div style="color:white">
+  <div style="font-weight:800;font-size:20px;margin-bottom:4px">Get in touch</div>
+  <div style="font-size:15px;margin-bottom:16px;opacity:0.8">Local Australian support. Fast response.</div>
+</div>
+
+<div class="formbox">
+  <form method="POST" action="https://voicerecognition.activehosted.com/proc.php" id={`_form_${formId}_`} class={`_form _form_${formId} _inline-form`} novalidate data-styles-version="5">
+    <input type="hidden" name="u" value={formId} />
+    <input type="hidden" name="f" value={formId} />
+    <input type="hidden" name="s" />
+    <input type="hidden" name="c" value="0" />
+    <input type="hidden" name="m" value="0" />
+    <input type="hidden" name="act" value="sub" />
+    <input type="hidden" name="v" value="2" />
+    <input type="hidden" name="or" value={orUuid} />
+    <div class="_form-content">
+      <div class="_form_element _full_width">
+        <div class="_field-wrapper">
+          <input type="text" id="firstname" name="firstname" placeholder="Your Name" required />
+        </div>
+      </div>
+      <div class="_form_element _full_width">
+        <div class="_field-wrapper">
+          <input type="text" id="email" name="email" placeholder="Your Email" required />
+        </div>
+      </div>
+      <div class="_form_element _full_width">
+        <div class="_field-wrapper">
+          <input type="text" id="phone" name="phone" placeholder="Your Phone Number" />
+        </div>
+      </div>
+      <!-- CHANGE_ME: Add or remove custom fields below as needed for this form -->
+      <div class="_form_element _full_width">
+        <div class="_field-wrapper">
+          <input type="text" id="field35" name="field[35]" placeholder="Company / Organisation" />
+        </div>
+      </div>
+      <div class="_form_element _full_width">
+        <div class="_field-wrapper">
+          <textarea id="field18" name="field[18]" placeholder="Tell us about your needs"></textarea>
+        </div>
+      </div>
+      <div class="_button-wrapper _full_width">
+        <button id={`_form_${formId}_submit`} class="_submit" type="submit" style={`background:${c.accent};color:${c.text}`}>{submitText}</button>
+      </div>
+    </div>
+    <div class="_form-thank-you" style="display:none;"></div>
+  </form>
+</div>
+
+<style is:inline>
+  .formbox {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  ._form_element { margin-bottom: 10px; }
+  ._form_element input[type="text"],
+  ._form_element textarea {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #0f172a;
+    font-size: 14px;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  ._form_element textarea { resize: vertical; min-height: 80px; }
+  ._submit {
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 20px;
+    width: 100%;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  ._submit:hover { opacity: 0.9; }
+  ._submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  ._error-inner {
+    padding: 8px 12px;
+    background: #FFDDDD;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #000;
+    margin-bottom: 8px;
+  }
+  ._form-thank-you {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #166534;
+    padding: 20px;
+  }
+</style>
+
+<script define:vars={{ formId }}>
+  // CHANGE_ME: Update cfields mapping to match this form's custom fields
+  window.cfields = {"35": "company", "18": "comments_about_your_needs"};
+
+  window._show_thank_you = function(id, message, trackcmp_url, email) {
+    var form = document.getElementById('_form_' + id + '_'),
+        thank_you = form.querySelector('._form-thank-you');
+    form.querySelector('._form-content').style.display = 'none';
+    thank_you.innerHTML = message;
+    thank_you.style.display = 'block';
+    const vgoAlias = typeof visitorGlobalObjectAlias === 'undefined' ? 'vgo' : visitorGlobalObjectAlias;
+    var visitorObject = window[vgoAlias];
+    if (email && typeof visitorObject !== 'undefined') {
+      visitorObject('setEmail', email);
+      visitorObject('update');
+    } else if (typeof(trackcmp_url) != 'undefined' && trackcmp_url) {
+      _load_script(trackcmp_url);
+    }
+  };
+
+  window._show_error = function(id, message, html) {
+    var form = document.getElementById('_form_' + id + '_'),
+        err = document.createElement('div'),
+        button = form.querySelector('button[type="submit"]'),
+        old_error = form.querySelector('._form_error');
+    if (old_error) old_error.parentNode.removeChild(old_error);
+    err.innerHTML = message;
+    err.className = '_error-inner _form_error _no_arrow';
+    var wrapper = document.createElement('div');
+    wrapper.className = '_form-inner';
+    wrapper.appendChild(err);
+    button.parentNode.insertBefore(wrapper, button);
+    var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
+    submitButton.disabled = false;
+  };
+
+  window._load_script = function(url, callback, isSubmit) {
+    var head = document.querySelector('head'), script = document.createElement('script'), r = false;
+    var submitButton = document.querySelector('#_form_' + formId + '_submit');
+    script.charset = 'utf-8';
+    script.src = url;
+    if (callback) {
+      script.onload = script.onreadystatechange = function() {
+        if (!r && (!this.readyState || this.readyState == 'complete')) {
+          r = true; callback();
+        }
+      };
+    }
+    script.onerror = function() {
+      if (isSubmit) {
+        _show_error(formId, "Sorry, your submission failed. Please try again.");
+        submitButton.disabled = false;
+      }
+    };
+    head.appendChild(script);
+  };
+
+  (function() {
+    if (window.location.search.indexOf('excludeform') !== -1) return false;
+    var form_to_submit = document.getElementById('_form_' + formId + '_');
+    if (!form_to_submit) return;
+    var allInputs = form_to_submit.querySelectorAll('input, select, textarea');
+
+    var validate_field = function(elem, remove) {
+      var value = elem.value, no_error = true;
+      elem.className = elem.className.replace(/ ?_has_error ?/g, '');
+      if (elem.getAttribute('required') !== null) {
+        if (value === undefined || value === null || value === '') {
+          elem.className = elem.className + ' _has_error';
+          no_error = false;
+        }
+      }
+      if (no_error && elem.name == 'email') {
+        if (!value.match(/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i)) {
+          elem.className = elem.className + ' _has_error';
+          no_error = false;
+        }
+      }
+      return no_error;
+    };
+
+    var validate_form = function(e) {
+      var no_error = true;
+      for (var i = 0; i < allInputs.length; i++) {
+        var input = allInputs[i];
+        if (input.getAttribute('required') !== null || input.name === 'email') {
+          if (!validate_field(input)) no_error = false;
+        }
+      }
+      if (!no_error && e) e.preventDefault();
+      return no_error;
+    };
+
+    var _form_serialize = function(form) {
+      if (!form || form.nodeName !== 'FORM') return;
+      var i, q = [];
+      for (i = 0; i < form.elements.length; i++) {
+        if (form.elements[i].name === '') continue;
+        switch (form.elements[i].nodeName) {
+          case 'INPUT':
+            switch (form.elements[i].type) {
+              case 'text': case 'hidden': case 'password': case 'button': case 'reset': case 'submit':
+                q.push(form.elements[i].name + '=' + encodeURIComponent(form.elements[i].value)); break;
+              case 'checkbox': case 'radio':
+                if (form.elements[i].checked) q.push(form.elements[i].name + '=' + encodeURIComponent(form.elements[i].value)); break;
+            } break;
+          case 'TEXTAREA':
+            q.push(form.elements[i].name + '=' + encodeURIComponent(form.elements[i].value)); break;
+          case 'SELECT':
+            q.push(form.elements[i].name + '=' + encodeURIComponent(form.elements[i].value)); break;
+        }
+      }
+      return q.join('&');
+    };
+
+    form_to_submit.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (validate_form(e)) {
+        var submitButton = document.getElementById('_form_' + formId + '_submit');
+        submitButton.disabled = true;
+        var serialized = _form_serialize(form_to_submit).replace(/%0A/g, '\\n');
+        var err = form_to_submit.querySelector('._form_error');
+        if (err) err.parentNode.removeChild(err);
+        _load_script('https://voicerecognition.activehosted.com/proc.php?' + serialized + '&jsonp=true', null, true);
+      }
+    });
+  })();
+</script>
