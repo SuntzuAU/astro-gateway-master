@@ -100,38 +100,46 @@ Body: { "prompt": "...", "name": "seo-slug-here" }
 - Both apex and www must be added as Cloudflare Pages custom domains
 - Cloudflare Pages 301 redirects are cached aggressively — test in incognito
 
-## CRITICAL — ActiveCampaign Form Phone Validation (Three Layers)
+## CRITICAL — ActiveCampaign Form Pattern
 
-This has caused repeated issues. There are THREE separate mechanisms that trigger phone validation. All three must be avoided.
+### The correct approach: copy dragonprofessional16 ACForm.astro exactly
 
-### Layer 1: AC embed script class detection (client-side)
-AC's external embed script scans the page for elements with class names like `_form_289`, `_form_element`, `_field-wrapper`, `_submit` etc. If found, it attaches itself and adds phone validation.
-**Fix:** Never use AC class names. All classes use `vra-` prefix. Form id uses `vra_form_` prefix.
+The ACForm component in `dragonprofessional16` (SuntzuAU/dragonprofessional16) is the working reference. When building an ACForm for any new site, copy that file and change only:
+- The form ID number (e.g. 283 → 289)
+- The `or` hidden field value (the UUID from AC)
+- The submit button colour if needed (driven from site.config.json colours)
+- The `cfields` mapping if the form has different custom fields
 
-### Layer 2: AC server-side phone field validation
-AC's `proc.php` treats `name="phone"` as a reserved field and validates it server-side, requiring E.164 international format. Returns error via JSONP even when field is not required.
-**Fix:** Never use `name="phone"`. Use `name="field[XX]"` mapped to a custom AC text field.
+Do NOT rewrite the form from scratch. Do NOT invent a custom validation approach.
 
-### Layer 3: AC intl-tel-input widget (the real root cause - hardest to spot)
-AC's embed JS specifically looks for `id="phone"` and loads the `intl-tel-input` library on it:
-```js
-var inputPhone = form_to_submit.querySelector("#phone");
-if(inputPhone) { initializePhoneInput(inputPhone); }
-```
-This widget enforces international phone number format validation regardless of `required` status. Any value that isn't a valid international number fails. Blank passes because the widget only validates non-empty values.
-**Fix:** Never use `id="phone"`. Use `id="field36"` or similar.
+### What works and must be kept
 
-### AC-side fix also available
-In AC form editor → click the Phone field → right panel shows **"Remove phone number validation"** link at the bottom. Clicking this disables the intl-tel-input widget at the AC form level. Do this for every AC form in the network.
+- AC class names (`_form_289`, `_form_element`, `_field-wrapper`, `_submit` etc.) — required, keep them
+- `id="phone"` and `name="phone"` — required for AC's intl-tel-input widget, keep them
+- The intl-tel-input widget is loaded by AC's own JS and handles phone input with AU pre-selected
+- The phone field has NO `required` attribute — it is optional, any format accepted via the widget
+- Submissions go via JSONP to `voicerecognition.activehosted.com/proc.php`
 
-### Complete correct pattern for phone field:
+### Form heading and subtext styling
+
+The "Get in touch" heading and subtext sit OUTSIDE the white `.formbox` card and must be white because the CTA section background is dark navy. The form fields sit INSIDE the white card.
+
+Correct structure:
 ```html
-<!-- CORRECT: id and name both avoid AC's reserved 'phone' identifiers -->
-<input type="text" id="field36" name="field[36]" placeholder="Your Phone Number" autocomplete="off" />
-```
-```js
-// CORRECT: cfields maps field 36 to a label, no special phone handling
-window.cfields = {"35": "practice_organisation", "36": "phone_number", "18": "comments_about_your_needs"};
+<div style="color:white">
+  <div style="font-weight:800;font-size:20px;margin-bottom:4px">Get in touch</div>
+  <div style="font-size:15px;margin-bottom:16px;opacity:0.8">Local Australian support. Fast response.</div>
+</div>
+<div class="formbox"> <!-- white card -->
+  <form ...>
+  ...
+  </form>
+</div>
 ```
 
-This rule applies to ALL sites in the network. Never use `id="phone"` or `name="phone"` in any form.
+### Form IDs per site
+
+- pdfsoftware.com.au — form 281
+- dragonprofessional16.com.au — form 283
+- dragonnaturallyspeaking.com.au — form 285
+- dragonmedicalone.au — form 289
