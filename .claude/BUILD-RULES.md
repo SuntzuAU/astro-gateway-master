@@ -100,29 +100,38 @@ Body: { "prompt": "...", "name": "seo-slug-here" }
 - Both apex and www must be added as Cloudflare Pages custom domains
 - Cloudflare Pages 301 redirects are cached aggressively — test in incognito
 
-## CRITICAL — ActiveCampaign Form: Two Separate Bugs, Both Fixed
+## CRITICAL — ActiveCampaign Form Phone Validation (Three Layers)
 
-### Bug 1: AC embed script hijacks form (client-side)
+This has caused repeated issues. There are THREE separate mechanisms that trigger phone validation. All three must be avoided.
 
-**NEVER use ActiveCampaign's own CSS class naming conventions in any form component.**
+### Layer 1: AC embed script class detection (client-side)
+AC's external embed script scans the page for elements with class names like `_form_289`, `_form_element`, `_field-wrapper`, `_submit` etc. If found, it attaches itself and adds phone validation.
+**Fix:** Never use AC class names. All classes use `vra-` prefix. Form id uses `vra_form_` prefix.
 
-When a form uses AC's class names (`_form_289`, `_form_element`, `_field-wrapper`, `_submit`, `_form-thank-you`, etc.), AC's external tracking/embed script detects these classes, attaches itself, and enforces its own validation including phone format.
+### Layer 2: AC server-side phone field validation
+AC's `proc.php` treats `name="phone"` as a reserved field and validates it server-side, requiring E.164 international format. Returns error via JSONP even when field is not required.
+**Fix:** Never use `name="phone"`. Use `name="field[XX]"` mapped to a custom AC text field.
 
-**Fix:** All form/wrapper classes use `vra-` prefix. Form `id` uses `vra_form_` prefix. See ACForm.astro in dragonmedicalone as the reference implementation.
-
-### Bug 2: AC server-side phone validation (server-side, harder to spot)
-
-**NEVER use `name="phone"` for the phone input field.**
-
-AC's `proc.php` endpoint treats `phone` as a reserved field name and validates it server-side, requiring international E.164 format (`+XXXXXXXXXXXXX`). It returns this error via JSONP callback to `_show_error` even when the field has no `required` attribute and even when our own JS doesn't validate it. Leaving the field blank bypasses it, but any text value triggers rejection.
-
-**Fix:** Map phone to a custom field: `name="field[XX]"` where XX is the AC custom text field ID for that form. Custom fields accept any text format.
-
-**The `cfields` map in the script must include the phone field ID:**
+### Layer 3: AC intl-tel-input widget (the real root cause - hardest to spot)
+AC's embed JS specifically looks for `id="phone"` and loads the `intl-tel-input` library on it:
 ```js
+var inputPhone = form_to_submit.querySelector("#phone");
+if(inputPhone) { initializePhoneInput(inputPhone); }
+```
+This widget enforces international phone number format validation regardless of `required` status. Any value that isn't a valid international number fails. Blank passes because the widget only validates non-empty values.
+**Fix:** Never use `id="phone"`. Use `id="field36"` or similar.
+
+### AC-side fix also available
+In AC form editor → click the Phone field → right panel shows **"Remove phone number validation"** link at the bottom. Clicking this disables the intl-tel-input widget at the AC form level. Do this for every AC form in the network.
+
+### Complete correct pattern for phone field:
+```html
+<!-- CORRECT: id and name both avoid AC's reserved 'phone' identifiers -->
+<input type="text" id="field36" name="field[36]" placeholder="Your Phone Number" autocomplete="off" />
+```
+```js
+// CORRECT: cfields maps field 36 to a label, no special phone handling
 window.cfields = {"35": "practice_organisation", "36": "phone_number", "18": "comments_about_your_needs"};
 ```
 
-If you ever see "Please provide a valid phone number (format +XXXXXXXXXXXXX)" and the field has no `required` attribute, the cause is `name="phone"`. Fix by remapping to `name="field[XX]"` using a custom AC text field.
-
-This rule applies to ALL sites in the network. Never use `name="phone"` in any AC form.
+This rule applies to ALL sites in the network. Never use `id="phone"` or `name="phone"` in any form.
