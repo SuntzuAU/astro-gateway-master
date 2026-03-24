@@ -1,0 +1,40 @@
+---
+import manifest from "../data/image-manifest.json";
+
+interface Props {
+  id: string;
+  class?: string;
+  loading?: "eager" | "lazy";
+  sizes?: string;
+  style?: string;
+}
+
+const { id, class: className, loading = "lazy", sizes, style } = Astro.props;
+const R2_BASE = import.meta.env.PUBLIC_R2_BASE || "";
+
+const img = manifest[id];
+if (!img) {
+  console.warn(`SEOImage: no manifest entry for "${id}"`);
+}
+
+const src = img?.r2Key && R2_BASE ? `${R2_BASE.replace(/\/$/, "")}/${img.r2Key}` : "";
+const alt = img?.altText || id;
+const title = img?.title || "";
+---
+
+{src ? (
+  <img
+    src={src}
+    alt={alt}
+    title={title || undefined}
+    loading={loading}
+    decoding={loading === "lazy" ? "async" : "auto"}
+    class={className}
+    style={style}
+    sizes={sizes}
+  />
+) : (
+  <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:14px">
+    {id}
+  </div>
+)}
